@@ -16,7 +16,9 @@ request.interceptors.response.use(
     return response.data
   },
   (error) => {
-    return Promise.reject(error)
+    const message = error.message
+    ElMessage.error(message)
+    return Promise.reject(message)
   }
 )
 
