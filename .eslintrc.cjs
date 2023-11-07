@@ -14,6 +14,8 @@ module.exports = {
   rules: {
     // eslint (https://eslint.org/docs/rules/)
     'no-undef': 'off',
+    'no-unused-vars': ['error', { vars: 'all', args: 'none' }],
+    'no-useless-escape': 'off',
     // eslint-plugin-vue (https://eslint.vuejs.org/rules/)
     'vue/multi-word-component-names': 'off'
   }

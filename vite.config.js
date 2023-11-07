@@ -3,34 +3,35 @@ import { defineConfig } from 'vite'
 import createVitePlugins from './vite/plugins'
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  plugins: createVitePlugins(),
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
-    }
-  },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        javascriptEnabled: true,
-        additionalData: `@use "@/assets/styles/element/index.scss" as *;`
+export default defineConfig(({ mode, command }) => {
+  return {
+    plugins: createVitePlugins(),
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url))
       }
-    }
-  },
-  server: {
-    host: 'localhost',
-    // port: 5173,
-    open: true,
-    proxy: {
-      '/dev-api': {
-        target: 'http://127.0.0.1:8000',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/dev-api/, '')
+    },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          javascriptEnabled: true,
+          additionalData: `@use "@/assets/styles/element/index.scss" as *;`
+        }
       }
+    },
+    server: {
+      host: 'localhost',
+      open: true,
+      proxy: {
+        '/dev-api': {
+          target: 'http://127.0.0.1:8000',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/dev-api/, '')
+        }
+      }
+    },
+    esbuild: {
+      drop: ['console', 'debugger']
     }
-  },
-  esbuild: {
-    drop: ['console', 'debugger']
   }
 })

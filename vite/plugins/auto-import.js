@@ -30,7 +30,7 @@ export default function createAutoImport() {
           importStyle: 'sass'
         }),
         IconsResolver({
-          enabledCollections: ['ep']
+          enabledCollections: ['ep', 'icon-park-outline']
         })
       ]
     })
