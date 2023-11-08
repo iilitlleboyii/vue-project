@@ -71,12 +71,12 @@
       </el-form-item>
       <el-form-item>
         <el-row justify="space-between" style="width: 100%">
-          <div class="login-type-other">
+          <el-row justify="space-between" align="middle" style="width: 120px">
             <span>其它登录方式</span>
             <div class="login-type-item">
               <i-icon-park-outline-wechat font-size="16" color="white" />
             </div>
-          </div>
+          </el-row>
           <el-button type="primary" link @click="$router.replace('/register')">注册账户</el-button>
         </el-row>
       </el-form-item>
@@ -173,13 +173,6 @@ function onLoginFormClick() {
 :deep(.el-tabs__nav-scroll) {
   display: flex;
   justify-content: center;
-}
-
-.login-type-other {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
 }
 
 .login-type-item {

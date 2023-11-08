@@ -1,7 +1,6 @@
 <template>
   <AppIndex>
-    <div style="width: 100%; text-align: center">账户注册</div>
-    <br />
+    <div style="width: 100%; text-align: center; margin-bottom: 18px">账户注册</div>
     <el-form :model="registerForm" :rules="rules" ref="registerFormRef" @submit.prevent>
       <el-form-item prop="email">
         <el-input v-model="registerForm.email" placeholder="邮箱" size="large" />
@@ -96,7 +95,21 @@ const rules = {
     }
   ],
   password1: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-  password2: [{ required: true, message: '请确认密码', trigger: 'blur' }],
+  password2: [
+    { required: true, message: '请输入确认密码', trigger: 'blur' },
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (value !== registerForm.password1) {
+            reject('两次密码输入不一致')
+          } else {
+            resolve()
+          }
+        })
+      },
+      trigger: 'blur'
+    }
+  ],
   phoneNumber: [
     { required: true, message: '请输入手机号', trigger: 'blur' },
     {

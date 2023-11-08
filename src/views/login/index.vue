@@ -1,24 +1,26 @@
 <template>
   <div class="login-page">
     <div class="header">
-      <div class="logo-title">
+      <el-row justify="center" align="middle">
         <img src="@/assets/images/logo.svg" class="logo" />
         <span class="title">Admin Pro</span>
+      </el-row>
+      <div class="desc">
+        <el-text type="info">Ant Design 是西湖区最具影响力的 Web 设计规范</el-text>
       </div>
-      <div class="desc">Ant Design 是西湖区最具影响力的 Web 设计规范</div>
     </div>
     <div class="main">
       <slot name="default"></slot>
     </div>
     <div class="footer">
       <el-row justify="space-evenly">
-        <el-link>帮助</el-link>
-        <el-link>隐私</el-link>
-        <el-link>条款</el-link>
+        <el-link :underline="false"><el-text type="info">帮助</el-text></el-link>
+        <el-link :underline="false"><el-text type="info">隐私</el-text></el-link>
+        <el-link :underline="false"><el-text type="info">条款</el-text></el-link>
       </el-row>
       <br />
       <el-row justify="center">
-        <span class="info">Copyright © 2020 杭州上树科技有限公司</span>
+        <el-text type="info">Copyright © 2020 杭州上树科技有限公司</el-text>
       </el-row>
     </div>
   </div>
@@ -40,42 +42,27 @@
   align-items: center;
   position: relative;
 }
-
 .header {
-  .logo-title {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    .logo {
-      width: 44px;
-      height: 44px;
-      margin-right: 16px;
-    }
-    .title {
-      color: black;
-      font-size: 33px;
-      font-weight: 600;
-    }
+  .logo {
+    width: 44px;
+    height: 44px;
+    margin-right: 16px;
+  }
+  .title {
+    font-size: 33px;
+    font-weight: 600;
   }
   .desc {
-    font-size: 14px;
-    color: rgba(0, 0, 0, 0.65);
     margin-top: 12px;
     margin-bottom: 40px;
   }
 }
-
 .main {
   width: 400px;
 }
-
 .footer {
   width: 300px;
   bottom: 20px;
   position: absolute;
-  .info {
-    font-size: 14px;
-    color: rgba(0, 0, 0, 0.65);
-  }
 }
 </style>

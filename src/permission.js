@@ -8,7 +8,7 @@ NProgress.configure({ showSpinner: false })
 NProgress.configure({ ease: 'ease', speed: 200 })
 NProgress.configure({ minimum: 0.3 })
 
-router.beforeEach(() => {
+router.beforeEach((to) => {
   NProgress.start()
 })
 

@@ -6,12 +6,12 @@ import createSvgIcon from './svg-icon'
 import createAutoImport from './auto-import'
 import createCompression from './compression'
 
-export default function createVitePlugins() {
+export default function createVitePlugins(isServe) {
   const vitePlugins = [
     vue(),
     vueJsx(),
     createSvgIcon(),
-    ...createAutoImport(),
+    ...createAutoImport(isServe),
     ...createCompression(),
     visualizer({
       gzipSize: true,
