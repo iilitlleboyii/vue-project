@@ -2,8 +2,8 @@
   <AppIndex>
     <div style="width: 100%; text-align: center; margin-bottom: 18px">账户注册</div>
     <el-form :model="registerForm" :rules="rules" ref="registerFormRef" @submit.prevent>
-      <el-form-item prop="email">
-        <el-input v-model="registerForm.email" placeholder="邮箱" size="large" />
+      <el-form-item prop="username">
+        <el-input v-model="registerForm.username" placeholder="用户名" size="large" />
       </el-form-item>
       <el-form-item prop="password1">
         <el-input
@@ -22,6 +22,9 @@
           type="password"
           show-password
         />
+      </el-form-item>
+      <el-form-item prop="email">
+        <el-input v-model="registerForm.email" placeholder="邮箱" size="large" />
       </el-form-item>
       <el-form-item prop="phoneNumber">
         <el-input
@@ -70,6 +73,7 @@
 
 <script setup>
 import AppIndex from './index.vue'
+import { register } from '@/api/common'
 
 const registerFormRef = ref()
 
@@ -78,6 +82,7 @@ const loading = ref(false)
 const select = ref('1')
 
 const registerForm = reactive({
+  username: '',
   email: '',
   password1: '',
   password2: '',
@@ -86,6 +91,7 @@ const registerForm = reactive({
 })
 
 const rules = {
+  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
   email: [
     { required: true, message: '请输入邮箱地址', trigger: 'blur' },
     {
@@ -136,11 +142,14 @@ function onRegisterFormClick() {
   registerFormRef.value.validate((valid) => {
     if (valid) {
       loading.value = true
-      setTimeout(() => {
-        loading.value = false
-        ElMessage.success('注册成功')
-        $router.replace('/')
-      }, 1500)
+      register(registerForm)
+        .then(() => {
+          ElMessage.success('注册成功')
+          $router.replace('/')
+        })
+        .finally(() => {
+          loading.value = false
+        })
     }
   })
 }

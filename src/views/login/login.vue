@@ -136,11 +136,9 @@ const $router = useRouter()
 const $userStore = useUserStore()
 
 const loginSuccess = () => {
-  setTimeout(() => {
-    localStorage.setItem('IsRemember', JSON.stringify(rememberMe.value))
-    ElMessage.success('登录成功')
-    $router.push('/home')
-  }, 1500)
+  localStorage.setItem('IsRemember', JSON.stringify(rememberMe.value))
+  ElMessage.success('登录成功')
+  $router.replace('/home')
 }
 
 function onLoginFormClick() {
