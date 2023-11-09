@@ -36,10 +36,11 @@ export function register(data) {
   })
 }
 
-export function refreshToken() {
+export function refreshToken(data) {
   return request({
     url: '/auth/refresh/',
-    method: 'get'
+    method: 'post',
+    data
   })
 }
 
