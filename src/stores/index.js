@@ -5,6 +5,4 @@ const pinia = createPinia()
 
 pinia.use(piniaPluginPersistedstate)
 
-export * from './modules/user'
-
 export default pinia

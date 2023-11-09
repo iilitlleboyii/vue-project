@@ -1,7 +1,13 @@
 <template>
   <AppIndex>
     <div style="width: 100%; text-align: center; margin-bottom: 18px">账户注册</div>
-    <el-form :model="registerForm" :rules="rules" ref="registerFormRef" @submit.prevent>
+    <el-form
+      :model="registerForm"
+      :rules="rules"
+      ref="registerFormRef"
+      label-width="auto"
+      @submit.prevent
+    >
       <el-form-item prop="username">
         <el-input v-model="registerForm.username" placeholder="用户名" size="large" />
       </el-form-item>
@@ -23,37 +29,39 @@
           show-password
         />
       </el-form-item>
-      <el-form-item prop="email">
-        <el-input v-model="registerForm.email" placeholder="邮箱" size="large" />
-      </el-form-item>
-      <el-form-item prop="phoneNumber">
-        <el-input
-          v-model="registerForm.phoneNumber"
-          placeholder="手机号"
-          size="large"
-          :maxlength="11"
-        >
-          <template #prepend>
-            <el-select v-model="select" size="large" style="width: 80px">
-              <el-option label="+86" value="1" />
-              <el-option label="+87" value="2" />
-            </el-select>
-          </template>
-        </el-input>
-      </el-form-item>
-      <el-form-item prop="code">
-        <el-row justify="space-between" style="width: 100%">
+      <template v-if="isRequired">
+        <el-form-item prop="email">
+          <el-input v-model="registerForm.email" placeholder="邮箱" size="large" />
+        </el-form-item>
+        <el-form-item prop="phoneNumber">
           <el-input
-            v-model="registerForm.code"
-            placeholder="验证码"
+            v-model="registerForm.phoneNumber"
+            placeholder="手机号"
             size="large"
-            :maxlength="6"
-            @keyup.enter="onRegisterFormClick"
-            style="width: 70%"
-          />
-          <el-button size="large">获取验证码</el-button>
-        </el-row>
-      </el-form-item>
+            :maxlength="11"
+          >
+            <template #prepend>
+              <el-select v-model="select" size="large" style="width: 80px">
+                <el-option label="+86" value="1" />
+                <el-option label="+87" value="2" />
+              </el-select>
+            </template>
+          </el-input>
+        </el-form-item>
+        <el-form-item prop="code">
+          <el-row justify="space-between" style="width: 100%">
+            <el-input
+              v-model="registerForm.code"
+              placeholder="验证码"
+              size="large"
+              :maxlength="6"
+              @keyup.enter="onRegisterFormClick"
+              style="width: 70%"
+            />
+            <el-button size="large">获取验证码</el-button>
+          </el-row>
+        </el-form-item>
+      </template>
       <el-form-item>
         <el-row justify="space-between" style="width: 100%">
           <el-button
@@ -81,6 +89,8 @@ const loading = ref(false)
 
 const select = ref('1')
 
+const isRequired = ref(false)
+
 const registerForm = reactive({
   username: '',
   email: '',
@@ -93,7 +103,7 @@ const registerForm = reactive({
 const rules = {
   username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
   email: [
-    { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+    { required: false, message: '请输入邮箱地址', trigger: 'blur' },
     {
       type: 'email',
       message: '请输入正确的邮箱地址',
@@ -117,7 +127,7 @@ const rules = {
     }
   ],
   phoneNumber: [
-    { required: true, message: '请输入手机号', trigger: 'blur' },
+    { required: false, message: '请输入手机号', trigger: 'blur' },
     {
       pattern:
         /^(?:(?:\+|00)86)?1(?:(?:3[\d])|(?:4[5-79])|(?:5[0-35-9])|(?:6[5-7])|(?:7[0-8])|(?:8[\d])|(?:9[1589]))\d{8}$/,
@@ -126,7 +136,7 @@ const rules = {
     }
   ],
   code: [
-    { required: true, message: '请输入验证码', trigger: 'blur' },
+    { required: false, message: '请输入验证码', trigger: 'blur' },
     {
       pattern: /^\d{6}$/,
       message: '验证码为6位数字',
@@ -142,7 +152,17 @@ function onRegisterFormClick() {
   registerFormRef.value.validate((valid) => {
     if (valid) {
       loading.value = true
-      register(registerForm)
+      const data = {
+        username: registerForm.username,
+        password: registerForm.password2
+      }
+      if (registerForm.email) {
+        data.email = registerForm.email
+      }
+      if (registerForm.phoneNumber) {
+        data.phoneNumber = registerForm.phoneNumber
+      }
+      register(data)
         .then(() => {
           ElMessage.success('注册成功')
           $router.replace('/')

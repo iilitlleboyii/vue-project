@@ -33,6 +33,7 @@
 <script setup>
 import useLocale from '@/hooks/useLocale'
 import { useDark, useFullscreen } from '@vueuse/core'
+import { getUserList } from '@/api/common'
 
 const { setLocale } = useLocale()
 const locale = ref(false)
@@ -57,6 +58,13 @@ function onChangeFullScreen() {
     toggle()
   }
 }
+
+onMounted(async () => {
+  const res = await getUserList()
+  if (res) {
+    console.log('userList =>', res)
+  }
+})
 </script>
 
 <style lang="scss" scoped>

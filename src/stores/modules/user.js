@@ -58,23 +58,34 @@ export const useUserStore = defineStore('userStore', {
     },
     Logout() {
       return new Promise((resolve, reject) => {
-        logout()
-          .then(() => {
-            this.access = ''
-            this.refresh = ''
-            this.permissions = []
-            this.roles = []
-            this.userInfo = {}
-            localStorage.removeItem('Access-Token')
-            localStorage.removeItem('Refresh-Token')
-            localStorage.removeItem('Permissions')
-            localStorage.removeItem('Roles')
-            localStorage.removeItem('UserInfo')
-            resolve()
-          })
-          .catch((err) => {
-            reject(err)
-          })
+        this.access = ''
+        this.refresh = ''
+        this.permissions = []
+        this.roles = []
+        this.userInfo = {}
+        localStorage.removeItem('Access-Token')
+        localStorage.removeItem('Refresh-Token')
+        localStorage.removeItem('Permissions')
+        localStorage.removeItem('Roles')
+        localStorage.removeItem('UserInfo')
+        resolve()
+        // logout()
+        //   .then(() => {
+        //     this.access = ''
+        //     this.refresh = ''
+        //     this.permissions = []
+        //     this.roles = []
+        //     this.userInfo = {}
+        //     localStorage.removeItem('Access-Token')
+        //     localStorage.removeItem('Refresh-Token')
+        //     localStorage.removeItem('Permissions')
+        //     localStorage.removeItem('Roles')
+        //     localStorage.removeItem('UserInfo')
+        //     resolve()
+        //   })
+        //   .catch((err) => {
+        //     reject(err)
+        //   })
       })
     }
   },

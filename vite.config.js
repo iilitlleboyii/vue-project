@@ -5,8 +5,9 @@ import createVitePlugins from './vite/plugins'
 // https://vitejs.dev/config/
 export default defineConfig(({ mode, command }) => {
   const env = loadEnv(mode, process.cwd(), '')
+  const { VITE_APP_ENV } = env
   return {
-    base: '/',
+    base: VITE_APP_ENV === 'production' ? '/' : '/',
     publicDir: 'public',
     plugins: createVitePlugins(command === 'serve'),
     resolve: {

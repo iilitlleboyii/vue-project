@@ -1,8 +1,8 @@
 import { createApp } from 'vue'
 
 import App from './App.vue'
-import router from './router'
 import pinia from './stores'
+import router from './router'
 
 // 路由守卫
 import './permission'
@@ -15,8 +15,8 @@ import 'virtual:svg-icons-register'
 
 const app = createApp(App)
 
-app.use(router)
 app.use(pinia)
 app.use(i18n)
+app.use(router)
 
 app.mount('#app')

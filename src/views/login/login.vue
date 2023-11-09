@@ -7,7 +7,7 @@
     <el-form :model="loginForm" :rules="rules" ref="loginFormRef" @submit.prevent>
       <template v-if="loginType === '0'">
         <el-form-item prop="username">
-          <el-input v-model="loginForm.username" placeholder="用户名:admin" size="large">
+          <el-input v-model="loginForm.username" placeholder="用户名" size="large">
             <template #prefix>
               <i-ep-user color="#165dff" />
             </template>
@@ -16,7 +16,7 @@
         <el-form-item prop="password">
           <el-input
             v-model="loginForm.password"
-            placeholder="密码:123456"
+            placeholder="密码"
             size="large"
             type="password"
             show-password
@@ -86,7 +86,7 @@
 
 <script setup>
 import AppIndex from './index.vue'
-import { useUserStore } from '@/stores'
+import { useUserStore } from '@/stores/modules'
 
 const loginFormRef = ref()
 
@@ -156,7 +156,8 @@ function onLoginFormClick() {
             loading.value = false
           })
       } else {
-        loginSuccess()
+        ElMessage.warning('暂不支持手机号登录~')
+        loading.value = false
       }
     }
   })
