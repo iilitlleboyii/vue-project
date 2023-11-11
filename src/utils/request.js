@@ -1,8 +1,7 @@
 import axios from 'axios'
-import pinia from '@/stores'
+import { getRefresh, setAccess, getAccess } from '@/utils/auth'
 import { useUserStore } from '@/stores/modules'
-
-let $userStore = null
+import pinia from '@/stores'
 
 // 是否正在刷新令牌
 let isRefreshing = false
@@ -21,10 +20,7 @@ request.interceptors.request.use(
   (config) => {
     // 请求是否携带令牌，默认携带
     config.headers['Carry-Token'] = config.headers['Carry-Token'] ?? true
-    if ($userStore === null) {
-      $userStore = useUserStore(pinia)
-    }
-    const access = $userStore.access
+    const access = getAccess()
     if (config.headers['Carry-Token'] && access) {
       config.headers['Authorization'] = 'Bearer ' + access
     }
@@ -46,8 +42,7 @@ request.interceptors.response.use(
     const { data, config } = response
     // 如果是刷新令牌请求，那么就把新的令牌存起来
     if (config.url.includes('refresh')) {
-      $userStore.access = data.access
-      localStorage.setItem('Access-Token', data.access)
+      setAccess(data.access)
       isRefreshing = false
       waitingRequests.forEach((item) => {
         request(item)
@@ -58,19 +53,17 @@ request.interceptors.response.use(
   },
   (error) => {
     const { data, config, status } = error.response
-    if ($userStore === null) {
-      $userStore = useUserStore(pinia)
-    }
     if (status === 401) {
       // 如果正在刷新令牌，且是普通请求，那么就暂存该请求
       if (isRefreshing && !config.url.includes('refresh')) {
         waitingRequests.push(config)
       } else {
         // 如果是普通请求，且存有刷新Token，那么就暂存该请求，尝试去刷新令牌，成功后再重新发送该请求
-        if (!config.url.includes('refresh') && $userStore.refresh) {
+        const refresh = getRefresh()
+        if (!config.url.includes('refresh') && refresh) {
           waitingRequests.push(config)
           isRefreshing = true
-          request.post('/auth/refresh/', { refresh: $userStore.refresh })
+          request.post('/auth/refresh/', { refresh: refresh })
         } else {
           // 如果刷新令牌也过期了，或者没有刷新Token，那么就直接提示用户重新登录
           isRefreshing = false
@@ -79,6 +72,7 @@ request.interceptors.response.use(
             type: 'warning',
             showClose: false
           }).then(() => {
+            const $userStore = useUserStore(pinia)
             $userStore.Logout().then(() => {
               location.href = '/login'
             })

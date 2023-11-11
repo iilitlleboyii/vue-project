@@ -1,12 +1,13 @@
-import { login, logout, getUserInfo } from '@/api/common'
+import { login, getUserInfo } from '@/api/common'
+import * as storage from '@/utils/auth'
 
 export const useUserStore = defineStore('userStore', {
   state: () => {
-    const access = localStorage.getItem('Access-Token') || ''
-    const refresh = localStorage.getItem('Refresh-Token') || ''
-    const permissions = JSON.parse(localStorage.getItem('Permissions')) || []
-    const roles = JSON.parse(localStorage.getItem('Roles')) || []
-    const userInfo = JSON.parse(localStorage.getItem('UserInfo')) || {}
+    const access = storage.getAccess() || ''
+    const refresh = storage.getRefresh() || ''
+    const permissions = storage.getPermissions() || []
+    const roles = storage.getRoles() || []
+    const userInfo = storage.getUserInfo() || {}
     return {
       access,
       refresh,
@@ -21,16 +22,12 @@ export const useUserStore = defineStore('userStore', {
         login(data)
           .then((res) => {
             const { access, refresh, permissions, roles, userInfo } = res
-            this.access = access
-            this.refresh = refresh
-            localStorage.setItem('Access-Token', access)
-            localStorage.setItem('Refresh-Token', refresh)
-            this.permissions = permissions
-            this.roles = roles
-            this.userInfo = userInfo
-            localStorage.setItem('Permissions', JSON.stringify(permissions))
-            localStorage.setItem('Roles', JSON.stringify(roles))
-            localStorage.setItem('UserInfo', JSON.stringify(userInfo))
+            storage.setAccess(access)
+            storage.setRefresh(refresh)
+
+            storage.setPermissions(permissions)
+            storage.setRoles(roles)
+            storage.setUserInfo(userInfo)
             resolve()
           })
           .catch((err) => {
@@ -43,12 +40,10 @@ export const useUserStore = defineStore('userStore', {
         getUserInfo()
           .then((res) => {
             const { permissions, roles, userInfo } = res
-            this.permissions = permissions
-            this.roles = roles
-            this.userInfo = userInfo
-            localStorage.setItem('Permissions', JSON.stringify(permissions))
-            localStorage.setItem('Roles', JSON.stringify(roles))
-            localStorage.setItem('UserInfo', JSON.stringify(userInfo))
+
+            storage.setPermissions(permissions)
+            storage.setRoles(roles)
+            storage.setUserInfo(userInfo)
             resolve()
           })
           .catch((err) => {
@@ -58,34 +53,12 @@ export const useUserStore = defineStore('userStore', {
     },
     Logout() {
       return new Promise((resolve, reject) => {
-        this.access = ''
-        this.refresh = ''
-        this.permissions = []
-        this.roles = []
-        this.userInfo = {}
-        localStorage.removeItem('Access-Token')
-        localStorage.removeItem('Refresh-Token')
-        localStorage.removeItem('Permissions')
-        localStorage.removeItem('Roles')
-        localStorage.removeItem('UserInfo')
+        storage.removeAccess()
+        storage.removeRefresh()
+        storage.removePermissions()
+        storage.removeRoles()
+        storage.removeUserInfo()
         resolve()
-        // logout()
-        //   .then(() => {
-        //     this.access = ''
-        //     this.refresh = ''
-        //     this.permissions = []
-        //     this.roles = []
-        //     this.userInfo = {}
-        //     localStorage.removeItem('Access-Token')
-        //     localStorage.removeItem('Refresh-Token')
-        //     localStorage.removeItem('Permissions')
-        //     localStorage.removeItem('Roles')
-        //     localStorage.removeItem('UserInfo')
-        //     resolve()
-        //   })
-        //   .catch((err) => {
-        //     reject(err)
-        //   })
       })
     }
   },
