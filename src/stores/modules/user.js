@@ -1,13 +1,13 @@
 import { login, getUserInfo } from '@/api/common'
-import * as storage from '@/utils/auth'
+import { storageKeys, getItem, setItem, removeItem } from '@/utils/auth'
 
 export const useUserStore = defineStore('userStore', {
   state: () => {
-    const access = storage.getAccess() || ''
-    const refresh = storage.getRefresh() || ''
-    const permissions = storage.getPermissions() || []
-    const roles = storage.getRoles() || []
-    const userInfo = storage.getUserInfo() || {}
+    const access = getItem(storageKeys.access)
+    const refresh = getItem(storageKeys.refresh)
+    const permissions = JSON.parse(getItem(storageKeys.permissions))
+    const roles = JSON.parse(getItem(storageKeys.roles))
+    const userInfo = JSON.parse(getItem(storageKeys.userInfo))
     return {
       access,
       refresh,
@@ -22,12 +22,12 @@ export const useUserStore = defineStore('userStore', {
         login(data)
           .then((res) => {
             const { access, refresh, permissions, roles, userInfo } = res
-            storage.setAccess(access)
-            storage.setRefresh(refresh)
+            setItem(storageKeys.access, access)
+            setItem(storageKeys.refresh, refresh)
 
-            storage.setPermissions(permissions)
-            storage.setRoles(roles)
-            storage.setUserInfo(userInfo)
+            setItem(storageKeys.permissions, JSON.stringify(permissions))
+            setItem(storageKeys.roles, JSON.stringify(roles))
+            setItem(storageKeys.userInfo, JSON.stringify(userInfo))
             resolve()
           })
           .catch((err) => {
@@ -41,9 +41,9 @@ export const useUserStore = defineStore('userStore', {
           .then((res) => {
             const { permissions, roles, userInfo } = res
 
-            storage.setPermissions(permissions)
-            storage.setRoles(roles)
-            storage.setUserInfo(userInfo)
+            setItem(storageKeys.permissions, JSON.stringify(permissions))
+            setItem(storageKeys.roles, JSON.stringify(roles))
+            setItem(storageKeys.userInfo, JSON.stringify(userInfo))
             resolve()
           })
           .catch((err) => {
@@ -53,11 +53,11 @@ export const useUserStore = defineStore('userStore', {
     },
     Logout() {
       return new Promise((resolve, reject) => {
-        storage.removeAccess()
-        storage.removeRefresh()
-        storage.removePermissions()
-        storage.removeRoles()
-        storage.removeUserInfo()
+        removeItem(storageKeys.access)
+        removeItem(storageKeys.refresh)
+        removeItem(storageKeys.permissions)
+        removeItem(storageKeys.roles)
+        removeItem(storageKeys.userInfo)
         resolve()
       })
     }

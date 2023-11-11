@@ -136,7 +136,7 @@ const $router = useRouter()
 const $userStore = useUserStore()
 
 const loginSuccess = () => {
-  localStorage.setItem('IsRemember', JSON.stringify(rememberMe.value))
+  localStorage.setItem('rememberMe', JSON.stringify(rememberMe.value))
   ElMessage.success('登录成功')
   $router.replace('/home')
 }
