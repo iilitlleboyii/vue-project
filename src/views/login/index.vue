@@ -1,18 +1,20 @@
 <template>
-  <div class="login-page">
-    <div class="header">
+  <div
+    class="login-page w-screen min-w-106 min-h-screen px-0 py-27.5 relative flex flex-col items-center bg-cover bg-no-repeat"
+  >
+    <div>
       <el-row justify="center" align="middle">
-        <img src="@/assets/images/logo.svg" class="logo" />
-        <span class="title">Admin Pro</span>
+        <img src="@/assets/images/logo.svg" class="w-11 h-11 mr-4" />
+        <span class="text-8 font-bold">Admin Pro</span>
       </el-row>
-      <div class="desc">
+      <div class="mt-3 mb-10">
         <el-text type="info">Ant Design 是西湖区最具影响力的 Web 设计规范</el-text>
       </div>
     </div>
-    <div class="main">
+    <div class="w-100">
       <slot name="default"></slot>
     </div>
-    <div class="footer">
+    <div class="w-75 absolute bottom-5">
       <el-row justify="space-evenly">
         <el-link :underline="false"><el-text type="info">帮助</el-text></el-link>
         <el-link :underline="false"><el-text type="info">隐私</el-text></el-link>
@@ -26,43 +28,8 @@
   </div>
 </template>
 
-<script setup></script>
-
 <style lang="scss" scoped>
 .login-page {
-  width: 100vw;
-  min-width: 425px;
-  min-height: 100vh;
   background-image: url('@/assets/images/background.svg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  padding: 110px 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-}
-.header {
-  .logo {
-    width: 44px;
-    height: 44px;
-    margin-right: 16px;
-  }
-  .title {
-    font-size: 33px;
-    font-weight: 600;
-  }
-  .desc {
-    margin-top: 12px;
-    margin-bottom: 40px;
-  }
-}
-.main {
-  width: 400px;
-}
-.footer {
-  width: 300px;
-  bottom: 20px;
-  position: absolute;
 }
 </style>

@@ -38,7 +38,7 @@
           ></el-input>
         </el-form-item>
         <el-form-item prop="code">
-          <el-row justify="space-between" style="width: 100%">
+          <el-row justify="space-between" class="w-full">
             <el-input
               v-model="loginForm.code"
               placeholder="验证码"
@@ -54,7 +54,7 @@
         </el-form-item>
       </template>
       <el-form-item>
-        <el-row justify="space-between" style="width: 100%">
+        <el-row justify="space-between" class="w-full">
           <el-checkbox v-model="rememberMe" label="记住密码" size="large" />
           <el-button type="primary" link>忘记密码</el-button>
         </el-row>
@@ -63,18 +63,20 @@
         <el-button
           type="primary"
           size="large"
-          style="width: 100%"
+          class="w-full"
           :loading="loading"
           @click="onLoginFormClick"
           >确 定</el-button
         >
       </el-form-item>
       <el-form-item>
-        <el-row justify="space-between" style="width: 100%">
-          <el-row justify="space-between" align="middle" style="width: 120px">
+        <el-row justify="space-between" class="w-full">
+          <el-row justify="space-between" align="middle" class="w-30">
             <span>其它登录方式</span>
-            <div class="login-type-item">
-              <i-icon-park-outline-wechat font-size="16" color="white" />
+            <div
+              class="inline-flex justify-center items-center bg-gray p-1 rounded-full cursor-pointer transition-colors hover:bg-#165dff"
+            >
+              <i-icon-park-outline-wechat font-size="4" color="white" />
             </div>
           </el-row>
           <el-button type="primary" link @click="$router.replace('/register')">注册账户</el-button>
@@ -172,20 +174,5 @@ function onLoginFormClick() {
 :deep(.el-tabs__nav-scroll) {
   display: flex;
   justify-content: center;
-}
-
-.login-type-item {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background-color: grey;
-  border-radius: 50%;
-  padding: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-
-  &:hover {
-    background-color: #165dff;
-  }
 }
 </style>

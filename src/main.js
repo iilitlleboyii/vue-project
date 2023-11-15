@@ -4,6 +4,11 @@ import App from './App.vue'
 import pinia from './stores'
 import router from './router'
 
+// 全局样式
+import '@/assets/styles/element/dark.scss'
+import 'virtual:uno.css'
+import '@unocss/reset/tailwind-compat.css'
+
 // 路由守卫
 import './permission'
 
