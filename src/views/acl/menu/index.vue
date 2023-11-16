@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <div>Message:{{ $t('hello') }}</div>
-  </div>
+  <div class="center">菜单管理</div>
 </template>
 
 <script setup></script>

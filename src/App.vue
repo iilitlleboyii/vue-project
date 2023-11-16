@@ -17,6 +17,11 @@ const locale = computed(() => (currentLocale.value === 'zh-CN' ? zhCn : enUS))
 </script>
 
 <style lang="scss">
+:root {
+  --animate-duration: 500ms;
+  /* --animate-delay: 0.9s; */
+}
+
 body {
   font-family: 'HarmonyOS_Sans', sans-serif;
 }

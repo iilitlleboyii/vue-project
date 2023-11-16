@@ -17,6 +17,7 @@ module.exports = {
     'no-unused-vars': ['error', { vars: 'all', args: 'none' }],
     'no-useless-escape': 'off',
     // eslint-plugin-vue (https://eslint.vuejs.org/rules/)
-    'vue/multi-word-component-names': 'off'
+    'vue/multi-word-component-names': 'off',
+    'vue/valid-v-for': 'off'
   }
 }

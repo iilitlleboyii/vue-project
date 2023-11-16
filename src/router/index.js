@@ -1,10 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import pinia from '@/stores'
-import { useMenuStore } from '@/stores/modules'
+import routes from './routes'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: useMenuStore(pinia) || [],
+  routes: routes,
   scrollBehavior: () => {
     return {
       left: 0,

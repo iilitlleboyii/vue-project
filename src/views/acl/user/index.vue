@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <div>Message:{{ $t('hello') }}</div>
-  </div>
+  <div class="center">用户管理</div>
 </template>
 
 <script setup></script>

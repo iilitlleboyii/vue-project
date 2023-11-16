@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <div>Message:{{ $t('hello') }}</div>
-  </div>
+  <div>数据大屏</div>
 </template>
 
 <script setup></script>

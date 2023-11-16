@@ -19,7 +19,7 @@ const linkProps = () => {
     return {
       href: props.item.path,
       target: '_blank',
-      rel: 'noopener'
+      rel: 'external'
     }
   }
   return {

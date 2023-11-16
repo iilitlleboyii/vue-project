@@ -9,6 +9,9 @@ import '@/assets/styles/element/dark.scss'
 import 'virtual:uno.css'
 import '@unocss/reset/tailwind-compat.css'
 
+// 引入动画库
+import 'animate.css'
+
 // 路由守卫
 import './permission'
 
