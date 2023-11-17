@@ -30,7 +30,14 @@ export default function createAutoImport(isServe) {
           importStyle: 'sass'
         }),
         IconsResolver({
-          enabledCollections: ['ep', 'icon-park-outline']
+          enabledCollections: [
+            'ep',
+            'icon-park-outline',
+            'material-symbols-light',
+            'ion',
+            'material-symbols',
+            'line-md'
+          ]
         })
       ],
       include: isServe ? [/\.vue$/, /\.vue\?vue/, 'element-plus'] : [/\.vue$/, /\.vue\?vue/],

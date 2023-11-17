@@ -1,6 +1,6 @@
 <template>
-  <el-dropdown trigger="click" @command="onCommand">
-    <SvgIcon name="international" size="30"></SvgIcon>
+  <el-dropdown trigger="hover" @command="onCommand">
+    <i-ion-language font-size="5" />
     <template #dropdown>
       <el-dropdown-menu>
         <template v-for="item in dropdownItems">
@@ -20,12 +20,12 @@ const { currentLocale, setLocale } = useLocale()
 
 const dropdownItems = [
   {
-    command: 'zh-CN',
-    text: '简体中文'
-  },
-  {
     command: 'en-US',
     text: 'English'
+  },
+  {
+    command: 'zh-CN',
+    text: '简体中文'
   }
 ]
 

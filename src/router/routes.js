@@ -16,6 +16,41 @@ const baseRoutes = [
     ]
   },
   {
+    name: 'System',
+    path: '/system',
+    redirect: '/system/user',
+    component: () => import('@/layout/index.vue'),
+    meta: {
+      title: '系统管理'
+    },
+    children: [
+      {
+        name: 'User',
+        path: '/system/user',
+        component: () => import('@/views/system/user/index.vue'),
+        meta: {
+          title: '用户管理'
+        }
+      },
+      {
+        name: 'Role',
+        path: '/system/role',
+        component: () => import('@/views/system/role/index.vue'),
+        meta: {
+          title: '角色管理'
+        }
+      },
+      {
+        name: 'Menu',
+        path: '/system/menu',
+        component: () => import('@/views/system/menu/index.vue'),
+        meta: {
+          title: '菜单管理'
+        }
+      }
+    ]
+  },
+  {
     name: 'Screen',
     path: '/screen',
     component: () => import('@/views/screen/index.vue'),
@@ -23,41 +58,6 @@ const baseRoutes = [
       title: '数据大屏',
       isExternalLink: true
     }
-  },
-  {
-    name: 'Acl',
-    path: '/acl',
-    redirect: '/acl/user',
-    component: () => import('@/layout/index.vue'),
-    meta: {
-      title: '权限管理'
-    },
-    children: [
-      {
-        name: 'User',
-        path: '/acl/user',
-        component: () => import('@/views/acl/user/index.vue'),
-        meta: {
-          title: '用户管理'
-        }
-      },
-      {
-        name: 'Role',
-        path: '/acl/role',
-        component: () => import('@/views/acl/role/index.vue'),
-        meta: {
-          title: '角色管理'
-        }
-      },
-      {
-        name: 'Menu',
-        path: '/acl/menu',
-        component: () => import('@/views/acl/menu/index.vue'),
-        meta: {
-          title: '菜单管理'
-        }
-      }
-    ]
   },
   {
     name: 'Login',

@@ -5,11 +5,11 @@ export const useMenuStore = defineStore('menuStore', {
       menuList: routes,
       loadedRoutes: [
         {
-          name: 'home',
+          name: 'Home',
           title: '首页'
         }
       ],
-      activeRoute: 'home'
+      activeRoute: 'Home'
     }
   },
   actions: {},

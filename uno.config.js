@@ -13,7 +13,8 @@ import {
 export default defineConfig({
   shortcuts: [
     {
-      'center': 'flex justify-center items-center'
+      'center': 'flex justify-center items-center',
+      'border-base': 'border border-solid border-gray-500_10',
     }
   ],
   theme: {

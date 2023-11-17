@@ -18,8 +18,8 @@ const locale = computed(() => (currentLocale.value === 'zh-CN' ? zhCn : enUS))
 
 <style lang="scss">
 :root {
-  --animate-duration: 500ms;
-  /* --animate-delay: 0.9s; */
+  --animate-duration: 500ms !important;
+  // --animate-delay: 1s;
 }
 
 body {
