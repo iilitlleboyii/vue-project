@@ -1,3 +1,7 @@
+import i18n from '@/locale'
+
+const { t } = i18n.global
+
 const baseRoutes = [
   {
     name: 'Index',
@@ -10,7 +14,7 @@ const baseRoutes = [
         path: '/home',
         component: () => import('@/views/home/index.vue'),
         meta: {
-          title: '首页'
+          title: t('home')
         }
       }
     ]
@@ -21,7 +25,7 @@ const baseRoutes = [
     redirect: '/system/user',
     component: () => import('@/layout/index.vue'),
     meta: {
-      title: '系统管理'
+      title: t('system')
     },
     children: [
       {
@@ -29,7 +33,7 @@ const baseRoutes = [
         path: '/system/user',
         component: () => import('@/views/system/user/index.vue'),
         meta: {
-          title: '用户管理'
+          title: t('user')
         }
       },
       {
@@ -37,7 +41,7 @@ const baseRoutes = [
         path: '/system/role',
         component: () => import('@/views/system/role/index.vue'),
         meta: {
-          title: '角色管理'
+          title: t('role')
         }
       },
       {
@@ -45,7 +49,7 @@ const baseRoutes = [
         path: '/system/menu',
         component: () => import('@/views/system/menu/index.vue'),
         meta: {
-          title: '菜单管理'
+          title: t('menu')
         }
       }
     ]
@@ -55,7 +59,7 @@ const baseRoutes = [
     path: '/screen',
     component: () => import('@/views/screen/index.vue'),
     meta: {
-      title: '数据大屏',
+      title: t('dataPanel'),
       isExternalLink: true
     }
   },
@@ -65,7 +69,7 @@ const baseRoutes = [
     component: () => import('@/views/login/login.vue'),
     hidden: true,
     meta: {
-      title: '登录'
+      title: t('login')
     }
   },
   {
@@ -74,7 +78,7 @@ const baseRoutes = [
     component: () => import('@/views/login/register.vue'),
     hidden: true,
     meta: {
-      title: '注册'
+      title: t('register')
     }
   },
   {
@@ -85,6 +89,12 @@ const baseRoutes = [
     meta: {
       title: '404'
     }
+  },
+  {
+    name: 'Blank',
+    path: '/blank',
+    component: () => import('@/views/blank/index.vue'),
+    hidden: true
   },
   {
     name: 'Any',

@@ -12,8 +12,9 @@ NProgress.configure({ minimum: 0.3 })
 
 let $userStore = null
 
-router.beforeEach(({ name, path, params, query }) => {
+router.beforeEach(({ name, path, params, query, meta }) => {
   NProgress.start()
+  document.title = meta.title ? meta.title + '-后台管理系统' : '后台管理系统'
   // 登录页和注册页直接放行
   if (name === 'Login' || name === 'Register') {
     return true

@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <div>Message:{{ $t('hello') }}</div>
-  </div>
+  <div class="app-container">Message:{{ $t('hello') }}</div>
 </template>
 
 <script setup></script>

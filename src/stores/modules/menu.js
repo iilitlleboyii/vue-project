@@ -1,4 +1,8 @@
 import routes from '@/router/routes'
+import i18n from '@/locale'
+
+const { t } = i18n.global
+
 export const useMenuStore = defineStore('menuStore', {
   state: () => {
     return {
@@ -6,7 +10,7 @@ export const useMenuStore = defineStore('menuStore', {
       loadedRoutes: [
         {
           name: 'Home',
-          title: '首页'
+          title: t('home')
         }
       ],
       activeRoute: 'Home'

@@ -1,9 +1,9 @@
 <template>
   <div class="flex items-center">
     <!-- 全屏 -->
-    <div class="cursor-pointer" :title="isFullscreen ? '退出全屏' : '全屏'" @click="toggle">
-      <i-material-symbols-light-fullscreen-exit font-size="6" v-if="isFullscreen" />
-      <i-material-symbols-light-fullscreen font-size="6" v-else />
+    <div class="cursor-pointer" @click="toggle">
+      <i-material-symbols-light:fullscreen-exit font-size="6" v-if="isFullscreen" />
+      <i-material-symbols-light:fullscreen font-size="6" v-else />
     </div>
     <el-divider direction="vertical" />
     <!-- 暗黑模式 -->

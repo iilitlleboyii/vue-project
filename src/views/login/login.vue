@@ -9,7 +9,7 @@
         <el-form-item prop="username">
           <el-input v-model="loginForm.username" placeholder="用户名" size="large">
             <template #prefix>
-              <i-ep-user color="#165dff" />
+              <i-ep:user color="#165dff" />
             </template>
           </el-input>
         </el-form-item>
@@ -22,7 +22,7 @@
             show-password
             @keyup.enter="onLoginFormClick"
           >
-            <template #prefix><i-ep-lock color="#165dff" /></template
+            <template #prefix><i-ep:lock color="#165dff" /></template
           ></el-input>
         </el-form-item>
       </template>
@@ -34,7 +34,7 @@
             size="large"
             :maxlength="11"
           >
-            <template #prefix><i-ep-iphone color="#165dff" /></template
+            <template #prefix><i-ep:iphone color="#165dff" /></template
           ></el-input>
         </el-form-item>
         <el-form-item prop="code">
@@ -47,7 +47,7 @@
               @keyup.enter="onLoginFormClick"
               style="width: 70%"
             >
-              <template #prefix><i-ep-message color="#165dff" /></template
+              <template #prefix><i-ep:message color="#165dff" /></template
             ></el-input>
             <el-button size="large">获取验证码</el-button>
           </el-row>
@@ -76,7 +76,7 @@
             <div
               class="inline-flex justify-center items-center bg-gray p-1 rounded-full cursor-pointer transition-colors hover:bg-#165dff"
             >
-              <i-icon-park-outline-wechat font-size="4" color="white" />
+              <i-icon-park-outline:wechat font-size="4" color="white" />
             </div>
           </el-row>
           <el-button type="primary" link @click="$router.replace('/register')">注册账户</el-button>

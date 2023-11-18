@@ -3,7 +3,9 @@
   <MenuLink v-else-if="item.children.length === 1" :item="item.children[0]" />
   <el-sub-menu v-else :index="item.path">
     <template #title>
-      <!-- <el-icon><component :is="item.meta.icon"></component></el-icon> -->
+      <el-icon>
+        <i-material-symbols:lists-rounded />
+      </el-icon>
       <span>{{ item.meta.title }}</span>
     </template>
     <MenuItem v-for="child in item.children" :key="child.path" :item="child" />

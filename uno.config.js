@@ -15,6 +15,7 @@ export default defineConfig({
     {
       'center': 'flex justify-center items-center',
       'border-base': 'border border-solid border-gray-500_10',
+      'app-container': 'center h-[calc(100vh-90px)]'
     }
   ],
   theme: {

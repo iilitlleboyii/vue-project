@@ -1,7 +1,7 @@
 <template>
   <el-container class="w-screen h-screen overflow-hidden">
     <el-aside :width="isCollapse ? '64px' : '200px'">
-      <LogoTitle :is-collapse="isCollapse" icon-name="home" title="后台管理系统"></LogoTitle>
+      <LogoTitle :is-collapse="isCollapse" icon-name="home" :title="$t('backend')"></LogoTitle>
       <el-scrollbar>
         <el-menu
           :unique-opened="true"
@@ -15,15 +15,12 @@
       </el-scrollbar>
     </el-aside>
     <el-container>
-      <el-header class="flex items-center justify-between border-b border-solid border-gray-500_10">
+      <!-- 下阴影需要适配暗黑模式 -->
+      <el-header class="flex items-center justify-between shadow-sm">
         <div class="flex items-center">
-          <div
-            :title="isCollapse ? '展开' : '折叠'"
-            @click="isCollapse = !isCollapse"
-            class="cursor-pointer"
-          >
-            <i-line-md-menu-fold-right font-size="6" v-if="isCollapse" />
-            <i-line-md-menu-fold-left font-size="6" v-else />
+          <div @click="isCollapse = !isCollapse" class="cursor-pointer">
+            <i-line-md:menu-fold-right font-size="6" v-if="isCollapse" />
+            <i-line-md:menu-fold-left font-size="6" v-else />
           </div>
           <el-divider direction="vertical" />
           <BreadCrumb></BreadCrumb>
@@ -78,23 +75,23 @@ function filterHidden(arr) {
 
 <style lang="scss" scoped>
 :deep(.el-scrollbar) {
-  height: calc(100vh - 3.75rem);
+  height: calc(100vh - 50px);
 
   .el-scrollbar__view {
     height: 100%;
   }
 }
 
-.el-main {
-  --el-main-padding: 8px;
+.el-menu {
+  border-right: 0;
 }
 
-.el-menu {
-  --el-menu-bg-color: #0c193d;
-  --el-menu-hover-bg-color: #152f70;
-  --el-menu-text-color: hsla(0, 0%, 100%, 0.65);
-  --el-menu-active-color: white;
+.el-header {
+  --el-header-padding: 0 5px;
+  --el-header-height: 50px;
+}
 
-  border-right: 0;
+.el-main {
+  --el-main-padding: 0;
 }
 </style>

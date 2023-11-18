@@ -1,14 +1,52 @@
 <template>
-  <el-tabs v-model="activeRoute" type="card" @tab-click="tabClick" @tab-remove="tabRemove">
+  <v-contextmenu ref="contextmenu">
+    <v-contextmenu-item @click="onRefreshCurrent">
+      <div class="flex items-center">
+        <i-material-symbols:refresh /><span class="ml-2">{{ $t('tab_refresh') }}</span>
+      </div></v-contextmenu-item
+    >
+    <v-contextmenu-item @click="onCloseOther"
+      ><div class="flex items-center">
+        <i-material-symbols:close /><span class="ml-2">{{ $t('tab_other') }}</span>
+      </div></v-contextmenu-item
+    >
+    <v-contextmenu-item @click="onCloseLeft"
+      ><div class="flex items-center">
+        <i-icon-park-outline:to-left /><span class="ml-2">{{ $t('tab_left') }}</span>
+      </div></v-contextmenu-item
+    >
+    <v-contextmenu-item @click="onCloseRight"
+      ><div class="flex items-center">
+        <i-icon-park-outline:to-right /><span class="ml-2">{{ $t('tab_right') }}</span>
+      </div></v-contextmenu-item
+    >
+    <v-contextmenu-item @click="onCloseAll"
+      ><div class="flex items-center">
+        <i-icon-park-outline:clear /><span class="ml-2">{{ $t('tab_all') }}</span>
+      </div></v-contextmenu-item
+    >
+  </v-contextmenu>
+  <el-tabs
+    v-model="activeRoute"
+    type="card"
+    @tab-click="tabClick"
+    @tab-remove="tabRemove"
+    @contextmenu.prevent
+  >
     <template v-for="route in loadedRoutes">
       <el-tab-pane :name="route.name" :closable="route.name !== 'Home'">
         <template #label>
-          <i-material-symbols-skateboarding-outline
-            font-size="3"
-            v-show="route.name === activeRoute"
-            class="pb-0.5"
-          />
-          <span class="select-none">{{ route.title }}</span>
+          <div
+            class="center h-full"
+            v-contextmenu:contextmenu
+            @contextmenu.prevent="triggerRoute = route"
+          >
+            <i-material-symbols:skateboarding-outline
+              font-size="3"
+              v-show="route.name === activeRoute"
+            />
+            <span class="select-none">{{ route.title }}</span>
+          </div>
         </template>
       </el-tab-pane>
     </template>
@@ -17,6 +55,7 @@
 
 <script setup>
 import { useMenuStore } from '@/stores/modules'
+import { nextTick } from 'vue'
 
 const $route = useRoute()
 const $router = useRouter()
@@ -56,16 +95,70 @@ const tabRemove = (name) => {
   }
   loadedRoutes.value = loadedRoutes.value.filter((route) => route.name !== name)
 }
+
+// 右键菜单响应
+const triggerRoute = ref(null)
+
+const onRefreshCurrent = async () => {
+  const triggerName = triggerRoute.value.name
+  const activeName = $route.name
+  if (triggerName === activeName) {
+    $router.replace({ name: 'Blank' })
+    await nextTick()
+    $router.replace({ name: triggerName })
+  } else {
+    $router.replace({ name: triggerName })
+  }
+}
+const onCloseOther = async () => {
+  const triggerName = triggerRoute.value.name
+  const activeName = $route.name
+  loadedRoutes.value = loadedRoutes.value.filter(
+    (route) => route.name === triggerName || route.name === 'Home'
+  )
+  if (triggerName !== activeName) {
+    $router.replace({ name: triggerName })
+  }
+}
+const onCloseLeft = async () => {
+  const triggerName = triggerRoute.value.name
+  const activeName = $route.name
+  const triggerIndex = loadedRoutes.value.findIndex((route) => route.name === triggerName)
+  loadedRoutes.value = loadedRoutes.value.filter(
+    (route, index) => route.name === triggerName || route.name === 'Home' || index > triggerIndex
+  )
+  if (triggerName !== activeName) {
+    $router.replace({ name: triggerName })
+  }
+}
+const onCloseRight = async () => {
+  const triggerName = triggerRoute.value.name
+  const activeName = $route.name
+  const triggerIndex = loadedRoutes.value.findIndex((route) => route.name === triggerName)
+  loadedRoutes.value = loadedRoutes.value.filter(
+    (route, index) => route.name === triggerName || route.name === 'Home' || index < triggerIndex
+  )
+  if (triggerName !== activeName) {
+    $router.replace({ name: triggerName })
+  }
+}
+const onCloseAll = async () => {
+  loadedRoutes.value = loadedRoutes.value.filter((route) => route.name === 'Home')
+  $router.replace({ name: 'Home' })
+}
 </script>
 
 <style lang="scss" scoped>
 .el-tabs {
   --el-tabs-header-height: 30px;
   // X 轴偏移量、Y 轴偏移量、模糊半径、扩散半径和颜色
-  box-shadow: 0 1px 5px 0 rgba(149, 157, 165, 0.2);
+  // 需要适配暗黑模式
+  box-shadow: 0 2px 6px 0 rgba(149, 157, 165, 0.2);
+  // border-bottom: 1px solid rgba($color: gray, $alpha: 0.2);
 
   :deep(.el-tabs__nav) {
-    gap: 10px;
+    gap: 5px;
+    padding: 5px;
   }
 
   :deep(.el-tabs__item) {
@@ -79,7 +172,7 @@ const tabRemove = (name) => {
   :deep(.el-tabs__header) {
     --el-border-color-light: transparent;
     // border-bottom: 1px solid var(--el-border-color-light);
-
+    margin: 0 0 10px;
     .el-tabs__nav {
       // border: 1px solid var(--el-border-color-light);
       // border-radius: 4px 4px 0 0;
@@ -90,6 +183,8 @@ const tabRemove = (name) => {
       // border-bottom: 1px solid transparent;
       // border-left: 1px solid var(--el-border-color-light);
       border: 1px solid rgba($color: gray, $alpha: 0.2);
+      // border-radius: 4px;
+      // box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     }
   }
 }

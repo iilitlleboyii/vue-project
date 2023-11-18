@@ -41,6 +41,9 @@ dependencies:
   sass-loader:
     specifier: ^13.3.2
     version: 13.3.2(sass@1.69.5)(webpack@5.89.0)
+  v-contextmenu:
+    specifier: ^3.0.0
+    version: 3.0.0(vue@3.3.7)
   vue:
     specifier: ^3.3.4
     version: 3.3.7
@@ -4225,6 +4228,15 @@ packages:
   /util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
     dev: true
+
+  /v-contextmenu@3.0.0(vue@3.3.7):
+    resolution: {integrity: sha512-zi38JxmTt66TmljgV1JbfEa9WvoQkpzRuEwZK7Tjb2XoRejbWLozQtkyTWXJa6x6Y3FrVDfgT36w01gpTpo41A==}
+    engines: {node: '>=10.16.0'}
+    peerDependencies:
+      vue: ^3.0.0
+    dependencies:
+      vue: 3.3.7
+    dev: false
 
   /vary@1.1.2:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}

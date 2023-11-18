@@ -1,9 +1,9 @@
 <template>
   <component :is="item.meta.isExternalLink ? 'a' : 'router-link'" v-bind="linkProps()">
     <el-menu-item :index="item.path">
-      <!-- <el-icon>
-        <component :is="item.meta.icon"></component>
-      </el-icon> -->
+      <el-icon>
+        <i-healthicons:ui-menu-grid />
+      </el-icon>
       <template #title>
         <span>{{ item.meta.title }}</span>
       </template>

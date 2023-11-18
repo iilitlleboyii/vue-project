@@ -21,10 +21,15 @@ import i18n from './locale'
 // SVG图标
 import 'virtual:svg-icons-register'
 
+// 右键菜单
+import contextmenu from 'v-contextmenu'
+import 'v-contextmenu/dist/themes/default.css'
+
 const app = createApp(App)
 
 app.use(pinia)
 app.use(i18n)
 app.use(router)
+app.use(contextmenu)
 
 app.mount('#app')

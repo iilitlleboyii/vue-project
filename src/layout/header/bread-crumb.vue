@@ -1,6 +1,6 @@
 <template>
-  <el-breadcrumb separator="/">
-    <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+  <el-breadcrumb separator="/" class="select-none">
+    <el-breadcrumb-item :to="{ path: '/' }">{{ $t('home') }}</el-breadcrumb-item>
     <template v-for="route in matchedArr">
       <el-breadcrumb-item v-if="route.meta.breadCrumb" :to="{ path: route.path }">
         {{ route.meta.title }}

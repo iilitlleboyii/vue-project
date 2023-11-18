@@ -36,7 +36,9 @@ export default function createAutoImport(isServe) {
             'material-symbols-light',
             'ion',
             'material-symbols',
-            'line-md'
+            'line-md',
+            'flagpack',
+            'healthicons'
           ]
         })
       ],

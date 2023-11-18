@@ -1,6 +1,6 @@
 <template>
-  <div class="flex items-center justify-around h-15 cursor-default bg-#0c193d select-none">
-    <SvgIcon :name="iconName" size="36"></SvgIcon>
+  <div class="flex items-center justify-around h-50px cursor-default bg-#0c193d select-none">
+    <SvgIcon :name="iconName" size="30" color="white"></SvgIcon>
     <span v-show="!isCollapse" class="text-white">{{ title }}</span>
   </div>
 </template>

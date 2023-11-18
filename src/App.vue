@@ -20,11 +20,18 @@ const locale = computed(() => (currentLocale.value === 'zh-CN' ? zhCn : enUS))
 :root {
   --animate-duration: 500ms !important;
   // --animate-delay: 1s;
+
+  // 菜单色调设置
+  --el-menu-bg-color: #0c193d !important;
+  --el-menu-hover-bg-color: #152f70 !important;
+  --el-menu-text-color: #fff !important;
+  --el-menu-active-color: #165dff !important;
 }
 
 body {
   font-family: 'HarmonyOS_Sans', sans-serif;
 }
+
 /* 设置全局字体样式为鸿蒙字体 */
 @font-face {
   font-family: 'HarmonyOS_Sans';
@@ -41,4 +48,10 @@ body {
   font-family: 'HarmonyOS_Sans_Black';
   src: url('./assets/fonts/HarmonyOS_Sans_SC_Black.ttf') format('truetype');
 }
+
+// .el-overlay {
+//   background-color: rgba(0, 0, 0, 0.1);
+//   -webkit-backdrop-filter: blur(3px);
+//   backdrop-filter: blur(3px);
+// }
 </style>
