@@ -32,7 +32,7 @@ request.interceptors.request.use(
     }
   },
   (error) => {
-    Promise.reject(error)
+    return Promise.reject(error)
   }
 )
 
@@ -64,7 +64,7 @@ request.interceptors.response.use(
           if (!config.url.includes('refresh') && refresh) {
             waitingRequests.push(config)
             isRefreshing = true
-            request.post('/auth/refresh/', { refresh: refresh })
+            return request.post('/auth/refresh/', { refresh: refresh })
           } else {
             // 如果刷新令牌也过期了，或者没有刷新Token，那么就直接提示用户重新登录
             isRefreshing = false
