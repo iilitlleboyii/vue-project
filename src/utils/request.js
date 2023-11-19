@@ -42,7 +42,7 @@ request.interceptors.response.use(
     const { config } = response
     // 如果是刷新令牌请求，那么就把新的令牌存起来
     if (config.url.includes('refresh')) {
-      setItem(storageKeys.access, data.access)
+      setItem(storageKeys.access, response.data.access)
       isRefreshing = false
       waitingRequests.forEach((item) => {
         request(item)
