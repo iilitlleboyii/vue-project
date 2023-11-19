@@ -7,6 +7,8 @@ let isRefreshing = false
 // 暂存请求
 let waitingRequests = []
 
+let refreshResponse = null
+
 const request = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_API,
   timeout: 10 * 1000,
@@ -58,13 +60,15 @@ request.interceptors.response.use(
         // 如果正在刷新令牌，且是普通请求，那么就暂存该请求
         if (isRefreshing && !config.url.includes('refresh')) {
           waitingRequests.push(config)
+          return refreshResponse
         } else {
           // 如果是普通请求，且存有刷新Token，那么就暂存该请求，尝试去刷新令牌，成功后再重新发送该请求
           const refresh = getItem(storageKeys.refresh)
           if (!config.url.includes('refresh') && refresh) {
             waitingRequests.push(config)
             isRefreshing = true
-            return request.post('/auth/refresh/', { refresh: refresh })
+            refreshResponse = request.post('/auth/refresh/', { refresh: refresh })
+            return refreshResponse
           } else {
             // 如果刷新令牌也过期了，或者没有刷新Token，那么就直接提示用户重新登录
             isRefreshing = false
