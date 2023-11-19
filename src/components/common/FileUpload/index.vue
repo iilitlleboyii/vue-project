@@ -63,14 +63,16 @@
           <el-tag v-if="scope.row.status === 'ready'" type="info" disable-transitions
             >待上传</el-tag
           >
-          <el-tag v-else-if="scope.row.status === 'uploading'" disable-transitions>上传中</el-tag>
+          <el-tag v-else-if="scope.row.status === 'uploading'" type="primary" disable-transitions
+            >上传中</el-tag
+          >
           <el-tag v-else-if="scope.row.status === 'success'" type="success" disable-transitions
             >已上传</el-tag
           >
-          <el-tag v-else-if="scope.row.status === 'canceled'" type="danger" disable-transitions
+          <el-tag v-else-if="scope.row.status === 'canceled'" type="warning" disable-transitions
             >已取消</el-tag
           >
-          <el-tag v-else type="warning" disable-transitions>已失败</el-tag>
+          <el-tag v-else type="danger" disable-transitions>已失败</el-tag>
         </template>
       </el-table-column>
       <el-table-column prop="percentage" label="进度" align="center" width="150">
@@ -78,6 +80,8 @@
           <el-progress
             :percentage="scope.row.percentage"
             :status="formatProgress(scope.row.status)"
+            :striped="true"
+            :striped-flow="scope.row.status === 'uploading'"
           />
         </template>
       </el-table-column>
@@ -161,11 +165,13 @@ const cancelNums = computed(
 // 格式化进度条
 const formatProgress = (status) => {
   const statusDict = {
+    ready: '',
+    uploading: '',
     success: 'success',
-    failed: 'exception',
-    canceled: 'warning'
+    canceled: 'warning',
+    failed: 'exception'
   }
-  return statusDict[status] || ''
+  return statusDict[status]
 }
 
 /**
