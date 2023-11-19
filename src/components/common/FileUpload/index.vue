@@ -16,7 +16,7 @@
         <i-ep:upload-filled font-size="12" />
         <el-text type="primary">点击或拖拽上传文件</el-text>
       </div>
-      <el-text>文件类型仅限jpeg/png，大小不得超过500kb</el-text>
+      <el-text>{{ tip }}</el-text>
     </el-upload>
     <!-- 按钮栏 -->
     <el-row justify="space-between" class="w-full my-3">
@@ -121,10 +121,25 @@
 <script setup>
 import { storageKeys, getItem } from '@/utils/auth'
 
-// 文件类型限制
-const mime = ['image/jpeg', 'image/png']
-// 文件大小限制
-const limit = 1024 * 500
+const props = defineProps({
+  // 备注说明
+  tip: {
+    type: String,
+    required: false
+  },
+  // 文件类型限制
+  mime: {
+    type: Array,
+    required: false,
+    default: () => []
+  },
+  // 文件大小限制
+  limit: {
+    type: Number,
+    required: false,
+    default: Infinity
+  }
+})
 // 文件列表
 const fileList = ref([])
 // 文件数量
@@ -145,15 +160,12 @@ const cancelNums = computed(
 )
 // 格式化进度条
 const formatProgress = (status) => {
-  let progress = ''
-  if (status === 'success') {
-    progress = 'success'
-  } else if (status === 'failed') {
-    progress = 'exception'
-  } else if (status === 'canceled') {
-    progress = 'warning'
+  const statusDict = {
+    success: 'success',
+    failed: 'exception',
+    canceled: 'warning'
   }
-  return progress
+  return statusDict[status] || ''
 }
 
 /**
@@ -193,20 +205,21 @@ function onFileChange() {
   if (fileElem) {
     const files = Array.from(fileElem.files)
       .map((raw) => {
-        const uid = Date.now()
-        raw.uid = uid
+        raw.uid = Date.now()
         return {
+          raw: raw,
+          uid: raw.uid,
           name: raw.name,
-          percentage: 0,
           size: raw.size,
-          status: 'ready',
-          uid: uid,
-          raw: raw
+          percentage: 0,
+          status: 'ready'
         }
       })
       .filter((file) => {
         const isExist = fileList.value.some((item) => item.name === file.name)
-        return mime.includes(file.raw.type) && file.size <= limit && !isExist
+        const isLimit = file.size > props.limit
+        const isMime = props.mime.length > 0 ? props.mime.includes(file.raw.type) : true
+        return isMime && !isLimit && !isExist
       })
     fileList.value = fileList.value.concat(files)
     // 每次选择文件后，清空选择框
@@ -225,20 +238,21 @@ function onDirChange() {
   if (fileElem) {
     const files = Array.from(fileElem.files)
       .map((raw) => {
-        const uid = Date.now()
-        raw.uid = uid
+        raw.uid = Date.now()
         return {
+          raw: raw,
+          uid: raw.uid,
           name: raw.name,
-          percentage: 0,
           size: raw.size,
-          status: 'ready',
-          uid: uid,
-          raw: raw
+          percentage: 0,
+          status: 'ready'
         }
       })
       .filter((file) => {
         const isExist = fileList.value.some((item) => item.name === file.name)
-        return mime.includes(file.raw.type) && file.size <= limit && !isExist
+        const isLimit = file.size > props.limit
+        const isMime = props.mime.length > 0 ? props.mime.includes(file.raw.type) : true
+        return isMime && !isLimit && !isExist
       })
     fileList.value = fileList.value.concat(files)
     // 每次选择文件后，清空选择框
@@ -258,9 +272,10 @@ async function handleChange(file) {
   await nextTick()
   // 如果已存在，则记录的是首个下标，否则是最新重复的下标
   const index = fileList.value.findLastIndex((item) => item.name === file.name)
-  // 已存在的、文件格式不符合的、文件大小超过限制的文件不上传
-  const flag = !mime.includes(file.raw.type) || file.size > limit || isExist
-  if (flag) {
+  // 文件格式不符合的、文件大小超过限制的、已存在的文件不上传
+  const isLimit = file.size > props.limit
+  const isMime = props.mime.length > 0 ? props.mime.includes(file.raw.type) : true
+  if (!isMime || isLimit || isExist) {
     fileList.value.splice(index, 1)
   }
 }
