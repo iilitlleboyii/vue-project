@@ -103,6 +103,9 @@
           </el-row>
         </template>
       </el-table-column>
+      <template #empty>
+        <el-empty description="数据为空" />
+      </template>
     </el-table>
     <!-- 文件上传详情 -->
     <el-row justify="space-between" class="w-full my-3">
