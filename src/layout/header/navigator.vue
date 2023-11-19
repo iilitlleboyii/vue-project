@@ -1,5 +1,14 @@
 <template>
   <div class="flex items-center">
+    <!-- 个人菜单 -->
+    <Avatar />
+    <el-divider direction="vertical" />
+    <!-- 消息通知 -->
+    <Notification></Notification>
+    <el-divider direction="vertical" />
+    <!-- 国际化 -->
+    <Locale></Locale>
+    <el-divider direction="vertical" />
     <!-- 全屏 -->
     <div class="cursor-pointer" @click="toggle">
       <i-material-symbols-light:fullscreen-exit font-size="6" v-if="isFullscreen" />
@@ -14,15 +23,6 @@
       :inactive-icon="Sunny"
       size="large"
     />
-    <el-divider direction="vertical" />
-    <!-- 国际化 -->
-    <Locale></Locale>
-    <el-divider direction="vertical" />
-    <!-- 消息通知 -->
-    <Notification></Notification>
-    <el-divider direction="vertical" />
-    <!-- 个人菜单 -->
-    <Avatar />
   </div>
 </template>
 

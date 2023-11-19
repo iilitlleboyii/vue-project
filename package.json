@@ -39,7 +39,7 @@
     "eslint-plugin-vue": "^9.11.0",
     "prettier": "^3.1.0",
     "rollup-plugin-visualizer": "^5.9.2",
-    "unocss": "^0.57.4",
+    "unocss": "^0.57.5",
     "unplugin-auto-import": "^0.16.7",
     "unplugin-icons": "^0.17.3",
     "unplugin-vue-components": "^0.25.2",

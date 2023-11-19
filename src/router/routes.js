@@ -2,6 +2,12 @@ import i18n from '@/locale'
 
 const { t } = i18n.global
 
+/* 
+  title: 路由标题
+  breadCrumb: 面包屑导航
+  hidden: 隐藏非菜单路由
+*/
+
 const baseRoutes = [
   {
     name: 'Index',
@@ -25,7 +31,8 @@ const baseRoutes = [
     redirect: '/system/user',
     component: () => import('@/layout/index.vue'),
     meta: {
-      title: t('system')
+      title: t('system'),
+      breadCrumb: true
     },
     children: [
       {

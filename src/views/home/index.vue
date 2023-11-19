@@ -1,5 +1,9 @@
 <template>
-  <div class="app-container">Message:{{ $t('hello') }}</div>
+  <div class="app-container">
+    <div>
+      <FileUpload></FileUpload>
+    </div>
+  </div>
 </template>
 
 <script setup></script>

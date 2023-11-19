@@ -42,10 +42,8 @@ export default function createAutoImport(isServe) {
           ]
         })
       ],
-      include: isServe ? [/\.vue$/, /\.vue\?vue/, 'element-plus'] : [/\.vue$/, /\.vue\?vue/],
-      exclude: isServe
-        ? [/[\\/]\.git[\\/]/, /[\\/]\.nuxt[\\/]/]
-        : [/[\\/]node_modules[\\/]/, /[\\/]\.git[\\/]/, /[\\/]\.nuxt[\\/]/]
+      include: [/\.vue$/, /\.vue\?vue/],
+      exclude: [/[\\/]node_modules[\\/]/, /[\\/]\.git[\\/]/, /[\\/]\.nuxt[\\/]/]
     })
   ]
 }
