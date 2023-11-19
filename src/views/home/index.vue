@@ -3,7 +3,7 @@
     <div>
       <FileUpload
         :mime="['image/jpeg', 'image/png']"
-        :limit="1024 * 500"
+        :limit="1024 * 50000"
         tip="文件类型仅限jpeg/png，大小不得超过500kb"
       ></FileUpload>
     </div>

@@ -63,7 +63,9 @@
           <el-tag v-if="scope.row.status === 'ready'" type="info" disable-transitions
             >待上传</el-tag
           >
-          <el-tag v-else-if="scope.row.status === 'uploading'" disable-transitions>上传中</el-tag>
+          <el-tag v-else-if="scope.row.status === 'uploading'" type="primary" disable-transitions
+            >上传中</el-tag
+          >
           <el-tag v-else-if="scope.row.status === 'success'" type="success" disable-transitions
             >已上传</el-tag
           >
@@ -121,7 +123,7 @@
 </template>
 
 <script setup>
-import { uploadFile } from '@/api/common'
+import { storageKeys, getItem } from '@/utils/auth'
 
 const props = defineProps({
   // 备注说明
@@ -305,6 +307,7 @@ function removeFile(name) {
 function cancelUpload(file) {
   if (file.abort && typeof file.abort === 'function') {
     file.abort()
+    file.status = 'canceled'
   }
 }
 
@@ -327,8 +330,10 @@ function onClear() {
 function onAgain() {
   const failedFile = fileList.value.filter((item) => item.status === 'failed')
   if (failedFile.length <= 0) return
+  const url = 'http://127.0.0.1:8000/upload/'
+  const access = getItem(storageKeys.access)
   for (const file of failedFile) {
-    onUploadFile(file, url, access)
+    file.abort = uploadFile(file, url, access)
   }
 }
 
@@ -342,8 +347,10 @@ function onUpload() {
   const readyFile = fileList.value.filter((item) => item.status === 'ready')
   if (readyFile.length <= 0) return
   // 采用分别上传的方式
+  const url = 'http://127.0.0.1:8000/upload/'
+  const access = getItem(storageKeys.access)
   for (const file of readyFile) {
-    onUploadFile(file)
+    file.abort = uploadFile(file, url, access)
   }
 }
 
@@ -351,23 +358,49 @@ function onUpload() {
  * 发送文件上传请求
  * @author Yuxianhao <yu.xh00@foxmail.com>
  * @date 2023-11-19
- * @param {any} file
+ * @param {any} file 文件子项
+ * @param {any} url 请求地址
+ * @param {any} access 访问令牌
  * @returns {any}
  */
-async function onUploadFile(file) {
-  try {
-    file.status = 'uploading'
-    const res = await uploadFile(file)
-    if (res) {
+function uploadFile(file, url, access) {
+  const xhr = new XMLHttpRequest()
+  // 设置请求方法和请求地址
+  xhr.open('POST', url)
+  // 设置请求头
+  xhr.setRequestHeader('Content-Type', 'multipart/form-data')
+  xhr.setRequestHeader('Authorization', 'Bearer ' + access)
+  // 处理请求响应
+  xhr.onload = () => {
+    if (xhr.status >= 200 && xhr.status < 300) {
       file.status = 'success'
-    }
-  } catch (error) {
-    if (error.message === 'canceled') {
-      file.status = 'canceled'
     } else {
       file.status = 'failed'
+      ElMessage.error(
+        '文件' +
+          file.name +
+          '上传失败，' +
+          '错误状态码:' +
+          xhr.status +
+          '，错误描述:' +
+          xhr.statusText
+      )
     }
   }
+  // 监控上传请求进度
+  xhr.upload.onprogress = (e) => {
+    if (e.lengthComputable) {
+      const percentage = Math.floor((e.loaded / e.total) * 100)
+      file.percentage = percentage
+    }
+  }
+  // 发送上传请求
+  const formData = new FormData()
+  formData.append('file', file.raw)
+  xhr.send(formData)
+  file.status = 'uploading'
+  // 返回取消上传方法
+  return () => xhr.abort()
 }
 </script>
 
