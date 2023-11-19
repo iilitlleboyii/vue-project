@@ -21,9 +21,8 @@
     <!-- 按钮栏 -->
     <el-row justify="space-between" class="w-full my-3">
       <div>
-        <input class="hidden" id="select-file" type="file" multiple @change="onFileChange" />
+        <input id="select-file" type="file" multiple @change="onFileChange" class="hidden" />
         <input
-          class="hidden"
           id="select-dir"
           type="file"
           multiple
@@ -31,6 +30,7 @@
           mozdirectory
           odirectory
           @change="onDirChange"
+          class="hidden"
         />
         <el-button type="primary" plain @click="onSelectFile">选择文件</el-button>
         <el-button type="primary" plain @click="onSelectDir">选择目录</el-button>
@@ -58,7 +58,21 @@
         :formatter="(row, column, cellValue, index) => cellValue.split('.')[1]"
       />
       <el-table-column prop="size" label="大小" align="center" width="90" />
-      <el-table-column prop="status" label="状态" align="center" width="80" />
+      <el-table-column prop="status" label="状态" align="center" width="90">
+        <template #default="scope">
+          <el-tag v-if="scope.row.status === 'ready'" type="info" disable-transitions
+            >待上传</el-tag
+          >
+          <el-tag v-else-if="scope.row.status === 'uploading'" disable-transitions>上传中</el-tag>
+          <el-tag v-else-if="scope.row.status === 'success'" type="success" disable-transitions
+            >已上传</el-tag
+          >
+          <el-tag v-else-if="scope.row.status === 'canceled'" type="danger" disable-transitions
+            >已取消</el-tag
+          >
+          <el-tag v-else type="warning" disable-transitions>已失败</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column prop="percentage" label="进度" align="center" width="150">
         <template #default="scope">
           <el-progress
@@ -82,7 +96,7 @@
               type="warning"
               link
               size="small"
-              :disabled="scope.status !== 'uploading'"
+              :disabled="scope.row.status !== 'uploading'"
               @click="cancelUpload(scope.row)"
               >取消</el-button
             >
@@ -192,6 +206,8 @@ function onFileChange() {
         return mime.includes(file.raw.type) && file.size <= limit && !isExist
       })
     fileList.value = fileList.value.concat(files)
+    // 每次选择文件后，清空选择框
+    fileElem.value = null
   }
 }
 
@@ -222,6 +238,8 @@ function onDirChange() {
         return mime.includes(file.raw.type) && file.size <= limit && !isExist
       })
     fileList.value = fileList.value.concat(files)
+    // 每次选择文件后，清空选择框
+    fileElem.value = null
   }
 }
 
@@ -302,11 +320,12 @@ function onAgain() {
  * @returns {any}
  */
 function onUpload() {
-  if (fileList.value.length <= 0) return
+  const readyFile = fileList.value.filter((item) => item.status === 'ready')
+  if (readyFile.length <= 0) return
   // 采用分别上传的方式
   const url = 'http://127.0.0.1:8000/upload/'
   const access = getItem(storageKeys.access)
-  for (const file of fileList.value) {
+  for (const file of readyFile) {
     file.abort = uploadFile(file, url, access)
   }
 }
@@ -331,7 +350,7 @@ function uploadFile(file, url, access) {
   xhr.onload = () => {
     if (xhr.status >= 200 && xhr.status < 300) {
       file.status = 'success'
-      console.log('请求结果:', JSON.parse(xhr.responseText))
+      // console.log('请求结果:', JSON.parse(xhr.responseText))
     } else {
       file.status = 'failed'
       ElMessage.error(
@@ -357,7 +376,7 @@ function uploadFile(file, url, access) {
   formData.append('file', file.raw)
   xhr.send(formData)
   file.status = 'uploading'
-  // 返回取消上传函数
+  // 返回取消上传方法
   return () => xhr.abort()
 }
 </script>
