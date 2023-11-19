@@ -328,7 +328,7 @@ function onAgain() {
   const failedFile = fileList.value.filter((item) => item.status === 'failed')
   if (failedFile.length <= 0) return
   for (const file of failedFile) {
-    onUploadFile(file, url, access)
+    onUploadFile(file)
   }
 }
 
