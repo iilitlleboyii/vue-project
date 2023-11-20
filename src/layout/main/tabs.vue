@@ -32,6 +32,7 @@
     @tab-click="tabClick"
     @tab-remove="tabRemove"
     @contextmenu.prevent
+    class="w-full"
   >
     <template v-for="route in loadedRoutes">
       <el-tab-pane :name="route.name" :closable="route.name !== 'Home'">

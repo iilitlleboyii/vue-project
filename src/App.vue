@@ -26,6 +26,9 @@ const locale = computed(() => (currentLocale.value === 'zh-CN' ? zhCn : enUS))
   --el-menu-hover-bg-color: #152f70 !important;
   --el-menu-text-color: #fff !important;
   --el-menu-active-color: #165dff !important;
+  .el-sub-menu .el-menu {
+    --el-menu-bg-color: #08122b !important;
+  }
 }
 
 body {
@@ -49,9 +52,27 @@ body {
   src: url('./assets/fonts/HarmonyOS_Sans_SC_Black.ttf') format('truetype');
 }
 
-// .el-overlay {
-//   background-color: rgba(0, 0, 0, 0.1);
-//   -webkit-backdrop-filter: blur(3px);
-//   backdrop-filter: blur(3px);
-// }
+// 设置表单标题字体加粗
+.el-form {
+  .el-form-item__label {
+    font-weight: bold;
+  }
+}
+
+// 引入Unocss后引起的小问题
+.el-icon {
+  &.el-cascader-node__prefix {
+    position: absolute;
+  }
+  &.el-cascader-node__postfix {
+    position: absolute;
+  }
+}
+
+// 遮罩背景虚化效果
+.el-overlay {
+  background-color: transparent;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
 </style>
