@@ -48,14 +48,16 @@
         label="文件名"
         align="center"
         show-overflow-tooltip
-        :formatter="(row, column, cellValue, index) => cellValue.split('.')[0]"
+        :formatter="
+          (row, column, cellValue, index) => cellValue.substring(0, cellValue.lastIndexOf('.'))
+        "
       />
       <el-table-column
         prop="name"
         label="类型"
         align="center"
         width="60"
-        :formatter="(row, column, cellValue, index) => cellValue.split('.')[1]"
+        :formatter="(row, column, cellValue, index) => cellValue.split('.').pop()"
       />
       <el-table-column prop="size" label="大小" align="center" width="90" />
       <el-table-column prop="status" label="状态" align="center" width="90">

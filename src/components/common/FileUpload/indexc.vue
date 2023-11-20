@@ -1,5 +1,5 @@
 <template>
-  <div class="w-150">
+  <div class="w-150 h-full">
     <!-- 拖拽区 -->
     <el-upload
       v-model:file-list="fileList"
@@ -48,14 +48,16 @@
         label="文件名"
         align="center"
         show-overflow-tooltip
-        :formatter="(row, column, cellValue, index) => cellValue.split('.')[0]"
+        :formatter="
+          (row, column, cellValue, index) => cellValue.substring(0, cellValue.lastIndexOf('.'))
+        "
       />
       <el-table-column
         prop="name"
         label="类型"
         align="center"
         width="60"
-        :formatter="(row, column, cellValue, index) => cellValue.split('.')[1]"
+        :formatter="(row, column, cellValue, index) => cellValue.split('.').pop()"
       />
       <el-table-column prop="size" label="大小" align="center" width="90" />
       <el-table-column prop="status" label="状态" align="center" width="90">
@@ -63,9 +65,7 @@
           <el-tag v-if="scope.row.status === 'ready'" type="info" disable-transitions
             >待上传</el-tag
           >
-          <el-tag v-else-if="scope.row.status === 'uploading'" type="primary" disable-transitions
-            >上传中</el-tag
-          >
+          <el-tag v-else-if="scope.row.status === 'uploading'" disable-transitions>上传中</el-tag>
           <el-tag v-else-if="scope.row.status === 'success'" type="success" disable-transitions
             >已上传</el-tag
           >
@@ -405,6 +405,18 @@ function uploadFile(file, url, access) {
 </script>
 
 <style lang="scss" scoped>
+.el-table {
+  height: calc(100% - 250px);
+}
+
+:deep(.el-table__empty-text) {
+  line-height: unset;
+
+  .el-empty {
+    padding: 0;
+  }
+}
+
 :deep(.el-progress__text) {
   min-width: unset;
 }
