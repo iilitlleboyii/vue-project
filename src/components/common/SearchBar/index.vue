@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form ref="searchBarRef" :model="queryParams" label-width="auto">
+    <el-form ref="searchBarRef" :model="queryParams" label-width="auto" @submit.prevent>
       <el-row :gutter="20">
         <el-col
           v-for="(item, index) in visibleItems"
@@ -10,22 +10,22 @@
           :sm="12"
           :xs="24"
         >
-          <el-form-item :label="item.label" :prop="item.key">
+          <el-form-item :label="item.label" :prop="item.prop">
             <el-input
               v-if="item.name === 'el-input'"
               v-bind="item.bindProps"
-              v-model="queryParams[item.key]"
+              v-model="queryParams[item.prop]"
               v-on="item?.events || {}"
             ></el-input>
             <el-select
               v-if="item.name === 'el-select'"
               v-bind="item.bindProps"
-              v-model="queryParams[item.key]"
+              v-model="queryParams[item.prop]"
               v-on="item?.events || {}"
             >
               <el-option
-                v-for="option in item.slot.value"
-                :key="option.value"
+                v-for="(option, index) in item.slot.value"
+                :key="index"
                 :label="option.label"
                 :value="option.value"
               />
@@ -33,19 +33,19 @@
             <el-cascader
               v-if="item.name === 'el-cascader'"
               v-bind="item.bindProps"
-              v-model="queryParams[item.key]"
+              v-model="queryParams[item.prop]"
               v-on="item?.events || {}"
             ></el-cascader>
             <el-date-picker
               v-if="item.name === 'el-date-picker'"
               v-bind="item.bindProps"
-              v-model="queryParams[item.key]"
+              v-model="queryParams[item.prop]"
               v-on="item?.events || {}"
             ></el-date-picker>
             <el-autocomplete
               v-if="item.name === 'el-autocomplete'"
               v-bind="item.bindProps"
-              v-model="queryParams[item.key]"
+              v-model="queryParams[item.prop]"
               v-on="item?.events || {}"
             ></el-autocomplete>
           </el-form-item>
@@ -109,7 +109,7 @@ const props = defineProps({
   /*   {
     name: '',
     lable: '',
-    key: '',
+    prop: '',
     bindProps: {},
     slot: {
     name: '',
@@ -130,7 +130,9 @@ function resetForm() {
 const isCollapse = ref(true)
 const innerWidth = ref(window.innerWidth)
 const counter = computed(() => (innerWidth.value >= 1200 ? 3 : innerWidth.value >= 992 ? 2 : 1))
-const visibleItems = computed(() => isCollapse.value ? props.config.slice(0, counter.value) : props.config)
+const visibleItems = computed(() =>
+  isCollapse.value ? props.config.slice(0, counter.value) : props.config
+)
 const isShow = computed(() => !isCollapse.value || props.config.length > visibleItems.value.length)
 function handleResize() {
   return debounce(() => {

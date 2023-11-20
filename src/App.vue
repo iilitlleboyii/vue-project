@@ -69,10 +69,10 @@ body {
   }
 }
 
-// 遮罩背景虚化效果
-.el-overlay {
-  background-color: transparent;
-  -webkit-backdrop-filter: blur(3px);
-  backdrop-filter: blur(3px);
-}
+// // 遮罩背景虚化效果
+// .el-overlay {
+//   background-color: transparent;
+//   -webkit-backdrop-filter: blur(3px);
+//   backdrop-filter: blur(3px);
+// }
 </style>

@@ -9,6 +9,8 @@ let waitingRequests = []
 
 let refreshResponse = null
 
+/* todo: 需要处理新的请求结果返给旧的请求，思路不仅仅是存config，而是整个promise */
+
 const request = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_API,
   timeout: 10 * 1000,
@@ -20,6 +22,8 @@ const request = axios.create({
 // 请求拦截
 request.interceptors.request.use(
   (config) => {
+    // django风格是要加/
+    config.url = config.url + '/'
     // 请求是否携带令牌，默认携带
     config.headers['Carry-Token'] = config.headers['Carry-Token'] ?? true
     const access = getItem(storageKeys.access)

@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function login(data) {
   return request({
-    url: '/auth/login/',
+    url: '/auth/login',
     method: 'post',
     headers: {
       'Carry-Token': false
@@ -13,21 +13,21 @@ export function login(data) {
 
 export function logout() {
   return request({
-    url: '/auth/logout/',
+    url: '/auth/logout',
     method: 'delete'
   })
 }
 
 export function getUserInfo() {
   return request({
-    url: '/auth/info/',
+    url: '/auth/info',
     method: 'get'
   })
 }
 
 export function register(data) {
   return request({
-    url: '/auth/register/',
+    url: '/auth/register',
     method: 'post',
     headers: {
       'Carry-Token': false
@@ -38,7 +38,7 @@ export function register(data) {
 
 export function refreshToken(data) {
   return request({
-    url: '/auth/refresh/',
+    url: '/auth/refresh',
     method: 'post',
     data
   })
@@ -46,7 +46,7 @@ export function refreshToken(data) {
 
 export function verifyToken(data) {
   return request({
-    url: '/auth/verify/',
+    url: '/auth/verify',
     method: 'post',
     data
   })
