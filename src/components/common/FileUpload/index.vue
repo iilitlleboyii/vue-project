@@ -1,5 +1,5 @@
 <template>
-  <div class="w-150">
+  <div class="w-150 h-full">
     <!-- 拖拽区 -->
     <el-upload
       v-model:file-list="fileList"
@@ -42,7 +42,7 @@
       </div>
     </el-row>
     <!-- 文件上传列表-->
-    <el-table :data="fileList" :height="400" border class="w-full">
+    <el-table :data="fileList" border class="w-full">
       <el-table-column
         prop="name"
         label="文件名"
@@ -369,9 +369,29 @@ async function onUploadFile(file) {
     }
   }
 }
+
+onMounted(() => {
+  const parent = document.querySelector('.el-table')
+  const child = document.querySelector('.el-table__empty-block')
+  setTimeout(() => {
+    child.style.height = parent.clientHeight - 40 + 'px'
+  }, 20)
+})
 </script>
 
 <style lang="scss" scoped>
+.el-table {
+  height: calc(100% - 250px);
+}
+
+:deep(.el-table__empty-text) {
+  line-height: unset;
+
+  .el-empty {
+    padding: 0;
+  }
+}
+
 :deep(.el-progress__text) {
   min-width: unset;
 }

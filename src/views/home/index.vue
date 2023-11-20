@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div>
+    <div class="h-lg">
       <FileUpload
         :mime="['image/jpeg', 'image/png']"
         :limit="1024 * 500"

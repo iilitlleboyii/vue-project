@@ -74,7 +74,7 @@ function filterHidden(arr) {
 </script>
 
 <style lang="scss" scoped>
-:deep(.el-scrollbar) {
+:deep(.el-aside .el-scrollbar) {
   height: calc(100vh - 50px);
 
   .el-scrollbar__view {
