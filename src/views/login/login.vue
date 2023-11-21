@@ -94,7 +94,7 @@ const loginFormRef = ref()
 
 const loginType = ref('0')
 
-const rememberMe = ref(!!JSON.parse(localStorage.getItem('IsRemember')))
+const rememberMe = ref(!!JSON.parse(localStorage.getItem('rememberMe')))
 
 const loading = ref(false)
 

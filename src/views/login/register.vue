@@ -27,6 +27,7 @@
           size="large"
           type="password"
           show-password
+          @keyup.enter="onRegisterFormClick"
         />
       </el-form-item>
       <template v-if="isRequired">

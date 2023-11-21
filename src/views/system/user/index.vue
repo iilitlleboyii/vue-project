@@ -29,10 +29,15 @@
       <el-table-column label="操作" width="100" align="center" fixed="right">
         <template #default="scope">
           <el-row justify="space-between">
-            <el-button link size="small" type="primary" @click="handleEdit(scope.row)"
+            <el-button
+              link
+              size="small"
+              type="primary"
+              @click="handleEdit(scope.row)"
+              :disabled="scope.row.is_superuser"
               >编辑</el-button
             >
-            <el-button link size="small" type="danger" @click="handleRemove(scope.row)"
+            <el-button link size="small" type="danger" @click="handleRemove(scope.row)" disabled
               >停用</el-button
             >
           </el-row>
@@ -104,6 +109,7 @@
 
 <script setup>
 import { getUserList, getUser, updateUser } from '@/api/common'
+import { useUserStore } from '@/stores/modules'
 
 const query = reactive({})
 async function handleSearch() {
@@ -149,6 +155,7 @@ const rules = {
     }
   ]
 }
+const $userStore = useUserStore()
 
 function reset() {
   if (!formRef.value) return
@@ -172,9 +179,13 @@ function onCancel() {
 }
 
 async function handleEdit(row) {
-  const res = await getUser(row.id)
-  form.value = res
-  open.value = true
+  if (row.id === $userStore.userInfo.id || $userStore.roles.includes('admin')) {
+    const res = await getUser(row.id)
+    form.value = res
+    open.value = true
+  } else {
+    ElMessage.error('只能修改自己的哦~')
+  }
 }
 function handleRemove(row) {}
 
