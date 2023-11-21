@@ -161,9 +161,9 @@ function reset() {
   if (!formRef.value) return
   formRef.value.resetFields()
 }
-function onConfirm() {
+async function onConfirm() {
   if (!formRef.value) return
-  formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async (valid) => {
     if (valid) {
       if (form.value.id) {
         await updateUser(form.value)
