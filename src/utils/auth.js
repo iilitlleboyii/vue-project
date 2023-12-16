@@ -23,7 +23,7 @@ export const getItem = (key) => {
 }
 
 export const setItem = (key, value) => {
-  localStorage.setItem(key, value)
+  localStorage.setItem(key, typeof value === 'string' ? value : JSON.stringify(value))
   const $userStore = getUserStore()
   $userStore[key] = value
 }

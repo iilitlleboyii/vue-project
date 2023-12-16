@@ -3,17 +3,12 @@ import { storageKeys, getItem, setItem, removeItem } from '@/utils/auth'
 
 export const useUserStore = defineStore('userStore', {
   state: () => {
-    const access = getItem(storageKeys.access)
-    const refresh = getItem(storageKeys.refresh)
-    const permissions = JSON.parse(getItem(storageKeys.permissions))
-    const roles = JSON.parse(getItem(storageKeys.roles))
-    const userInfo = JSON.parse(getItem(storageKeys.userInfo))
     return {
-      access,
-      refresh,
-      permissions,
-      roles,
-      userInfo
+      access: getItem(storageKeys.access),
+      refresh: getItem(storageKeys.refresh),
+      permissions: JSON.parse(getItem(storageKeys.permissions)),
+      roles: JSON.parse(getItem(storageKeys.roles)),
+      userInfo: JSON.parse(getItem(storageKeys.userInfo))
     }
   },
   actions: {
@@ -21,13 +16,14 @@ export const useUserStore = defineStore('userStore', {
       return new Promise((resolve, reject) => {
         login(data)
           .then((res) => {
+            console.log(res)
             const { access, refresh, permissions, roles, userInfo } = res
             setItem(storageKeys.access, access)
             setItem(storageKeys.refresh, refresh)
 
-            setItem(storageKeys.permissions, JSON.stringify(permissions))
-            setItem(storageKeys.roles, JSON.stringify(roles))
-            setItem(storageKeys.userInfo, JSON.stringify(userInfo))
+            setItem(storageKeys.permissions, permissions)
+            setItem(storageKeys.roles, roles)
+            setItem(storageKeys.userInfo, userInfo)
             resolve()
           })
           .catch((err) => {
@@ -40,10 +36,9 @@ export const useUserStore = defineStore('userStore', {
         getUserInfo()
           .then((res) => {
             const { permissions, roles, userInfo } = res
-
-            setItem(storageKeys.permissions, JSON.stringify(permissions))
-            setItem(storageKeys.roles, JSON.stringify(roles))
-            setItem(storageKeys.userInfo, JSON.stringify(userInfo))
+            setItem(storageKeys.permissions, permissions)
+            setItem(storageKeys.roles, roles)
+            setItem(storageKeys.userInfo, userInfo)
             resolve()
           })
           .catch((err) => {

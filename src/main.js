@@ -16,7 +16,7 @@ import 'animate.css'
 import './permission'
 
 // 国际化
-import i18n from './locale'
+import i18n from './locales'
 
 // SVG图标
 import 'virtual:svg-icons-register'

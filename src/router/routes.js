@@ -1,4 +1,4 @@
-import i18n from '@/locale'
+import i18n from '@/locales'
 
 const { t } = i18n.global
 
