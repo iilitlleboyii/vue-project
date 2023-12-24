@@ -16,7 +16,6 @@ export const useUserStore = defineStore('userStore', {
       return new Promise((resolve, reject) => {
         login(data)
           .then((res) => {
-            console.log(res)
             const { access, refresh, permissions, roles, userInfo } = res
             setItem(storageKeys.access, access)
             setItem(storageKeys.refresh, refresh)
