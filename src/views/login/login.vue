@@ -90,7 +90,7 @@
 import AppIndex from './index.vue'
 import { useUserStore } from '@/stores/modules'
 
-const loginFormRef = ref()
+const loginFormRef = ref(null)
 
 const loginType = ref('0')
 

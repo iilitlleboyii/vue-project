@@ -84,7 +84,7 @@
 import AppIndex from './index.vue'
 import { register } from '@/api/common'
 
-const registerFormRef = ref()
+const registerFormRef = ref(null)
 
 const loading = ref(false)
 
