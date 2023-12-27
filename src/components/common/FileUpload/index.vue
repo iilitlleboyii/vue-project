@@ -317,6 +317,11 @@ function cancelUpload(file) {
  * @returns {any}
  */
 function onClear() {
+  const uploadingFile = fileList.value.filter((item) => item.status === 'uploading')
+  if (uploadingFile.length > 0) {
+    ElMessage.warning('请等待所有文件上传完成')
+    return
+  }
   fileList.value = []
 }
 
@@ -328,7 +333,10 @@ function onClear() {
  */
 function onAgain() {
   const failedFile = fileList.value.filter((item) => item.status === 'failed')
-  if (failedFile.length <= 0) return
+  if (failedFile.length <= 0) {
+    ElMessage.warning('暂无上传失败的文件')
+    return
+  }
   for (const file of failedFile) {
     onUploadFile(file)
   }
@@ -342,7 +350,10 @@ function onAgain() {
  */
 function onUpload() {
   const readyFile = fileList.value.filter((item) => item.status === 'ready')
-  if (readyFile.length <= 0) return
+  if (readyFile.length <= 0) {
+    ElMessage.warning('暂无待上传的文件')
+    return
+  }
   // 采用分别上传的方式
   for (const file of readyFile) {
     onUploadFile(file)

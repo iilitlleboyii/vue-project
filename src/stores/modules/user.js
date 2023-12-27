@@ -16,7 +16,7 @@ export const useUserStore = defineStore('userStore', {
       return new Promise((resolve, reject) => {
         login(data)
           .then((res) => {
-            const { access, refresh, permissions, roles, userInfo } = res
+            const { access, refresh, permissions, roles, userInfo } = res.data
             setItem(storageKeys.access, access)
             setItem(storageKeys.refresh, refresh)
 
@@ -34,7 +34,7 @@ export const useUserStore = defineStore('userStore', {
       return new Promise((resolve, reject) => {
         getUserInfo()
           .then((res) => {
-            const { permissions, roles, userInfo } = res
+            const { permissions, roles, userInfo } = res.data
             setItem(storageKeys.permissions, permissions)
             setItem(storageKeys.roles, roles)
             setItem(storageKeys.userInfo, userInfo)

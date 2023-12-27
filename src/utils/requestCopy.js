@@ -19,7 +19,7 @@ const request = axios.create({
 request.interceptors.request.use(
   (config) => {
     // django风格是要加/
-    config.url = config.url + '/'
+    config.url = config.url.endsWith('/') ? config.url : config.url + '/'
     // 请求是否携带令牌，默认携带
     config.headers['Carry-Token'] = config.headers['Carry-Token'] ?? true
     const access = getItem(storageKeys.access)
@@ -75,7 +75,7 @@ request.interceptors.response.use(
           const refresh = getItem(storageKeys.refresh)
           if (!config.url.includes('refresh') && refresh) {
             isRefreshing = true
-            request.post('/auth/refresh/', { refresh: refresh })
+            request.post('/auth/refresh', { refresh: refresh })
             return new Promise((resolve, reject) => {
               waitingRequests.push({ config, resolve, reject })
             })

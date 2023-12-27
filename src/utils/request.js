@@ -19,7 +19,7 @@ const request = axios.create({
 request.interceptors.request.use(
   (config) => {
     // django风格是要加/
-    config.url = config.url + '/'
+    config.url = config.url.endsWith('/') ? config.url : config.url + '/'
     // 请求是否携带令牌，默认携带
     config.headers['Carry-Token'] = config.headers['Carry-Token'] ?? true
     const access = getItem(storageKeys.access)
@@ -46,7 +46,7 @@ request.interceptors.response.use(
     const config = response.config
     const { code, data, msg } = response.data
     // 请求成功
-    if (code === 200) {
+    if (code >= 200 && code < 300) {
       // 如果是刷新令牌请求，那么就把新的令牌存起来
       if (isRefreshing && config.url.includes('refresh')) {
         setItem(storageKeys.access, data.access)
@@ -62,7 +62,7 @@ request.interceptors.response.use(
         })
         waitingRequests.length = 0
       }
-      return Promise.resolve(data)
+      return Promise.resolve(response.data)
     }
     // 认证失败
     if (code === 401) {
@@ -76,7 +76,7 @@ request.interceptors.response.use(
         const refresh = getItem(storageKeys.refresh)
         if (!config.url.includes('refresh') && refresh) {
           isRefreshing = true
-          request.post('/auth/refresh/', { refresh: refresh })
+          request.post('/auth/refresh', { refresh: refresh })
           return new Promise((resolve, reject) => {
             waitingRequests.push({ config, resolve, reject })
           })
