@@ -168,6 +168,7 @@ function onRegisterFormClick() {
           ElMessage.success('注册成功')
           $router.replace('/')
         })
+        .catch((err) => {})
         .finally(() => {
           loading.value = false
         })

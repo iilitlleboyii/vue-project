@@ -113,14 +113,16 @@ import { useUserStore } from '@/stores/modules'
 
 const query = reactive({})
 async function handleSearch() {
-  loading.value = true
-  const res = await getUserList(query)
-  if (res) {
-    const { count, results } = res.data
-    list.value = results
-    total.value = count
-    loading.value = false
-  }
+  try {
+    loading.value = true
+    const res = await getUserList(query)
+    if (res) {
+      const { count, results } = res.data
+      list.value = results
+      total.value = count
+      loading.value = false
+    }
+  } catch (error) {}
 }
 
 const loading = ref(false)

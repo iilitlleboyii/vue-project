@@ -65,9 +65,13 @@ request.interceptors.response.use(
       return Promise.resolve(response.data)
     }
     // 认证失败
-    if (code === 401) {
+    else if (code === 401) {
+      if (msg === 'No active account found with the given credentials') {
+        ElMessage.error('用户名或密码错误')
+        return Promise.reject('用户名或密码错误')
+      }
       // 如果正在刷新令牌，且是普通请求，那么就暂存该请求
-      if (isRefreshing && !config.url.includes('refresh')) {
+      else if (isRefreshing && !config.url.includes('refresh')) {
         return new Promise((resolve, reject) => {
           waitingRequests.push({ config, resolve, reject })
         })
@@ -76,13 +80,16 @@ request.interceptors.response.use(
         const refresh = getItem(storageKeys.refresh)
         if (!config.url.includes('refresh') && refresh) {
           isRefreshing = true
-          request.post('/auth/refresh', { refresh: refresh })
+          request.post('/auth/refresh', { refresh: refresh }).catch((err) => {})
           return new Promise((resolve, reject) => {
             waitingRequests.push({ config, resolve, reject })
           })
         } else {
           // 如果刷新令牌也过期了，或者没有刷新Token，那么就直接提示用户重新登录
           isRefreshing = false
+          waitingRequests.forEach((item) => {
+            item.reject('登录状态已过期，请重新登录')
+          })
           waitingRequests.length = 0
           ElMessageBox.alert('登录状态已过期，请重新登录', '提示', {
             type: 'warning',
@@ -96,10 +103,11 @@ request.interceptors.response.use(
           })
         }
       }
+    } else {
+      // 其它错误
+      ElMessage.error(msg)
+      return Promise.reject(msg)
     }
-    // 其它错误
-    ElMessage.error(msg)
-    return Promise.reject(msg)
   },
   (error) => {
     return Promise.reject(error)

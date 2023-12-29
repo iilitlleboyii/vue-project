@@ -154,6 +154,7 @@ function onLoginFormClick() {
           .then(() => {
             loginSuccess()
           })
+          .catch((err) => {})
           .finally(() => {
             loading.value = false
           })
