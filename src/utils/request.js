@@ -1,11 +1,75 @@
 import axios from 'axios'
 import { storageKeys, getItem, setItem, getUserStore } from '@/utils/auth'
 
-// 是否正在刷新令牌
-let isRefreshing = false
+const refreshClass = {
+  isRefreshing: false,
+  waitingRequests: []
+}
 
-// 暂存请求
-let waitingRequests = []
+function isRefreshRequest(config) {
+  // 判断是否为刷新令牌请求
+  return config.url.includes('refresh')
+}
+function handleNewRequests(config, refreshClass) {
+  // 如果正在刷新令牌，那么就将新的普通请求暂存
+  if (refreshClass.isRefreshing && !isRefreshRequest(config)) {
+    return new Promise((resolve, reject) => {
+      refreshClass.waitingRequests.push({ config, resolve, reject })
+    })
+  }
+}
+function handle401Requests(config, refreshClass) {
+  // 如果正在刷新令牌，那么就将401的普通请求暂存
+  if (refreshClass.isRefreshing && !isRefreshRequest(config)) {
+    return new Promise((resolve, reject) => {
+      refreshClass.waitingRequests.push({ config, resolve, reject })
+    })
+  }
+}
+function tryRefreshAccessToken(refresh, config, refreshClass) {
+  // 如果普通请求401，且存在刷新Token
+  if (!isRefreshRequest(config) && refresh) {
+    refreshClass.isRefreshing = true
+
+    // 发送刷新令牌请求
+    request
+      .post('/auth/refresh', { refresh: refresh })
+      .then((res) => {})
+      .catch((err) => {})
+
+    return new Promise((resolve, reject) => {
+      refreshClass.waitingRequests.push({ config, resolve, reject })
+    })
+  }
+}
+function onSuccess(config, refreshClass, cb) {
+  // 如果正在刷新令牌，且刷新令牌请求成功
+  if (refreshClass.isRefreshing && isRefreshRequest(config)) {
+    // 替换新的令牌
+    cb()
+
+    refreshClass.isRefreshing = false
+
+    refreshClass.waitingRequests.forEach((item) => {
+      request(item.config).then(item.resolve).catch(item.reject)
+    })
+    refreshClass.waitingRequests.length = 0
+  }
+}
+function onFail(refreshClass, cb) {
+  // 如果是刷新令牌请求401，或者不存在刷新Token
+  refreshClass.isRefreshing = false
+
+  refreshClass.waitingRequests.forEach((item) => {
+    item.reject('登录状态已过期，请重新登录')
+  })
+  refreshClass.waitingRequests.length = 0
+
+  // 返回登录页重新登录
+  cb()
+
+  return Promise.reject('登录状态已过期，请重新登录')
+}
 
 const request = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_API,
@@ -20,20 +84,15 @@ request.interceptors.request.use(
   (config) => {
     // django风格是要加/
     config.url = config.url.endsWith('/') ? config.url : config.url + '/'
+
     // 请求是否携带令牌，默认携带
     config.headers['Carry-Token'] = config.headers['Carry-Token'] ?? true
     const access = getItem(storageKeys.access)
     if (config.headers['Carry-Token'] && access) {
       config.headers['Authorization'] = 'Bearer ' + access
     }
-    // 如果正在刷新令牌，那么就把新请求暂存，等待刷新令牌请求成功后使用新的令牌重新发送请求
-    if (isRefreshing && !config.url.includes('refresh')) {
-      return new Promise((resolve, reject) => {
-        waitingRequests.push({ config, resolve, reject })
-      })
-    } else {
-      return config
-    }
+
+    return handleNewRequests(config, refreshClass) || config
   },
   (error) => {
     return Promise.reject(error)
@@ -47,21 +106,10 @@ request.interceptors.response.use(
     const { code, data, msg } = response.data
     // 请求成功
     if (code >= 200 && code < 300) {
-      // 如果是刷新令牌请求，那么就把新的令牌存起来
-      if (isRefreshing && config.url.includes('refresh')) {
+      onSuccess(config, refreshClass, () => {
         setItem(storageKeys.access, data.access)
-        isRefreshing = false
-        waitingRequests.forEach((item) => {
-          request(item.config)
-            .then((res) => {
-              item.resolve(res)
-            })
-            .catch((err) => {
-              item.reject(err)
-            })
-        })
-        waitingRequests.length = 0
-      }
+      })
+
       return Promise.resolve(response.data)
     }
     // 认证失败
@@ -70,27 +118,11 @@ request.interceptors.response.use(
         ElMessage.error('用户名或密码错误')
         return Promise.reject('用户名或密码错误')
       }
-      // 如果正在刷新令牌，且是普通请求，那么就暂存该请求
-      else if (isRefreshing && !config.url.includes('refresh')) {
-        return new Promise((resolve, reject) => {
-          waitingRequests.push({ config, resolve, reject })
-        })
-      } else {
-        // 如果是普通请求，且存有刷新Token，那么就暂存该请求，尝试去刷新令牌，成功后再重新发送该请求
-        const refresh = getItem(storageKeys.refresh)
-        if (!config.url.includes('refresh') && refresh) {
-          isRefreshing = true
-          request.post('/auth/refresh', { refresh: refresh }).catch((err) => {})
-          return new Promise((resolve, reject) => {
-            waitingRequests.push({ config, resolve, reject })
-          })
-        } else {
-          // 如果刷新令牌也过期了，或者没有刷新Token，那么就直接提示用户重新登录
-          isRefreshing = false
-          waitingRequests.forEach((item) => {
-            item.reject('登录状态已过期，请重新登录')
-          })
-          waitingRequests.length = 0
+
+      return (
+        handle401Requests(config, refreshClass) ||
+        tryRefreshAccessToken(getItem(storageKeys.refresh), config, refreshClass) ||
+        onFail(refreshClass, () => {
           ElMessageBox.alert('登录状态已过期，请重新登录', '提示', {
             type: 'warning',
             showClose: false
@@ -99,10 +131,9 @@ request.interceptors.response.use(
             $userStore.Logout().then(() => {
               location.href = '/login'
             })
-            return Promise.reject(msg)
           })
-        }
-      }
+        })
+      )
     } else {
       // 其它错误
       ElMessage.error(msg)
