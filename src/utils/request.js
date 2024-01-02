@@ -1,35 +1,35 @@
 import axios from 'axios'
 import { storageKeys, getItem, setItem, getUserStore } from '@/utils/auth'
 
-const refreshClass = {
-  isRefreshing: false,
-  waitingRequests: []
-}
+// 是否正在刷新
+let isRefreshing = false
+// 待请求队列
+let waitingRequests = []
 
 function isRefreshRequest(config) {
   // 判断是否为刷新令牌请求
   return config.url.includes('refresh')
 }
-function handleNewRequests(config, refreshClass) {
+function handleNewRequests(config) {
   // 如果正在刷新令牌，那么就将新的普通请求暂存
-  if (refreshClass.isRefreshing && !isRefreshRequest(config)) {
+  if (isRefreshing && !isRefreshRequest(config)) {
     return new Promise((resolve, reject) => {
-      refreshClass.waitingRequests.push({ config, resolve, reject })
+      waitingRequests.push({ config, resolve, reject })
     })
   }
 }
-function handle401Requests(config, refreshClass) {
+function handle401Requests(config) {
   // 如果正在刷新令牌，那么就将401的普通请求暂存
-  if (refreshClass.isRefreshing && !isRefreshRequest(config)) {
+  if (isRefreshing && !isRefreshRequest(config)) {
     return new Promise((resolve, reject) => {
-      refreshClass.waitingRequests.push({ config, resolve, reject })
+      waitingRequests.push({ config, resolve, reject })
     })
   }
 }
-function tryRefreshAccessToken(refresh, config, refreshClass) {
+function tryRefreshAccessToken(config, refresh) {
   // 如果普通请求401，且存在刷新Token
   if (!isRefreshRequest(config) && refresh) {
-    refreshClass.isRefreshing = true
+    isRefreshing = true
 
     // 发送刷新令牌请求
     request
@@ -38,32 +38,32 @@ function tryRefreshAccessToken(refresh, config, refreshClass) {
       .catch((err) => {})
 
     return new Promise((resolve, reject) => {
-      refreshClass.waitingRequests.push({ config, resolve, reject })
+      waitingRequests.push({ config, resolve, reject })
     })
   }
 }
-function onSuccess(config, refreshClass, cb) {
+function onSuccess(config, cb) {
   // 如果正在刷新令牌，且刷新令牌请求成功
-  if (refreshClass.isRefreshing && isRefreshRequest(config)) {
+  if (isRefreshing && isRefreshRequest(config)) {
     // 替换新的令牌
     cb()
 
-    refreshClass.isRefreshing = false
+    isRefreshing = false
 
-    refreshClass.waitingRequests.forEach((item) => {
+    waitingRequests.forEach((item) => {
       request(item.config).then(item.resolve).catch(item.reject)
     })
-    refreshClass.waitingRequests.length = 0
+    waitingRequests = []
   }
 }
-function onFail(refreshClass, cb) {
+function onFail(cb) {
   // 如果是刷新令牌请求401，或者不存在刷新Token
-  refreshClass.isRefreshing = false
+  isRefreshing = false
 
-  refreshClass.waitingRequests.forEach((item) => {
+  waitingRequests.forEach((item) => {
     item.reject('登录状态已过期，请重新登录')
   })
-  refreshClass.waitingRequests.length = 0
+  waitingRequests = []
 
   // 返回登录页重新登录
   cb()
@@ -92,7 +92,7 @@ request.interceptors.request.use(
       config.headers['Authorization'] = 'Bearer ' + access
     }
 
-    return handleNewRequests(config, refreshClass) || config
+    return handleNewRequests(config) || config
   },
   (error) => {
     return Promise.reject(error)
@@ -106,7 +106,7 @@ request.interceptors.response.use(
     const { code, data, msg } = response.data
     // 请求成功
     if (code >= 200 && code < 300) {
-      onSuccess(config, refreshClass, () => {
+      onSuccess(config, () => {
         setItem(storageKeys.access, data.access)
       })
 
@@ -120,9 +120,9 @@ request.interceptors.response.use(
       }
 
       return (
-        handle401Requests(config, refreshClass) ||
-        tryRefreshAccessToken(getItem(storageKeys.refresh), config, refreshClass) ||
-        onFail(refreshClass, () => {
+        handle401Requests(config) ||
+        tryRefreshAccessToken(config, getItem(storageKeys.refresh)) ||
+        onFail(() => {
           ElMessageBox.alert('登录状态已过期，请重新登录', '提示', {
             type: 'warning',
             showClose: false
