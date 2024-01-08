@@ -27,7 +27,9 @@
     "v-contextmenu": "^3.0.0",
     "vue": "^3.4.4",
     "vue-i18n": "^9.6.5",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "vxe-table": "^4.5.17",
+    "xe-utils": "^3.5.14"
   },
   "devDependencies": {
     "@iconify/json": "^2.2.138",

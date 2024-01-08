@@ -25,11 +25,16 @@ import 'virtual:svg-icons-register'
 import contextmenu from 'v-contextmenu'
 import 'v-contextmenu/dist/themes/default.css'
 
+// VXETable
+import VXETable from 'vxe-table'
+import 'vxe-table/lib/style.css'
+
 const app = createApp(App)
 
 app.use(pinia)
 app.use(i18n)
 app.use(router)
 app.use(contextmenu)
+app.use(VXETable)
 
 app.mount('#app')
