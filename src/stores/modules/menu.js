@@ -10,7 +10,7 @@ export const useMenuStore = defineStore('menuStore', {
       loadedRoutes: [
         {
           name: 'Home',
-          title: t('home')
+          title: t('layout.routes.home')
         }
       ],
       activeRoute: 'Home'
