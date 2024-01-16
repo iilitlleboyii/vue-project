@@ -16,6 +16,7 @@
               v-bind="item.bindProps"
               v-model="queryParams[item.prop]"
               v-on="item?.events || {}"
+              @keyup.enter="handleSearch"
             ></el-input>
             <el-select
               v-if="item.name === 'el-select'"

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { storageKeys, getItem, setItem, getUserStore } from '@/utils/auth'
+import { formatQueryParams } from '@/utils/tools'
 
 // 是否正在刷新
 let isRefreshing = false
@@ -90,6 +91,10 @@ request.interceptors.request.use(
     const access = getItem(storageKeys.access)
     if (config.headers['Carry-Token'] && access) {
       config.headers['Authorization'] = 'Bearer ' + access
+    }
+
+    if (config.method === 'get' && config.params) {
+      config.params = formatQueryParams(config.params)
     }
 
     return handleNewRequests(config) || config

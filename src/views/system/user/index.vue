@@ -45,15 +45,12 @@
       </el-table-column>
     </el-table>
     <!-- 分页 -->
-    <!-- <div class="pagination">
-      <el-pagination
-        v-model:page="page"
-        v-model:page-size="pageSize"
-        :total="total"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      ></el-pagination>
-    </div> -->
+    <Pagination
+      v-model:page-size="query.pageSize"
+      v-model:page-num="query.pageNum"
+      :total="total"
+      @pagination="handleSearch"
+    ></Pagination>
     <!-- 对话框 -->
     <el-dialog
       v-model="open"
@@ -87,9 +84,9 @@
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="form.email" placeholder="请输入邮箱" clearable></el-input>
         </el-form-item>
-        <el-form-item label="激活" prop="is_active">
+        <!-- <el-form-item label="激活" prop="is_active">
           <el-switch v-model="form.is_active" />
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="管理人员" prop="is_staff">
           <el-switch v-model="form.is_staff" />
         </el-form-item>
@@ -111,7 +108,10 @@
 import { getUserList, getUser, updateUser } from '@/api/common'
 import { useUserStore } from '@/stores/modules'
 
-const query = reactive({})
+const query = reactive({
+  pageNum: 1,
+  pageSize: 10
+})
 async function handleSearch() {
   try {
     loading.value = true
