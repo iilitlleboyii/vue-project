@@ -2,27 +2,27 @@
   <v-contextmenu ref="contextmenu">
     <v-contextmenu-item @click="onRefreshCurrent">
       <div class="flex items-center">
-        <i-material-symbols:refresh /><span class="ml-2">{{ $t('tab_refresh') }}</span>
+        <i-material-symbols:refresh /><span class="ml-2">{{ $t('layout.tab.refresh') }}</span>
       </div></v-contextmenu-item
     >
     <v-contextmenu-item @click="onCloseOther"
       ><div class="flex items-center">
-        <i-material-symbols:close /><span class="ml-2">{{ $t('tab_other') }}</span>
+        <i-material-symbols:close /><span class="ml-2">{{ $t('layout.tab.others') }}</span>
       </div></v-contextmenu-item
     >
     <v-contextmenu-item @click="onCloseLeft"
       ><div class="flex items-center">
-        <i-icon-park-outline:to-left /><span class="ml-2">{{ $t('tab_left') }}</span>
+        <i-icon-park-outline:to-left /><span class="ml-2">{{ $t('layout.tab.left') }}</span>
       </div></v-contextmenu-item
     >
     <v-contextmenu-item @click="onCloseRight"
       ><div class="flex items-center">
-        <i-icon-park-outline:to-right /><span class="ml-2">{{ $t('tab_right') }}</span>
+        <i-icon-park-outline:to-right /><span class="ml-2">{{ $t('layout.tab.right') }}</span>
       </div></v-contextmenu-item
     >
     <v-contextmenu-item @click="onCloseAll"
       ><div class="flex items-center">
-        <i-icon-park-outline:clear /><span class="ml-2">{{ $t('tab_all') }}</span>
+        <i-icon-park-outline:clear /><span class="ml-2">{{ $t('layout.tab.all') }}</span>
       </div></v-contextmenu-item
     >
   </v-contextmenu>

@@ -20,7 +20,7 @@ const baseRoutes = [
         path: '/home',
         component: () => import('@/views/home/index.vue'),
         meta: {
-          title: t('home')
+          title: t('layout.routes.home')
         }
       }
     ]
@@ -31,7 +31,7 @@ const baseRoutes = [
     redirect: '/system/user',
     component: () => import('@/layout/index.vue'),
     meta: {
-      title: t('system'),
+      title: t('layout.routes.system'),
       breadCrumb: true
     },
     children: [
@@ -40,7 +40,7 @@ const baseRoutes = [
         path: '/system/user',
         component: () => import('@/views/system/user/index.vue'),
         meta: {
-          title: t('user')
+          title: t('layout.routes.user')
         }
       },
       {
@@ -48,7 +48,7 @@ const baseRoutes = [
         path: '/system/role',
         component: () => import('@/views/system/role/index.vue'),
         meta: {
-          title: t('role')
+          title: t('layout.routes.role')
         }
       },
       {
@@ -56,7 +56,7 @@ const baseRoutes = [
         path: '/system/menu',
         component: () => import('@/views/system/menu/index.vue'),
         meta: {
-          title: t('menu')
+          title: t('layout.routes.menu')
         }
       }
     ]
@@ -66,7 +66,7 @@ const baseRoutes = [
     path: '/screen',
     component: () => import('@/views/screen/index.vue'),
     meta: {
-      title: t('dataPanel'),
+      title: t('layout.routes.dataPanel'),
       isExternalLink: true
     }
   },
@@ -76,7 +76,7 @@ const baseRoutes = [
     component: () => import('@/views/login/login.vue'),
     hidden: true,
     meta: {
-      title: t('login')
+      title: t('layout.routes.login')
     }
   },
   {
@@ -85,7 +85,7 @@ const baseRoutes = [
     component: () => import('@/views/login/register.vue'),
     hidden: true,
     meta: {
-      title: t('register')
+      title: t('layout.routes.register')
     }
   },
   {
