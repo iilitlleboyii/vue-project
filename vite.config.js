@@ -34,6 +34,10 @@ export default defineConfig(({ mode, command }) => {
         }
       }
     },
+    optimizeDeps: {
+      include: ['element-plus/es/components/**/style/index'],
+      force: true
+    },
     esbuild: {
       drop: ['console', 'debugger']
     },
