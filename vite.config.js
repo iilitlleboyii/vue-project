@@ -24,7 +24,7 @@ export default defineConfig(({ mode, command }) => {
       }
     },
     server: {
-      host: 'localhost',
+      host: '0.0.0.0',
       open: true,
       proxy: {
         '/dev-api': {
