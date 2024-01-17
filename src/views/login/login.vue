@@ -137,12 +137,6 @@ const rules = {
 const $router = useRouter()
 const $userStore = useUserStore()
 
-const loginSuccess = () => {
-  localStorage.setItem('rememberMe', JSON.stringify(rememberMe.value))
-  ElMessage.success('登录成功')
-  $router.replace('/home')
-}
-
 function onLoginFormClick() {
   if (!loginFormRef.value) return
   loginFormRef.value.validate((valid) => {
@@ -152,7 +146,9 @@ function onLoginFormClick() {
         $userStore
           .Login({ username: loginForm.username, password: loginForm.password })
           .then(() => {
-            loginSuccess()
+            localStorage.setItem('rememberMe', JSON.stringify(rememberMe.value))
+            ElMessage.success('登录成功')
+            $router.replace('/home')
           })
           .catch((err) => {})
           .finally(() => {

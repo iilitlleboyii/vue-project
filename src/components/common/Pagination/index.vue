@@ -8,7 +8,7 @@
     @size-change="handleSizeChange"
     @current-change="handleCurrentChange"
     v-on="$attrs"
-    class="mt-10"
+    class="mt-5 justify-end"
   />
 </template>
 
@@ -39,6 +39,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:pageNum', 'update:pageSize', 'pagination'])
 
+// 也可以使用 Vue3.4 新特性 defineModel
 const pageNum_ = useVModel(props, 'pageNum', emit)
 const pageSize_ = useVModel(props, 'pageSize', emit)
 

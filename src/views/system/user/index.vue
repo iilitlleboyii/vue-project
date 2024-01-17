@@ -115,13 +115,10 @@ const query = reactive({
 async function handleSearch() {
   try {
     loading.value = true
-    const res = await getUserList(query)
-    if (res) {
-      const { count, results } = res.data
-      list.value = results
-      total.value = count
-      loading.value = false
-    }
+    const { data } = await getUserList(query)
+    list.value = data.results
+    total.value = data.count
+    loading.value = false
   } catch (error) {}
 }
 
@@ -184,13 +181,15 @@ function onCancel() {
 }
 
 async function handleEdit(row) {
-  if (row.id === $userStore.userInfo.id || $userStore.roles.includes('admin')) {
-    const res = await getUser(row.id)
-    form.value = res
-    open.value = true
-  } else {
-    ElMessage.error('只能修改自己的哦~')
+  if (row.id !== $userStore.userInfo.id && !$userStore.roles.includes('admin')) {
+    ElMessage.warning('只能修改自己的哦~')
+    return
   }
+  try {
+    const { data } = await getUser(row.id)
+    form.value = data
+    open.value = true
+  } catch (error) {}
 }
 function handleRemove(row) {}
 
@@ -201,6 +200,7 @@ const config = [
     label: '用户名',
     prop: 'username',
     bindProps: {
+      maxlength: 32,
       clearable: true,
       placeholder: '请输入'
     }
@@ -210,6 +210,7 @@ const config = [
     label: '昵称',
     prop: 'nickname',
     bindProps: {
+      maxlength: 20,
       clearable: true,
       placeholder: '请输入'
     }
