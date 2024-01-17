@@ -90,9 +90,9 @@
         <el-form-item label="管理人员" prop="is_staff">
           <el-switch v-model="form.is_staff" />
         </el-form-item>
-        <el-form-item label="超级用户" prop="is_superuser">
+        <!-- <el-form-item label="超级用户" prop="is_superuser">
           <el-switch v-model="form.is_superuser" />
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
       <template #footer>
         <span>
