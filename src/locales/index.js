@@ -1,7 +1,7 @@
 import { createI18n } from 'vue-i18n'
 
-import en from './lang/en.json'
-import zh from './lang/zh.json'
+import en from './lang/en-US.json'
+import zh from './lang/zh-CN.json'
 
 const defaultLocale = localStorage.getItem('locale') || 'zh-CN'
 

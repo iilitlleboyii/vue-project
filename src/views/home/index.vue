@@ -1,13 +1,15 @@
 <template>
   <div class="app-container">
-    <!-- <div class="h-lg">
-      <FileUpload
-        :mime="['image/jpeg', 'image/png']"
-        :limit="1024 * 500"
-        tip="文件类型仅限jpeg/png，大小不得超过500kb"
-      ></FileUpload>
-    </div> -->
-    <TreeSelector v-model="data"></TreeSelector>
+    <div class="flex gap-4">
+      <TreeSelector :dataSource="data" @nodes-change="onNodesChange"></TreeSelector>
+      <div class="h-lg">
+        <FileUpload
+          :mime="['image/jpeg', 'image/png']"
+          :limit="1024 * 500"
+          tip="文件类型仅限jpeg/png，大小不得超过500kb"
+        ></FileUpload>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -60,108 +62,12 @@ const data = [
         label: 'Level two 3-2'
       }
     ]
-  },
-  {
-    id: 11,
-    label: 'Level one 1',
-    children: [
-      {
-        id: 12,
-        label: 'Level two 1-1',
-        children: [
-          {
-            id: 13,
-            label: 'Level three 1-1-1'
-          },
-          {
-            id: 14,
-            label: 'Level three 1-1-2'
-          }
-        ]
-      }
-    ]
-  },
-  {
-    id: 15,
-    label: 'Level one 1',
-    children: [
-      {
-        id: 16,
-        label: 'Level two 1-1',
-        children: [
-          {
-            id: 17,
-            label: 'Level three 1-1-1'
-          },
-          {
-            id: 18,
-            label: 'Level three 1-1-2'
-          }
-        ]
-      }
-    ]
-  },
-  {
-    id: 15,
-    label: 'Level one 1',
-    children: [
-      {
-        id: 16,
-        label: 'Level two 1-1',
-        children: [
-          {
-            id: 17,
-            label: 'Level three 1-1-1'
-          },
-          {
-            id: 18,
-            label: 'Level three 1-1-2'
-          }
-        ]
-      }
-    ]
-  },
-  {
-    id: 15,
-    label: 'Level one 1',
-    children: [
-      {
-        id: 16,
-        label: 'Level two 1-1',
-        children: [
-          {
-            id: 17,
-            label: 'Level three 1-1-1'
-          },
-          {
-            id: 18,
-            label: 'Level three 1-1-2'
-          }
-        ]
-      }
-    ]
-  },
-  {
-    id: 15,
-    label: 'Level one 1',
-    children: [
-      {
-        id: 16,
-        label: 'Level two 1-1',
-        children: [
-          {
-            id: 17,
-            label: 'Level three 1-1-1'
-          },
-          {
-            id: 18,
-            label: 'Level three 1-1-2'
-          }
-        ]
-      }
-    ]
   }
 ]
+
+function onNodesChange(data) {
+  console.log(data)
+}
 </script>
 
 <style lang="scss" scoped></style>

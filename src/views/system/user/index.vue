@@ -58,7 +58,7 @@
       width="30%"
       :append-to-body="true"
       :close-on-click-modal="false"
-      :closed="reset"
+      @closed="reset"
     >
       <el-form ref="formRef" :model="form" :rules="rules" label-width="auto" @submit.prevent>
         <el-form-item label="用户名" prop="username">
@@ -162,6 +162,7 @@ const $userStore = useUserStore()
 function reset() {
   if (!formRef.value) return
   formRef.value.resetFields()
+  form.value = {}
 }
 async function onConfirm() {
   if (!formRef.value) return

@@ -42,6 +42,9 @@
       "reset": "Reset",
       "expand": "Expand",
       "collapse": "Collapse"
+    },
+    "treeselector": {
+      "placeholder": "Please input keyword"
     }
   }
 }
