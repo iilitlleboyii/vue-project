@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@element-plus/icons-vue':
-    specifier: ^2.1.0
-    version: 2.1.0(vue@3.4.4)
+    specifier: ^2.3.1
+    version: 2.3.1(vue@3.4.4)
   '@unocss/reset':
     specifier: ^0.57.4
     version: 0.57.4
@@ -27,8 +27,8 @@ dependencies:
     specifier: ^5.4.3
     version: 5.4.3
   element-plus:
-    specifier: ^2.4.2
-    version: 2.4.2(vue@3.4.4)
+    specifier: ^2.5.1
+    version: 2.5.1(vue@3.4.4)
   mathjs:
     specifier: ^12.2.1
     version: 12.2.1
@@ -532,8 +532,8 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
-  /@element-plus/icons-vue@2.1.0(vue@3.4.4):
-    resolution: {integrity: sha512-PSBn3elNoanENc1vnCfh+3WA9fimRC7n+fWkf3rE5jvv+aBohNHABC/KAR5KWPecxWxDTVT1ERpRbOMRcOV/vA==}
+  /@element-plus/icons-vue@2.3.1(vue@3.4.4):
+    resolution: {integrity: sha512-XxVUZv48RZAd87ucGS48jPf6pKu0yV5UCg9f4FFwtrYxXOwWuVJo6wOvSLKEoMQKjv8GsX/mhP6UsC1lRwbUWg==}
     peerDependencies:
       vue: ^3.2.0
     dependencies:
@@ -1504,7 +1504,7 @@ packages:
       '@types/web-bluetooth': 0.0.16
       '@vueuse/metadata': 9.13.0
       '@vueuse/shared': 9.13.0(vue@3.4.4)
-      vue-demi: 0.13.11(vue@3.4.4)
+      vue-demi: 0.14.6(vue@3.4.4)
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
@@ -1528,7 +1528,7 @@ packages:
   /@vueuse/shared@9.13.0(vue@3.4.4):
     resolution: {integrity: sha512-UrnhU+Cnufu4S6JLCPZnkWh0WwZGUp72ktOF2DFptMlOs3TOdVv8xJN53zhHGARmVOsz5KqOls09+J1NR6sBKw==}
     dependencies:
-      vue-demi: 0.13.11(vue@3.4.4)
+      vue-demi: 0.14.6(vue@3.4.4)
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
@@ -2261,13 +2261,13 @@ packages:
   /electron-to-chromium@1.4.619:
     resolution: {integrity: sha512-gW4qlnHxa49kp9kXlLdvnwdYEUlQRio30QOR61YfOQU8MaC/NGHWiJhyMMUl1EwFHbbzQTxvP1Dypdw95DjIow==}
 
-  /element-plus@2.4.2(vue@3.4.4):
-    resolution: {integrity: sha512-E/HwXX7JF1LPvQSjs0fZ8WblIoc0quoXsRXQZiL7QDq7xJdNGSUaXtdk7xiEv7axPmLfEFtxE5du9fFspDrmJw==}
+  /element-plus@2.5.1(vue@3.4.4):
+    resolution: {integrity: sha512-ylX9h2U125/nesPlLWgfPkI1rID9EiGROlgf0QkzBUjx+/d4w/YqS+IqZZZC5yvQPhKYu9aMDqEBzOurwn4Cnw==}
     peerDependencies:
       vue: ^3.2.0
     dependencies:
       '@ctrl/tinycolor': 3.6.1
-      '@element-plus/icons-vue': 2.1.0(vue@3.4.4)
+      '@element-plus/icons-vue': 2.3.1(vue@3.4.4)
       '@floating-ui/dom': 1.5.3
       '@popperjs/core': /@sxzz/popperjs-es@2.11.7
       '@types/lodash': 4.14.200
@@ -4639,21 +4639,6 @@ packages:
     optionalDependencies:
       fsevents: 2.3.3
     dev: true
-
-  /vue-demi@0.13.11(vue@3.4.4):
-    resolution: {integrity: sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A==}
-    engines: {node: '>=12'}
-    hasBin: true
-    requiresBuild: true
-    peerDependencies:
-      '@vue/composition-api': ^1.0.0-rc.1
-      vue: ^3.0.0-0 || ^2.6.0
-    peerDependenciesMeta:
-      '@vue/composition-api':
-        optional: true
-    dependencies:
-      vue: 3.4.4
-    dev: false
 
   /vue-demi@0.14.6(vue@3.4.4):
     resolution: {integrity: sha512-8QA7wrYSHKaYgUxDA5ZC24w+eHm3sYCbp0EzcDwKqN3p6HqtTCGR/GVsPyZW92unff4UlcSh++lmqDWN3ZIq4w==}
