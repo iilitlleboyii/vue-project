@@ -1,6 +1,5 @@
 {
   "hello": "Hello World!",
-
   "layout": {
     "backend": "Backend System",
     "routes": {
@@ -35,6 +34,14 @@
         "fail": "load avatar fail",
         "success": "Logout successfully"
       }
+    }
+  },
+  "components": {
+    "searchbar": {
+      "search": "Search",
+      "reset": "Reset",
+      "expand": "Expand",
+      "collapse": "Collapse"
     }
   }
 }

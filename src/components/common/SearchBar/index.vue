@@ -59,13 +59,13 @@
         >
           <el-form-item class="search-bar__btns">
             <el-button type="primary" @click="handleSearch"
-              ><span>搜索</span>
+              ><span>{{ $t('components.searchbar.search') }}</span>
               <template #icon>
                 <i-ep:search />
               </template>
             </el-button>
             <el-button @click="resetForm"
-              ><span>重置</span>
+              ><span>{{ $t('components.searchbar.reset') }}</span>
               <template #icon>
                 <i-ep:refresh />
               </template>
@@ -78,7 +78,7 @@
               @click="isCollapse = !isCollapse"
             >
               <template #default>
-                <span>{{ isCollapse ? '展开' : '收起' }}</span>
+                <span>{{ isCollapse ? $t('components.searchbar.expand') : $t('components.searchbar.collapse') }}</span>
                 <i-ep:arrow-down v-if="isCollapse" />
                 <i-ep:arrow-up v-else />
               </template>

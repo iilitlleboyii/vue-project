@@ -1,6 +1,5 @@
 {
   "hello": "你好，世界！",
-
   "layout": {
     "backend": "后台管理系统",
     "routes": {
@@ -35,6 +34,14 @@
         "fail": "头像数据加载失败",
         "success": "注销登录成功"
       }
+    }
+  },
+  "components": {
+    "searchbar": {
+      "search": "搜索",
+      "reset": "重置",
+      "expand": "展开",
+      "collapse": "收起"
     }
   }
 }
