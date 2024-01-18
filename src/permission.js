@@ -6,9 +6,7 @@ import { useUserStore } from '@/stores/modules'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
-NProgress.configure({ showSpinner: false })
-NProgress.configure({ ease: 'ease', speed: 200 })
-NProgress.configure({ minimum: 0.3 })
+NProgress.configure({ showSpinner: false, ease: 'ease', speed: 200, minimum: 0.3 })
 
 let $userStore = null
 
