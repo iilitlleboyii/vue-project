@@ -29,7 +29,7 @@ const data = [
           },
           {
             id: 10,
-            label: 'Level three 1-1-2'
+            label: 'Level three 1-1-2 Level three 1-1-2 Level three 1-1-2'
           }
         ]
       }

@@ -9,6 +9,9 @@ import '@/assets/styles/element/dark.scss'
 import 'virtual:uno.css'
 import '@unocss/reset/tailwind-compat.css'
 
+// 注册指令
+import truncate from '@/directives/common/truncate'
+
 // 引入动画库
 import 'animate.css'
 
@@ -36,5 +39,7 @@ app.use(i18n)
 app.use(router)
 app.use(contextmenu)
 app.use(VXETable)
+
+app.directive('truncate', truncate)
 
 app.mount('#app')

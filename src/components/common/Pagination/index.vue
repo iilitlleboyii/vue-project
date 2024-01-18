@@ -7,7 +7,7 @@
     :background="true"
     @size-change="handleSizeChange"
     @current-change="handleCurrentChange"
-    v-on="$attrs"
+    v-bind="$attrs"
     class="mt-5 justify-end"
   />
 </template>
@@ -54,5 +54,3 @@ function handleSizeChange(value) {
   emit('pagination', { pageNum: pageNum_.value, pageSize: value })
 }
 </script>
-
-<style lang="scss" scoped></style>

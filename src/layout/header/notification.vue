@@ -7,5 +7,3 @@
 <script setup>
 const msgNum = ref('9')
 </script>
-
-<style lang="scss" scoped></style>

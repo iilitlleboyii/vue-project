@@ -14,15 +14,16 @@
         :default-expand-all="true"
         :highlight-current="true"
         :expand-on-click-node="false"
-        :show-checkbox="showCheckbox"
+        :show-checkbox="multiple"
         :filter-node-method="filterNode"
         @node-click="onNodeClick"
         @check="onCheck"
+        v-bind="attrs"
       >
         <template #default="{ node }">
-          <el-tooltip :content="node.label" :disabled="node.label.length <= 20">
-            <span>{{
-              node.label.length <= 20 ? node.label : node.label.slice(0, 20) + '...'
+          <el-tooltip :content="node.label" :disabled="!truncateObj[node.id]">
+            <span v-truncate="{ obj: truncateObj, id: node.id }" class="truncate">{{
+              node.label
             }}</span>
           </el-tooltip>
         </template>
@@ -32,12 +33,12 @@
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
   dataSource: {
     type: Array,
     required: true
   },
-  showCheckbox: {
+  multiple: {
     type: Boolean,
     required: false,
     default: false
@@ -55,14 +56,15 @@ const defaultProps = {
   label: 'label'
 }
 
+const attrs = useAttrs()
+
 function onInput(value) {
   if (!treeRef.value) return
   treeRef.value.filter(value)
 }
 
 function filterNode(value, data) {
-  if (!value) return true
-  return data.label.includes(value)
+  return !value ? true : data.label.includes(value)
 }
 
 function onNodeClick(node) {
@@ -73,6 +75,29 @@ function onCheck() {
   if (!treeRef.value) return
   emit('nodes-change', treeRef.value.getCheckedNodes())
 }
-</script>
 
-<style lang="scss" scoped></style>
+// 记录节点内容是否溢出
+const truncateObj = ref(getTruncateObj())
+function getTruncateObj() {
+  const obj = {}
+  for (const item of flattenArray(props.dataSource)) {
+    obj[item.id] = false
+  }
+  return obj
+}
+function flattenArray(data) {
+  const result = []
+  for (const node of data) {
+    dfs(node)
+  }
+  function dfs(node) {
+    result.push(node)
+    if (node.children) {
+      for (const child of node.children) {
+        dfs(child)
+      }
+    }
+  }
+  return result
+}
+</script>
