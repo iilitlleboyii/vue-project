@@ -5,15 +5,15 @@ import pinia from './stores'
 import router from './router'
 
 // 全局样式
-import '@/assets/styles/element/dark.scss'
 import 'virtual:uno.css'
 import '@unocss/reset/tailwind-compat.css'
-
-// 注册指令
-import truncate from '@/directives/common/truncate'
+import '@/assets/styles/element/dark.scss'
 
 // 引入动画库
 import 'animate.css'
+
+// 注册指令
+import truncate from '@/directives/common/truncate'
 
 // 路由守卫
 import './permission'

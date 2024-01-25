@@ -64,7 +64,7 @@ function onInput(value) {
 }
 
 function filterNode(value, data) {
-  return !value ? true : data.label.includes(value)
+  return !value ? true : data.deptName.includes(value)
 }
 
 function onNodeClick(node) {

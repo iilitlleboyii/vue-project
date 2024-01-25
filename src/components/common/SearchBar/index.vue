@@ -78,7 +78,11 @@
               @click="isCollapse = !isCollapse"
             >
               <template #default>
-                <span>{{ isCollapse ? $t('components.searchbar.expand') : $t('components.searchbar.collapse') }}</span>
+                <span>{{
+                  isCollapse
+                    ? $t('components.searchbar.expand')
+                    : $t('components.searchbar.collapse')
+                }}</span>
                 <i-ep:arrow-down v-if="isCollapse" />
                 <i-ep:arrow-up v-else />
               </template>
@@ -158,11 +162,5 @@ onMounted(() => {
 .el-row {
   margin-left: 0 !important;
   margin-right: 0 !important;
-}
-
-:deep(.el-form-item__content) {
-  div {
-    width: 100% !important;
-  }
 }
 </style>
