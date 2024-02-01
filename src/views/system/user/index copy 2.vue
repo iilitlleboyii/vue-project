@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <!-- 搜索栏 -->
-    <SearchBar v-model="queryParams" :config="config" @search="handleSearch"></SearchBar>
+    <SearchBar v-model="query" :config="config" :handleSearch="handleSearch"></SearchBar>
     <!-- 数据表 -->
     <el-table v-loading="loading" :data="list" border stripe class="w-full">
       <el-table-column prop="id" label="编号" width="80" show-overflow-tooltip />
@@ -46,8 +46,8 @@
     </el-table>
     <!-- 分页 -->
     <Pagination
-      v-model:page-size="queryParams.pageSize"
-      v-model:page-num="queryParams.pageNum"
+      v-model:page-size="query.pageSize"
+      v-model:page-num="query.pageNum"
       :total="total"
       @pagination="handleSearch"
     ></Pagination>
@@ -96,8 +96,8 @@
       </el-form>
       <template #footer>
         <span>
-          <el-button @click="cancel">取消</el-button>
-          <el-button type="primary" @click="submit">确认</el-button>
+          <el-button @click="onCancel">取消</el-button>
+          <el-button type="primary" @click="onConfirm">确认</el-button>
         </span>
       </template>
     </el-dialog>
@@ -105,13 +105,96 @@
 </template>
 
 <script setup>
-import { getUserList, getUser, createUser, updateUser } from '@/api/common'
+import { getUserList, getUser, updateUser } from '@/api/common'
 import { useUserStore } from '@/stores/modules'
-import useQueryList from '@/hooks/useQueryList'
-import useForm from '@/hooks/useForm'
 
+const query = reactive({
+  pageNum: 1,
+  pageSize: 10
+})
+async function handleSearch() {
+  try {
+    loading.value = true
+    const { data } = await getUserList(query)
+    list.value = data.results
+    total.value = data.count
+    loading.value = false
+  } catch (error) {}
+}
+
+const loading = ref(false)
+const list = ref([])
+const total = ref(0)
+
+onMounted(() => {
+  handleSearch()
+})
+
+const open = ref(false)
+const formRef = ref(null)
+const form = ref({})
+const rules = {
+  username: [
+    {
+      required: true,
+      message: '请输入用户名',
+      trigger: 'blur'
+    }
+  ],
+  telephone: [
+    {
+      pattern:
+        /^(?:(?:\+|00)86)?1(?:(?:3[\d])|(?:4[5-79])|(?:5[0-35-9])|(?:6[5-7])|(?:7[0-8])|(?:8[\d])|(?:9[1589]))\d{8}$/,
+      message: '手机号不合法',
+      trigger: 'blur'
+    }
+  ],
+  email: [
+    {
+      type: 'email',
+      message: '请输入正确的邮箱',
+      trigger: 'blur'
+    }
+  ]
+}
 const $userStore = useUserStore()
 
+function reset() {
+  if (!formRef.value) return
+  formRef.value.resetFields()
+  form.value = {}
+}
+async function onConfirm() {
+  if (!formRef.value) return
+  await formRef.value.validate(async (valid) => {
+    if (valid) {
+      if (form.value.id) {
+        await updateUser(form.value)
+        open.value = false
+        ElMessage.success('修改成功')
+        handleSearch()
+      }
+    }
+  })
+}
+function onCancel() {
+  open.value = false
+}
+
+async function handleEdit(row) {
+  if (row.id !== $userStore.userInfo.id && !$userStore.roles.includes('admin')) {
+    ElMessage.warning('只能修改自己的哦~')
+    return
+  }
+  try {
+    const { data } = await getUser(row.id)
+    form.value = data
+    open.value = true
+  } catch (error) {}
+}
+function handleRemove(row) {}
+
+// 搜索栏配置
 const config = [
   {
     name: 'el-input',
@@ -200,51 +283,6 @@ const config = [
     }
   }
 ]
-const { loading, queryParams, list, total, handleSearch } = useQueryList(getUserList)
-
-const formRef = ref(null)
-const rules = {
-  username: [
-    {
-      required: true,
-      message: '请输入用户名',
-      trigger: 'blur'
-    }
-  ],
-  telephone: [
-    {
-      pattern:
-        /^(?:(?:\+|00)86)?1(?:(?:3[\d])|(?:4[5-79])|(?:5[0-35-9])|(?:6[5-7])|(?:7[0-8])|(?:8[\d])|(?:9[1589]))\d{8}$/,
-      message: '手机号不合法',
-      trigger: 'blur'
-    }
-  ],
-  email: [
-    {
-      type: 'email',
-      message: '请输入正确的邮箱',
-      trigger: 'blur'
-    }
-  ]
-}
-const { open, form, reset, cancel, submit } = useForm(createUser, updateUser, formRef, handleSearch)
-
-async function handleEdit(row) {
-  if (row.id !== $userStore.userInfo.id && !$userStore.roles.includes('admin')) {
-    ElMessage.warning('只能修改自己的哦~')
-    return
-  }
-  try {
-    const { data } = await getUser(row.id)
-    form.value = data
-    open.value = true
-  } catch (error) {}
-}
-function handleRemove(row) {}
-
-onMounted(() => {
-  handleSearch()
-})
 </script>
 
 <style lang="scss" scoped>

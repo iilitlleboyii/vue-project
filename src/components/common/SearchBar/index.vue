@@ -103,10 +103,6 @@ const props = defineProps({
     type: null,
     required: true
   },
-  handleSearch: {
-    type: Function,
-    default: () => {}
-  },
   config: {
     type: Array,
     default: () => []
@@ -123,13 +119,17 @@ const props = defineProps({
     events: {}
 } */
 })
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'search'])
+
 const queryParams = useVModel(props, 'modelValue', emit)
 const searchBarRef = ref(null)
+function handleSearch() {
+  emit('search')
+}
 function resetForm() {
   if (!searchBarRef.value) return
   searchBarRef.value.resetFields()
-  props.handleSearch()
+  handleSearch()
 }
 
 const isCollapse = ref(true)
