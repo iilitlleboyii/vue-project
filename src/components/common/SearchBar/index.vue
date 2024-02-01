@@ -17,12 +17,14 @@
               v-model="queryParams[item.prop]"
               v-on="item?.events || {}"
               @keyup.enter="handleSearch"
+              class="w-full"
             ></el-input>
             <el-select
               v-if="item.name === 'el-select'"
               v-bind="item.bindProps"
               v-model="queryParams[item.prop]"
               v-on="item?.events || {}"
+              class="w-full"
             >
               <el-option
                 v-for="(option, index) in item.slot.value"
@@ -36,18 +38,21 @@
               v-bind="item.bindProps"
               v-model="queryParams[item.prop]"
               v-on="item?.events || {}"
+              class="w-full"
             ></el-cascader>
             <el-date-picker
               v-if="item.name === 'el-date-picker'"
               v-bind="item.bindProps"
               v-model="queryParams[item.prop]"
               v-on="item?.events || {}"
+              class="w-full"
             ></el-date-picker>
             <el-autocomplete
               v-if="item.name === 'el-autocomplete'"
               v-bind="item.bindProps"
               v-model="queryParams[item.prop]"
               v-on="item?.events || {}"
+              class="w-full"
             ></el-autocomplete>
           </el-form-item>
         </el-col>
