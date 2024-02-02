@@ -1,9 +1,9 @@
 export default function useForm(addReq, editReq, formRef, cb) {
-  const callback = cb ? cb : () => {}
-
+  const title = ref('')
   const open = ref(false)
 
   const form = ref({})
+  const callback = cb ? cb : () => {}
 
   const reset = () => {
     if (!formRef.value) return
@@ -35,6 +35,7 @@ export default function useForm(addReq, editReq, formRef, cb) {
 
   return {
     open,
+    title,
     form,
     reset,
     cancel,

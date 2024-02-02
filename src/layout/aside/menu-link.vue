@@ -1,5 +1,5 @@
 <template>
-  <component :is="item.meta.isExternalLink ? 'a' : 'router-link'" v-bind="linkProps()">
+  <component :is="item.external ? 'a' : 'router-link'" v-bind="linkProps()">
     <el-menu-item :index="item.path">
       <el-icon>
         <i-healthicons:ui-menu-grid />
@@ -15,7 +15,7 @@
 const props = defineProps(['item'])
 
 const linkProps = () => {
-  if (props.item.meta.isExternalLink) {
+  if (props.item.external) {
     return {
       href: props.item.path,
       target: '_blank',

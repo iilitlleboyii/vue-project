@@ -6,6 +6,7 @@ const { t } = i18n.global
   title: 路由标题
   breadCrumb: 面包屑导航
   hidden: 隐藏非菜单路由
+  external: 外部链接
 */
 
 const baseRoutes = [
@@ -65,9 +66,9 @@ const baseRoutes = [
     name: 'Screen',
     path: '/screen',
     component: () => import('@/views/screen/index.vue'),
+    external: true,
     meta: {
-      title: t('layout.routes.dataPanel'),
-      isExternalLink: true
+      title: t('layout.routes.dataPanel')
     }
   },
   {

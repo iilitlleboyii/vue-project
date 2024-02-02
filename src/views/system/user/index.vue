@@ -3,41 +3,41 @@
     <!-- 搜索栏 -->
     <SearchBar v-model="queryParams" :config="config" @search="handleSearch"></SearchBar>
     <!-- 数据表 -->
-    <el-table v-loading="loading" :data="list" border stripe class="w-full">
+    <el-table v-loading="loading" :data="list" border stripe max-height="600" class="w-full">
       <el-table-column prop="id" label="编号" width="80" show-overflow-tooltip />
       <el-table-column prop="username" label="用户名" min-width="100" show-overflow-tooltip />
       <el-table-column prop="nickname" label="昵称" min-width="100" show-overflow-tooltip />
       <el-table-column prop="telephone" label="手机号" width="120" show-overflow-tooltip />
       <el-table-column prop="email" label="邮箱" width="180" show-overflow-tooltip />
       <el-table-column prop="is_active" label="激活" width="70" align="center">
-        <template #default="scope">
-          <BoolTag :value="scope.row.is_active"></BoolTag>
+        <template #default="{ row }">
+          <BoolTag :value="row.is_active"></BoolTag>
         </template>
       </el-table-column>
       <el-table-column prop="is_staff" label="管理人员" width="90" align="center">
-        <template #default="scope">
-          <BoolTag :value="scope.row.is_staff"></BoolTag>
+        <template #default="{ row }">
+          <BoolTag :value="row.is_staff"></BoolTag>
         </template>
       </el-table-column>
       <el-table-column prop="is_superuser" label="超级用户" width="90" align="center">
-        <template #default="scope">
-          <BoolTag :value="scope.row.is_superuser"></BoolTag>
+        <template #default="{ row }">
+          <BoolTag :value="row.is_superuser"></BoolTag>
         </template>
       </el-table-column>
       <el-table-column prop="last_login" label="上次登录时间" width="180" align="center" />
       <el-table-column prop="date_joined" label="创建时间" width="180" align="center" />
       <el-table-column label="操作" width="100" align="center" fixed="right">
-        <template #default="scope">
+        <template #default="{ row }">
           <el-row justify="space-between">
             <el-button
               link
               size="small"
               type="primary"
-              @click="handleEdit(scope.row)"
+              @click="handleEdit(row)"
               :disabled="scope.row.is_superuser"
               >编辑</el-button
             >
-            <el-button link size="small" type="danger" @click="handleRemove(scope.row)" disabled
+            <el-button link size="small" type="danger" @click="handleRemove(row)" disabled
               >停用</el-button
             >
           </el-row>
@@ -54,11 +54,11 @@
     <!-- 对话框 -->
     <el-dialog
       v-model="open"
-      title="编辑"
-      width="30%"
+      :title="title"
       :append-to-body="true"
       :close-on-click-modal="false"
       @closed="reset"
+      width="30%"
     >
       <el-form ref="formRef" :model="form" :rules="rules" label-width="auto" @submit.prevent>
         <el-form-item label="用户名" prop="username">
@@ -227,7 +227,12 @@ const rules = {
     }
   ]
 }
-const { open, form, reset, cancel, submit } = useForm(createUser, updateUser, formRef, handleSearch)
+const { open, title, form, reset, cancel, submit } = useForm(
+  createUser,
+  updateUser,
+  formRef,
+  handleSearch
+)
 
 async function handleEdit(row) {
   if (row.id !== $userStore.userInfo.id && !$userStore.roles.includes('admin')) {
@@ -237,6 +242,7 @@ async function handleEdit(row) {
   try {
     const { data } = await getUser(row.id)
     form.value = data
+    title.value = '修改用户'
     open.value = true
   } catch (error) {}
 }
