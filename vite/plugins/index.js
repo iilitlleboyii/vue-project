@@ -1,9 +1,11 @@
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import VueSetupExtend from 'vite-plugin-vue-setup-extend'
 import { visualizer } from 'rollup-plugin-visualizer'
 
 import createSvgIcon from './svg-icon'
 import createAutoImport from './auto-import'
+
 import createCompression from './compression'
 import UnoCSS from 'unocss/vite'
 
@@ -12,6 +14,7 @@ export default function createVitePlugins(isServe) {
     vue(),
     UnoCSS(),
     vueJsx(),
+    VueSetupExtend(),
     createSvgIcon(),
     ...createAutoImport(isServe),
     ...createCompression(),

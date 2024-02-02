@@ -59,10 +59,7 @@ const $route = useRoute()
 
 const $menuStore = useMenuStore()
 
-const cachedComponents = computed(() => {
-  console.log($menuStore.loadedRoutes.map((item) => item.name));
-  return $menuStore.loadedRoutes.map((item) => item.name)
-})
+const cachedComponents = computed(() => $menuStore.getCachedRoutes)
 
 const menuItems = computed(() => filterHidden($menuStore.menuList))
 

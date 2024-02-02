@@ -13,7 +13,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup name="Home">
 const data = [
   {
     id: 1,

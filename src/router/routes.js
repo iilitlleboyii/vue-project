@@ -7,6 +7,7 @@ const { t } = i18n.global
   breadCrumb: 面包屑导航
   hidden: 隐藏非菜单路由
   external: 外部链接
+  keepAlive: 缓存组件
 */
 
 const baseRoutes = [
@@ -40,6 +41,7 @@ const baseRoutes = [
         name: 'User',
         path: '/system/user',
         component: () => import('@/views/system/user/index.vue'),
+        keepAlive: true,
         meta: {
           title: t('layout.routes.user')
         }

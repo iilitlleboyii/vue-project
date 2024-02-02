@@ -17,6 +17,12 @@ export const useMenuStore = defineStore('menuStore', {
     }
   },
   actions: {},
-  getters: {},
+  getters: {
+    getCachedRoutes: (state) =>
+      state.menuList
+        .flatMap((route) => [route, ...(route.children || [])])
+        .filter((item) => item.keepAlive)
+        .map((item) => item.name)
+  },
   persist: false
 })

@@ -104,7 +104,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup name="User">
 import { getUserList, getUser, createUser, updateUser } from '@/api/common'
 import { useUserStore } from '@/stores/modules'
 import useQueryList from '@/hooks/useQueryList'

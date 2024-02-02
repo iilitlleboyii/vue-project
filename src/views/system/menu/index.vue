@@ -17,7 +17,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup name="Menu">
 // const tableData = ref([])
 // setTimeout(() => {
 //   // 模拟数据

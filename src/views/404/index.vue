@@ -2,6 +2,6 @@
   <div>404页面</div>
 </template>
 
-<script setup></script>
+<script setup name="404"></script>
 
 <style lang="scss" scoped></style>
