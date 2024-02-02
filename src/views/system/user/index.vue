@@ -34,7 +34,7 @@
               size="small"
               type="primary"
               @click="handleEdit(row)"
-              :disabled="scope.row.is_superuser"
+              :disabled="row.is_superuser"
               >编辑</el-button
             >
             <el-button link size="small" type="danger" @click="handleRemove(row)" disabled
