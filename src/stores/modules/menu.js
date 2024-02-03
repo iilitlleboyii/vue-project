@@ -21,7 +21,7 @@ export const useMenuStore = defineStore('menuStore', {
     getCachedRoutes: (state) =>
       state.menuList
         .flatMap((route) => [route, ...(route.children || [])])
-        .filter((item) => item.keepAlive)
+        .filter((item) => item.keepAlive && state.loadedRoutes.map((route) => route.name).includes(item.name))
         .map((item) => item.name)
   },
   persist: false
