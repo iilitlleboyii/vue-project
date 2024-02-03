@@ -18,11 +18,17 @@ export const useMenuStore = defineStore('menuStore', {
   },
   actions: {},
   getters: {
-    getCachedRoutes: (state) =>
-      state.menuList
-        .flatMap((route) => [route, ...(route.children || [])])
-        .filter((item) => item.keepAlive && state.loadedRoutes.map((route) => route.name).includes(item.name))
-        .map((item) => item.name)
+    getCachedRoutes: (state) => {
+      const dfs = (routes, acc = []) => {
+        for (const route of routes) {
+          acc.push(route)
+          route.children && dfs(route.children, acc)
+        }
+        return acc
+      }
+      const loadedRoutesNames = state.loadedRoutes.map((route) => route.name)
+      return dfs(state.menuList).filter((item) => item.keepAlive && loadedRoutesNames.includes(item.name)).map((item) => item.name)
+    }
   },
   persist: false
 })
