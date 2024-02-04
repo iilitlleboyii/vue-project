@@ -7,8 +7,8 @@ export default function useForm(addReq, editReq, formRef, cb) {
 
   const reset = () => {
     if (!formRef.value) return
-    formRef.value.resetFields()
     form.value = {}
+    formRef.value.resetFields()
   }
 
   const cancel = () => {
