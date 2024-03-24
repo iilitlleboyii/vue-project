@@ -35,7 +35,7 @@ export default defineConfig(({ mode, command }) => {
       }
     },
     optimizeDeps: {
-      include: ['element-plus/es/components/**/style/index'],
+      include: ['element-plus/es/components/**/style/index', 'lodash-es', 'dayjs'],
       force: true
     },
     esbuild: {

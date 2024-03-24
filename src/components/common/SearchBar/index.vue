@@ -2,14 +2,7 @@
   <div>
     <el-form ref="searchBarRef" :model="queryParams" label-width="auto" @submit.prevent>
       <el-row :gutter="20">
-        <el-col
-          v-for="(item, index) in visibleItems"
-          :key="index"
-          :lg="6"
-          :md="8"
-          :sm="12"
-          :xs="24"
-        >
+        <el-col v-for="(item, index) in visibleItems" :key="index" :lg="6" :md="8" :sm="12" :xs="24">
           <el-form-item :label="item.label" :prop="item.prop">
             <el-input
               v-if="item.name === 'el-input'"
@@ -26,12 +19,7 @@
               v-on="item?.events || {}"
               class="w-full"
             >
-              <el-option
-                v-for="(option, index) in item.slot.value"
-                :key="index"
-                :label="option.label"
-                :value="option.value"
-              />
+              <el-option v-for="(option, index) in item.slot.value" :key="index" :label="option.label" :value="option.value" />
             </el-select>
             <el-cascader
               v-if="item.name === 'el-cascader'"
@@ -75,19 +63,9 @@
                 <i-ep:refresh />
               </template>
             </el-button>
-            <el-button
-              v-if="isShow"
-              type="primary"
-              size="small"
-              link
-              @click="isCollapse = !isCollapse"
-            >
+            <el-button v-if="isShow" type="primary" size="small" link @click="isCollapse = !isCollapse">
               <template #default>
-                <span>{{
-                  isCollapse
-                    ? $t('components.searchbar.expand')
-                    : $t('components.searchbar.collapse')
-                }}</span>
+                <span>{{ isCollapse ? $t('components.searchbar.expand') : $t('components.searchbar.collapse') }}</span>
                 <i-ep:arrow-down v-if="isCollapse" />
                 <i-ep:arrow-up v-else />
               </template>
@@ -100,8 +78,8 @@
 </template>
 
 <script setup>
-import { debounce } from '@/utils/plugins'
 import { useVModel } from '@vueuse/core'
+import { debounce } from 'lodash-es'
 
 const props = defineProps({
   modelValue: {
@@ -140,20 +118,19 @@ function resetForm() {
 const isCollapse = ref(true)
 const innerWidth = ref(window.innerWidth)
 const counter = computed(() => (innerWidth.value >= 1200 ? 3 : innerWidth.value >= 992 ? 2 : 1))
-const visibleItems = computed(() =>
-  isCollapse.value ? props.config.slice(0, counter.value) : props.config
-)
+const visibleItems = computed(() => (isCollapse.value ? props.config.slice(0, counter.value) : props.config))
 const isShow = computed(() => !isCollapse.value || props.config.length > visibleItems.value.length)
-function handleResize() {
-  return debounce(() => {
-    innerWidth.value = window.innerWidth
-  }, 300)
-}
+
+const handleResize = debounce(() => {
+  innerWidth.value = window.innerWidth
+}, 300)
 
 onMounted(() => {
-  window.onresize = () => {
-    handleResize()
-  }
+  window.addEventListener('resize', handleResize)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
 })
 </script>
 
