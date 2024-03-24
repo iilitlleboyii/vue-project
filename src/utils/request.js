@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { storageKeys, getItem, setItem, getUserStore } from '@/utils/auth'
-import { formatQueryParams } from '@/utils/tools'
+import { formatQueryParams, downloadByData } from '@/utils/tools'
 
 // 是否正在刷新
 let isRefreshing = false
@@ -149,5 +149,24 @@ request.interceptors.response.use(
     return Promise.reject(error)
   }
 )
+
+export const download = (config) => {
+  return new Promise((resolve, reject) => {
+    config.url = config.url.endsWith('/') ? config.url : config.url + '/'
+    fetch(import.meta.env.VITE_APP_BASE_API + config.url, {
+      method: config.method,
+      headers: config.headers,
+      body: config.data
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        downloadByData(data, config.filename, config.mime)
+        resolve()
+      })
+      .catch((err) => {
+        reject(err)
+      })
+  })
+}
 
 export default request

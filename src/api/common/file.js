@@ -1,4 +1,4 @@
-import request from '@/utils/request'
+import request, { download } from '@/utils/request'
 import axios from 'axios'
 
 export function uploadFile(file) {
@@ -20,5 +20,15 @@ export function uploadFile(file) {
     cancelToken: new axios.CancelToken((cancelFn) => {
       file.abort = cancelFn
     })
+  })
+}
+
+export function downloadFile(data, filename, mime) {
+  return download({
+    url: '/download',
+    method: 'post',
+    data,
+    filename,
+    mime
   })
 }
