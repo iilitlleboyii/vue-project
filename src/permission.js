@@ -16,20 +16,18 @@ router.beforeEach(({ name, path, params, query, meta }) => {
   // 登录页和注册页直接放行
   if (name === 'Login' || name === 'Register') {
     return true
-  } else {
-    if ($userStore === null) {
-      $userStore = useUserStore(pinia)
-    }
-    // 其它页如果已登录过直接放行，否则重新登录
-    if ($userStore.access) {
-      return true
-    } else {
-      return {
-        path: '/login',
-        query: {
-          redirect: path
-        }
-      }
+  }
+  if ($userStore === null) {
+    $userStore = useUserStore(pinia)
+  }
+  // 其它页如果已登录过直接放行，否则重新登录
+  if ($userStore.access) {
+    return true
+  }
+  return {
+    path: '/login',
+    query: {
+      redirect: path
     }
   }
 })
