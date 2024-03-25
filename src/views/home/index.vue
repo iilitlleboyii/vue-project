@@ -8,7 +8,7 @@
 import { downloadFile } from '@/api/common'
 
 function handleClick() {
-  downloadFile(null, 'test.md').then((res) => {
+  downloadFile(null, 'test.docx').then((res) => {
     console.log(res)
   })
 }

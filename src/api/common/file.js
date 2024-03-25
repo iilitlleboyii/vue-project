@@ -28,6 +28,9 @@ export function downloadFile(data, filename, mime) {
     url: '/download',
     method: 'post',
     data,
+    headers: {
+      'Content-Disposition': `attachment;filename=${filename}`
+    },
     filename,
     mime
   })

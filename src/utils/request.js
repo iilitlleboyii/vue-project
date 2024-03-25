@@ -160,6 +160,13 @@ export const download = (config) => {
     })
       .then((response) => response.json())
       .then((data) => {
+        if (typeof data === 'object') {
+          const { code, msg } = data
+          if (code !== 200) {
+            ElMessage.error(msg)
+            return reject(msg)
+          }
+        }
         downloadByData(data, config.filename, config.mime)
         resolve()
       })
