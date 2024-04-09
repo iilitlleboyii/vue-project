@@ -8,8 +8,8 @@
 import { downloadFile } from '@/api/common'
 
 function handleClick() {
-  downloadFile(null, 'test.docx').then((res) => {
-    console.log(res)
+  downloadFile(null, 'users.xlsx').then((res) => {
+    ElMessage.success('下载成功')
   })
 }
 </script>

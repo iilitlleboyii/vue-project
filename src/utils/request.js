@@ -158,15 +158,8 @@ export const download = (config) => {
       headers: config.headers,
       body: config.data
     })
-      .then((response) => response.json())
+      .then((response) => response.blob())
       .then((data) => {
-        if (typeof data === 'object') {
-          const { code, msg } = data
-          if (code !== 200) {
-            ElMessage.error(msg)
-            return reject(msg)
-          }
-        }
         downloadByData(data, config.filename, config.mime)
         resolve()
       })
