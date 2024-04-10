@@ -158,12 +158,23 @@ export const download = (config) => {
       headers: config.headers,
       body: config.data
     })
-      .then((response) => response.blob())
+      .then((response) => {
+        if (response.ok) {
+          return response.blob()
+        } else {
+          return response.json()
+        }
+      })
       .then((data) => {
-        downloadByData(data, config.filename, config.mime)
-        resolve()
+        if (data instanceof Blob) {
+          downloadByData(data, config.filename, config.mime)
+          resolve()
+        } else {
+          reject(data.message)
+        }
       })
       .catch((err) => {
+        console.log(err)
         reject(err)
       })
   })

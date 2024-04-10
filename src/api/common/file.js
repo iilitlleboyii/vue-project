@@ -27,10 +27,11 @@ export function downloadFile(data, filename, mime) {
   return download({
     url: '/download',
     method: 'post',
-    data,
     headers: {
-      'Content-Disposition': `attachment;filename=${filename}`
+      'Content-Type': 'application/octet-stream',
+      'Content-Disposition': `attachment;filename=${encodeURIComponent(filename)}`
     },
+    data,
     filename,
     mime
   })

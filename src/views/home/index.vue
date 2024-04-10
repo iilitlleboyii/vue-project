@@ -8,9 +8,13 @@
 import { downloadFile } from '@/api/common'
 
 function handleClick() {
-  downloadFile(null, 'users.xlsx').then((res) => {
-    ElMessage.success('下载成功')
-  })
+  downloadFile(null, '新建文本文档.7z')
+    .then((res) => {
+      ElMessage.success('下载成功')
+    })
+    .catch((err) => {
+      ElMessage.error(err)
+    })
 }
 </script>
 

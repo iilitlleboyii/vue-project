@@ -1,19 +1,9 @@
 <template>
   <el-container class="w-screen h-screen overflow-hidden">
     <el-aside :width="isCollapse ? '64px' : '200px'">
-      <LogoTitle
-        :is-collapse="isCollapse"
-        icon-name="home"
-        :title="$t('layout.backend')"
-      ></LogoTitle>
+      <LogoTitle :is-collapse="isCollapse" icon-name="home" :title="$t('layout.backend')"></LogoTitle>
       <el-scrollbar>
-        <el-menu
-          :unique-opened="true"
-          :default-active="$route.path"
-          :collapse="isCollapse"
-          :collapse-transition="false"
-          class="h-full select-none"
-        >
+        <el-menu :unique-opened="true" :default-active="$route.path" :collapse="isCollapse" :collapse-transition="false" class="h-full select-none">
           <MenuItem v-for="item in menuItems" :key="item.path" :item="item"></MenuItem>
         </el-menu>
       </el-scrollbar>
@@ -31,8 +21,8 @@
         </div>
         <Navigator></Navigator>
       </el-header>
+      <Tabs></Tabs>
       <el-main>
-        <Tabs></Tabs>
         <router-view v-slot="{ Component }">
           <transition enter-active-class="animate__animated animate__fadeInLeft">
             <keep-alive :include="cachedComponents">
