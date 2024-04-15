@@ -1,96 +1,166 @@
 <template>
-  <div class="screen">
-    <div class="particle">
-      <iframe frameborder="0" src="../../../html/particle.html" style="width: 100%; height: 100%"></iframe>
+  <div class="app-container">
+    <div style="float: right;">
+      <div>
+        <el-button-group>
+          <el-button type="primary" plain @click="onPrevPage">上一页</el-button>
+          <el-button type="primary" plain @click="onNextPage">下一页</el-button>
+        </el-button-group>
+        <el-select v-model="pageSelector.current" :filterable="true" placeholder="请选择页面" @change="onChangePage" style="width: 240px">
+          <el-option v-for="(item, index) in pageSelector.pages" :key="index" :label="item.name" :value="index" />
+        </el-select>
+      </div>
+      <div>
+        <el-form-item label="选择层级">
+          <el-select v-model="pageSelector.layerIdx" :filterable="true" placeholder="请选择层级" @change="onChangeLayer" style="width: 240px">
+            <el-option v-for="(item, index) in currentPage.layer" :key="index" :label="index" :value="index" />
+          </el-select>
+        </el-form-item>
+      </div>
     </div>
-    <div class="maps">
-      <div class="map pc1"></div>
-      <div class="map pc2"></div>
-      <div class="map pc3"></div>
+
+    <div class="draw" v-loading="loading">
+      <Draw-Container :pageData="pageData"></Draw-Container>
     </div>
+    <!-- <div>
+        <el-button v-for="(item, index) in originalData?.button || []" :key="index" type="info" plain @click="onClick(index)">按钮</el-button>
+      </div> -->
   </div>
 </template>
 
-<script setup name="Screen"></script>
+<script setup name="Home">
+const loading = ref(true)
+
+const originalData = ref(null)
+const pageSelector = ref({
+  current: 0,
+  layerIdx: 0,
+  pages: []
+})
+const currentPage = computed(() => {
+  let ret = {}
+  if (pageSelector.value.pages.length > 0 && pageSelector.value.current >= 0) {
+    const data = pageSelector.value.pages[pageSelector.value.current]
+    ret = {
+      ...data
+    }
+  }
+  return ret
+})
+const pageData = computed(() => {
+  let ret = currentPage.value.common || []
+  if (currentPage.value.layer && currentPage.value.layer.length > 0) {
+    ret = ret.concat(currentPage.value.layer[pageSelector.value.layerIdx])
+  }
+  return formatPageData(ret)
+})
+// const btns = computed(() => {
+//   let ret = []
+//   if (originalData.value && originalData.value.button && originalData.value.button.length > 0) {
+//     ret = originalData.value.button
+//   }
+//   console.log(ret);
+//   return formatPageData(ret)
+// })
+
+function formatPageData(data) {
+  return data
+    .map((item) => {
+      const ret = {
+        id: item.id,
+        type: item.type,
+        value: item.value,
+        style: {
+          position: 'absolute',
+          top: item.top,
+          left: item.left,
+          width: item.width,
+          height: item.height
+        }
+      }
+      if (item.type === 'input') {
+        ret.reg = item.reg
+        ret.bitWidth = item.bitWidth
+      } else if (item.type === 'select') {
+        ret.reg = item.reg
+        ret.bitWidth = item.bitWidth
+        ret.options = item.selectList
+      } else if (item.type === 'switch') {
+        ret.reg = item.reg
+        ret.bitWidth = item.bitWidth
+        ret.bitNum = item.bitNum
+        ret.open = item.open
+        ret.close = item.close
+        ret.openColor = item.openColor
+        ret.closeColor = item.closeColor
+        ret.openWord = item.openWord
+        ret.closeWord = item.closeWord
+      }
+      return ret
+    })
+    .reduce((acc, cur) => {
+      if (!acc.some((obj) => obj.id === cur.id)) {
+        acc.push(cur)
+      }
+      return acc
+    }, [])
+}
+// new URL('@/assets/json/record.json', import.meta.url).href
+// https://arcuchi-static.oss-cn-shenzhen.aliyuncs.com/record.json
+// https://diebaos-oss.oss-cn-shenzhen.aliyuncs.com/user/2024/03/07/b9233d6e819e46bc8e941d470a580e16.json
+// 'https://arcuchi-static.oss-cn-shenzhen.aliyuncs.com/record.json'
+fetch(new URL('@/assets/json/draw.json', import.meta.url).href)
+  .then((res) => res.json())
+  .then((data) => {
+    loading.value = false
+    originalData.value = data
+    console.log(originalData.value)
+    pageSelector.value = {
+      current: 0,
+      layerIdx: 0,
+      pages: Object.entries(data)
+        .filter(([key, value]) => {
+          return !['title', 'menu', 'button', 'aside'].includes(key)
+        })
+        .map((item) => item[1])
+    }
+  })
+
+function onPrevPage() {
+  if (pageSelector.value.current > 0) {
+    pageSelector.value.current -= 1
+  } else {
+    ElMessage.warning('已经是第一页了~')
+  }
+}
+function onNextPage() {
+  if (pageSelector.value.current < pageSelector.value.pages.length - 1) {
+    pageSelector.value.current += 1
+  } else {
+    ElMessage.warning('已经是最后一页了~')
+  }
+}
+
+function onChangePage(value) {
+  console.log('当前页面：', value)
+  console.log('当前页面数据：', pageData.value)
+}
+function onChangeLayer(value) {
+  console.log('当前层级：', value)
+}
+function onClick(index) {
+  console.log('点击了' + index)
+}
+</script>
 
 <style lang="scss" scoped>
-.screen {
-  width: 100%;
-  height: 100vh;
-  background: url('@/assets/images/screen/bg.jpg') no-repeat;
-  background-size: cover;
-  background-position: center;
-  position: relative;
-
-  .particle {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 99%;
-    z-index: 1;
-    opacity: 0.5;
-  }
-
-  .maps {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-  }
-
-  .map {
-    position: absolute;
-    top: 170px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-  }
-
-  .pc1 {
-    width: 500px;
-    height: 500px;
-    background: url('@/assets/images/screen/lbx.png') no-repeat;
-    background-size: 100% 100%;
-    z-index: 1;
-    animation: rotate1 15s infinite linear;
-  }
-
-  .pc2 {
-    width: 407px;
-    height: 407px;
-    background: url('@/assets/images/screen/jt.png') no-repeat;
-    background-size: 100% 100%;
-    z-index: 3;
-    animation: rotate2 10s infinite linear;
-  }
-
-  .pc3 {
-    width: 370px;
-    height: 370px;
-    background: url('@/assets/images/screen/map.png') no-repeat;
-    background-size: 100% 100%;
-    z-index: 2;
-    animation: rotate2 10s infinite linear;
-  }
-}
-
-@keyframes rotate1 {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(359deg);
-  }
-}
-
-@keyframes rotate2 {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(-359deg);
-  }
+.draw {
+  width: 768px;
+  height: 1024px;
+  background-color: #e2e7e8;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  border-radius: 4px;
+  scale: 0.8;
+  transform-origin: top left;
 }
 </style>

@@ -36,3 +36,15 @@ export function downloadFile(data, filename, mime) {
     mime
   })
 }
+
+export function exportExcel(filename) {
+  return download({
+    url: '/download',
+    method: 'get',
+    headers: {
+      'Content-Type': 'application/octet-stream',
+      'Content-Disposition': `attachment;filename=${encodeURIComponent(filename)}`
+    },
+    filename
+  })
+}
