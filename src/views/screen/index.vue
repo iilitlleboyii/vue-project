@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div style="float: right;">
+    <div style="float: right">
       <div>
         <el-button-group>
           <el-button type="primary" plain @click="onPrevPage">上一页</el-button>
@@ -18,25 +18,30 @@
         </el-form-item>
       </div>
     </div>
-
     <div class="draw" v-loading="loading">
       <Draw-Container :pageData="pageData"></Draw-Container>
     </div>
     <!-- <div>
-        <el-button v-for="(item, index) in originalData?.button || []" :key="index" type="info" plain @click="onClick(index)">按钮</el-button>
-      </div> -->
+      <el-button v-for="(item, index) in originalData?.button || []" :key="index" type="info" plain @click="onClick(index)">按钮</el-button>
+    </div> -->
   </div>
 </template>
 
 <script setup name="Home">
+/* 加载效果 */
 const loading = ref(true)
 
+/* 原始数据 */
 const originalData = ref(null)
+
+/* 页面选择器 */
 const pageSelector = ref({
   current: 0,
   layerIdx: 0,
   pages: []
 })
+
+/* 当前页面 */
 const currentPage = computed(() => {
   let ret = {}
   if (pageSelector.value.pages.length > 0 && pageSelector.value.current >= 0) {
@@ -47,6 +52,8 @@ const currentPage = computed(() => {
   }
   return ret
 })
+
+/* 页面数据 */
 const pageData = computed(() => {
   let ret = currentPage.value.common || []
   if (currentPage.value.layer && currentPage.value.layer.length > 0) {
@@ -54,15 +61,18 @@ const pageData = computed(() => {
   }
   return formatPageData(ret)
 })
+
+// /* 按钮组 */
 // const btns = computed(() => {
 //   let ret = []
 //   if (originalData.value && originalData.value.button && originalData.value.button.length > 0) {
 //     ret = originalData.value.button
 //   }
-//   console.log(ret);
+//   console.log(ret)
 //   return formatPageData(ret)
 // })
 
+/* 格式化数据 */
 function formatPageData(data) {
   return data
     .map((item) => {
@@ -105,10 +115,10 @@ function formatPageData(data) {
       return acc
     }, [])
 }
-// new URL('@/assets/json/record.json', import.meta.url).href
+
+// new URL('@/assets/json/draw.json', import.meta.url).href
 // https://arcuchi-static.oss-cn-shenzhen.aliyuncs.com/record.json
 // https://diebaos-oss.oss-cn-shenzhen.aliyuncs.com/user/2024/03/07/b9233d6e819e46bc8e941d470a580e16.json
-// 'https://arcuchi-static.oss-cn-shenzhen.aliyuncs.com/record.json'
 fetch(new URL('@/assets/json/draw.json', import.meta.url).href)
   .then((res) => res.json())
   .then((data) => {
@@ -133,6 +143,7 @@ function onPrevPage() {
     ElMessage.warning('已经是第一页了~')
   }
 }
+
 function onNextPage() {
   if (pageSelector.value.current < pageSelector.value.pages.length - 1) {
     pageSelector.value.current += 1
@@ -145,9 +156,11 @@ function onChangePage(value) {
   console.log('当前页面：', value)
   console.log('当前页面数据：', pageData.value)
 }
+
 function onChangeLayer(value) {
   console.log('当前层级：', value)
 }
+
 function onClick(index) {
   console.log('点击了' + index)
 }

@@ -46,15 +46,15 @@
             >{{ item.openWord }}</el-tag
           >
           <!-- <el-switch
-              v-model="item.value"
-              :disabled="false"
-              :active-text="item.openWord"
-              :inactive-text="item.closeWord"
-              :style="{
-                '--el-switch-on-color': item.openColor,
-                '--el-switch-off-color': item.closeColor
-              }"
-            /> -->
+            v-model="item.value"
+            :disabled="false"
+            :active-text="item.openWord"
+            :inactive-text="item.closeWord"
+            :style="{
+              '--el-switch-on-color': item.openColor,
+              '--el-switch-off-color': item.closeColor
+            }"
+          /> -->
         </el-form-item>
       </template>
     </el-form>
