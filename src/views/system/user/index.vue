@@ -97,9 +97,10 @@ const config = [
     label: '用户名',
     prop: 'username',
     bindProps: {
-      maxlength: 32,
+      maxlength: 150,
       clearable: true,
-      placeholder: '请输入'
+      placeholder: '请输入',
+      formatter: (value) => value.replace(/[^a-zA-Z0-9@\.\-_]/g, '')
     }
   },
   {
@@ -207,17 +208,16 @@ const rules = {
 }
 const { open, title, form, reset, cancel, submit } = useForm(createUser, updateUser, formRef, handleSearch)
 
-async function handleEdit(row) {
+function handleEdit(row) {
   if (row.id !== $userStore.userInfo.id && !$userStore.roles.includes('admin')) {
     ElMessage.warning('只能修改自己的哦~')
     return
   }
-  try {
-    const { data } = await getUser(row.id)
-    form.value = data
+  getUser(row.id).then((res) => {
+    form.value = res.data
     title.value = '修改用户'
     open.value = true
-  } catch (error) {}
+  })
 }
 function handleRemove(row) {}
 
