@@ -17,8 +17,18 @@
           </el-select>
         </el-form-item>
       </div>
+      <div>
+        是否横屏: <el-button @click="horizontal = !horizontal">{{ horizontal ? '是' : '否' }}</el-button>
+      </div>
     </div>
-    <div class="draw" v-loading="loading">
+    <div
+      class="draw"
+      v-loading="loading"
+      :style="{
+        width: horizontal ? '1024px' : '768px',
+        height: horizontal ? '768px' : '1024px'
+      }"
+    >
       <Draw-Container :pageData="pageData"></Draw-Container>
     </div>
     <!-- <div>
@@ -119,7 +129,7 @@ function formatPageData(data) {
 // new URL('@/assets/json/draw.json', import.meta.url).href
 // https://arcuchi-static.oss-cn-shenzhen.aliyuncs.com/record.json
 // https://diebaos-oss.oss-cn-shenzhen.aliyuncs.com/user/2024/03/07/b9233d6e819e46bc8e941d470a580e16.json
-fetch(new URL('@/assets/json/draw.json', import.meta.url).href)
+fetch(new URL('@/assets/json/draw(19).json', import.meta.url).href)
   .then((res) => res.json())
   .then((data) => {
     loading.value = false
@@ -164,12 +174,14 @@ function onChangeLayer(value) {
 function onClick(index) {
   console.log('点击了' + index)
 }
+
+const horizontal = ref(true)
 </script>
 
 <style lang="scss" scoped>
 .draw {
-  width: 768px;
-  height: 1024px;
+  // width: 768px;
+  // height: 1024px;
   background-color: #e2e7e8;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   border-radius: 4px;
