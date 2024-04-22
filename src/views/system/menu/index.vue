@@ -1,37 +1,24 @@
 <template>
   <div class="app-container">
-    菜单管理
-    <!-- <vxe-table
-      border
-      show-overflow
-      height="400"
-      :row-config="{ isHover: true }"
-      :data="tableData"
-      :scroll-y="{ enabled: true }"
-    >
-      <vxe-column type="seq" width="100"></vxe-column>
-      <vxe-column field="name" title="Name" sortable></vxe-column>
-      <vxe-column field="role" title="Role"></vxe-column>
-      <vxe-column field="sex" title="Sex"></vxe-column>
-    </vxe-table> -->
+    <div v-html="html"></div>
   </div>
 </template>
 
 <script setup name="Menu">
-// const tableData = ref([])
-// setTimeout(() => {
-//   // 模拟数据
-//   const mockList = []
-//   for (let index = 0; index < 100000; index++) {
-//     mockList.push({
-//       id: index,
-//       name: 'Test' + index,
-//       role: 'Developer',
-//       sex: '男'
-//     })
-//   }
-//   tableData.value = mockList
-// }, 1000)
+import { codeToHtml } from 'shiki'
+
+const code = `<template>
+<div>
+<h1>hello word</h1>  
+</div>  
+</template>
+`
+const html = await codeToHtml(code, {
+  lang: 'vue',
+  theme: 'vitesse-dark'
+})
+
+console.log(html) // 带有高亮显示的 HTML 字符串
 </script>
 
 <style lang="scss" scoped></style>
