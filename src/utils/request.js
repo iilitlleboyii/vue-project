@@ -119,9 +119,9 @@ request.interceptors.response.use(
     }
     // 认证失败
     else if (code === 401) {
-      if (msg === 'No active account found with the given credentials') {
-        ElMessage.error('用户名或密码错误')
-        return Promise.reject('用户名或密码错误')
+      if (msg === '用户名或密码错误') {
+        ElMessage.error(msg)
+        return Promise.reject(msg)
       }
 
       return (

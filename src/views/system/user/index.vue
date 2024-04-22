@@ -4,7 +4,7 @@
     <SearchBar v-model="queryParams" :config="config" @search="handleSearch"></SearchBar>
     <!-- 数据表 -->
     <el-table v-loading="loading" :data="list" border stripe max-height="600" class="w-full">
-      <el-table-column prop="id" label="编号" width="80" show-overflow-tooltip />
+      <el-table-column prop="id" label="#" width="80" show-overflow-tooltip />
       <el-table-column prop="username" label="用户名" min-width="100" show-overflow-tooltip />
       <el-table-column prop="nickname" label="昵称" min-width="100" show-overflow-tooltip />
       <el-table-column prop="telephone" label="手机号" width="120" show-overflow-tooltip />
@@ -29,17 +29,8 @@
       <el-table-column label="操作" width="100" align="center" fixed="right">
         <template #default="{ row }">
           <el-row justify="space-between">
-            <el-button
-              link
-              size="small"
-              type="primary"
-              @click="handleEdit(row)"
-              :disabled="row.is_superuser"
-              >编辑</el-button
-            >
-            <el-button link size="small" type="danger" @click="handleRemove(row)" disabled
-              >停用</el-button
-            >
+            <el-button link size="small" type="primary" @click="handleEdit(row)" :disabled="row.is_superuser">编辑</el-button>
+            <el-button link size="small" type="danger" @click="handleRemove(row)" disabled>停用</el-button>
           </el-row>
         </template>
       </el-table-column>
@@ -52,14 +43,7 @@
       @pagination="handleSearch"
     ></Pagination>
     <!-- 对话框 -->
-    <el-dialog
-      v-model="open"
-      :title="title"
-      :append-to-body="true"
-      :close-on-click-modal="false"
-      @closed="reset"
-      width="30%"
-    >
+    <el-dialog v-model="open" :title="title" :append-to-body="true" :close-on-click-modal="false" @closed="reset" width="30%">
       <el-form ref="formRef" :model="form" :rules="rules" label-width="auto" @submit.prevent>
         <el-form-item label="用户名" prop="username">
           <el-input
@@ -74,12 +58,7 @@
           <el-input v-model="form.nickname" placeholder="请输入昵称" clearable></el-input>
         </el-form-item>
         <el-form-item label="手机号" prop="telephone">
-          <el-input
-            v-model="form.telephone"
-            :maxlength="11"
-            placeholder="请输入手机号"
-            clearable
-          ></el-input>
+          <el-input v-model="form.telephone" :maxlength="11" placeholder="请输入手机号" clearable></el-input>
         </el-form-item>
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="form.email" placeholder="请输入邮箱" clearable></el-input>
@@ -118,9 +97,10 @@ const config = [
     label: '用户名',
     prop: 'username',
     bindProps: {
-      maxlength: 32,
+      maxlength: 150,
       clearable: true,
-      placeholder: '请输入'
+      placeholder: '请输入',
+      formatter: (value) => value.replace(/[^a-zA-Z0-9@\.\-_]/g, '')
     }
   },
   {
@@ -213,8 +193,7 @@ const rules = {
   ],
   telephone: [
     {
-      pattern:
-        /^(?:(?:\+|00)86)?1(?:(?:3[\d])|(?:4[5-79])|(?:5[0-35-9])|(?:6[5-7])|(?:7[0-8])|(?:8[\d])|(?:9[1589]))\d{8}$/,
+      pattern: /^(?:(?:\+|00)86)?1(?:(?:3[\d])|(?:4[5-79])|(?:5[0-35-9])|(?:6[5-7])|(?:7[0-8])|(?:8[\d])|(?:9[1589]))\d{8}$/,
       message: '手机号不合法',
       trigger: 'blur'
     }
@@ -227,24 +206,18 @@ const rules = {
     }
   ]
 }
-const { open, title, form, reset, cancel, submit } = useForm(
-  createUser,
-  updateUser,
-  formRef,
-  handleSearch
-)
+const { open, title, form, reset, cancel, submit } = useForm(createUser, updateUser, formRef, handleSearch)
 
-async function handleEdit(row) {
+function handleEdit(row) {
   if (row.id !== $userStore.userInfo.id && !$userStore.roles.includes('admin')) {
     ElMessage.warning('只能修改自己的哦~')
     return
   }
-  try {
-    const { data } = await getUser(row.id)
-    form.value = data
+  getUser(row.id).then((res) => {
+    form.value = res.data
     title.value = '修改用户'
     open.value = true
-  } catch (error) {}
+  })
 }
 function handleRemove(row) {}
 
