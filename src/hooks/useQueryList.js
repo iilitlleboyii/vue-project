@@ -1,3 +1,11 @@
+/**
+ * 快速列表查询
+ * @author Yuxianhao <yu.xh00@foxmail.com>
+ * @date 2024-04-12
+ * @param {any} request 查询接口
+ * @param {any} params={} 除分页的额外参数
+ * @returns {any}
+ */
 export default function useQueryList(request, params = {}) {
   const loading = ref(false)
 
@@ -12,11 +20,15 @@ export default function useQueryList(request, params = {}) {
   const handleSearch = async () => {
     try {
       loading.value = true
-      const { data } = await request(queryParams)
-      list.value = data.results
-      total.value = data.count
+      const res = await request(queryParams)
+      if (res) {
+        list.value = res.data.results
+        total.value = res.data.count
+        loading.value = false
+      }
+    } catch (error) {
       loading.value = false
-    } catch (error) {}
+    }
   }
 
   return {
