@@ -76,3 +76,28 @@ body {
 //   backdrop-filter: blur(3px);
 // }
 </style>
+
+<style>
+.shiki {
+  padding: 1em;
+  border-radius: 0.5em;
+}
+
+[data-theme='light'] .shiki,
+[data-theme='light'] .shiki span {
+  background-color: var(--shiki-light-bg) !important;
+  color: var(--shiki-light) !important;
+  font-style: var(--shiki-light-font-style) !important;
+  font-weight: var(--shiki-light-font-weight) !important;
+  text-decoration: var(--shiki-light-text-decoration) !important;
+}
+
+[data-theme='dark'] .shiki,
+[data-theme='dark'] .shiki span {
+  background-color: var(--shiki-dark-bg) !important;
+  color: var(--shiki-dark) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+</style>
