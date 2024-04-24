@@ -1,4 +1,3 @@
-```vue
 <template>
   <div class="login-page w-screen min-w-106 min-h-screen px-0 py-27.5 relative flex flex-col items-center bg-cover bg-no-repeat">
     <div>
@@ -32,4 +31,3 @@
   background-image: url('@/assets/images/background.svg');
 }
 </style>
-```

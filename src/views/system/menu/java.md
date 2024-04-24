@@ -1,4 +1,3 @@
-```java
 import java.awt.Rectangle;
 
 public class ObjectVarsAsParameters
@@ -33,4 +32,3 @@ public class ObjectVarsAsParameters
 	}
 
 }
-```
