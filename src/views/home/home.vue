@@ -17,9 +17,7 @@
     </div>
     <div class="w-75 flex flex-col items-center gap-6">
       <div>全屏开关:{{ isFullscreen ? '开' : '关' }}</div>
-      <el-button @click="onChangeFullScreen">{{
-        isFullscreen ? '退出全屏' : '开启全屏'
-      }}</el-button>
+      <el-button @click="onChangeFullScreen">{{ isFullscreen ? '退出全屏' : '开启全屏' }}</el-button>
       <el-divider />
     </div>
     <div class="w-75 flex flex-col items-center gap-6">

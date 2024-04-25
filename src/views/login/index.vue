@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="login-page w-screen min-w-106 min-h-screen px-0 py-27.5 relative flex flex-col items-center bg-cover bg-no-repeat"
-  >
+  <div class="login-page w-screen min-w-106 min-h-screen px-0 py-27.5 relative flex flex-col items-center bg-cover bg-no-repeat">
     <div>
       <el-row justify="center" align="middle">
         <img src="@/assets/images/logo.svg" class="w-11 h-11 mr-4" />

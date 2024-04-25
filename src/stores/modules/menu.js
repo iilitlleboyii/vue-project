@@ -27,7 +27,9 @@ export const useMenuStore = defineStore('menuStore', {
         return acc
       }
       const loadedRoutesNames = state.loadedRoutes.map((route) => route.name)
-      return dfs(state.menuList).filter((item) => item.keepAlive && loadedRoutesNames.includes(item.name)).map((item) => item.name)
+      return dfs(state.menuList)
+        .filter((item) => item.keepAlive && loadedRoutesNames.includes(item.name))
+        .map((item) => item.name)
     }
   },
   persist: false

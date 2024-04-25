@@ -21,19 +21,12 @@
       </el-dropdown-menu>
     </template>
   </el-dropdown>
-  <el-dialog
-    v-model="open"
-    :title="$t('layout.avatar.dialog.remainder')"
-    width="25%"
-    append-to-body
-  >
+  <el-dialog v-model="open" :title="$t('layout.avatar.dialog.remainder')" width="25%" append-to-body>
     <span>{{ $t('layout.avatar.dialog.content') }}</span>
     <template #footer>
       <span>
         <el-button @click="open = false">{{ $t('layout.avatar.dialog.cancel') }}</el-button>
-        <el-button type="primary" @click="onConfirm">{{
-          $t('layout.avatar.dialog.confirm')
-        }}</el-button>
+        <el-button type="primary" @click="onConfirm">{{ $t('layout.avatar.dialog.confirm') }}</el-button>
       </span>
     </template>
   </el-dialog>

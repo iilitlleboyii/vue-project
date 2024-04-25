@@ -26,26 +26,12 @@
       </div></v-contextmenu-item
     >
   </v-contextmenu>
-  <el-tabs
-    v-model="activeRoute"
-    type="card"
-    @tab-click="tabClick"
-    @tab-remove="tabRemove"
-    @contextmenu.prevent
-    class="w-full"
-  >
+  <el-tabs v-model="activeRoute" type="card" @tab-click="tabClick" @tab-remove="tabRemove" @contextmenu.prevent class="w-full">
     <template v-for="route in loadedRoutes">
       <el-tab-pane :name="route.name" :closable="route.name !== 'Home'">
         <template #label>
-          <div
-            class="center h-full"
-            v-contextmenu:contextmenu
-            @contextmenu.prevent="triggerRoute = route"
-          >
-            <i-material-symbols:skateboarding-outline
-              font-size="3"
-              v-show="route.name === activeRoute"
-            />
+          <div class="center h-full" v-contextmenu:contextmenu @contextmenu.prevent="triggerRoute = route">
+            <i-material-symbols:skateboarding-outline font-size="3" v-show="route.name === activeRoute" />
             <span class="select-none">{{ route.title }}</span>
           </div>
         </template>
@@ -114,9 +100,7 @@ const onRefreshCurrent = async () => {
 const onCloseOther = async () => {
   const triggerName = triggerRoute.value.name
   const activeName = $route.name
-  loadedRoutes.value = loadedRoutes.value.filter(
-    (route) => route.name === triggerName || route.name === 'Home'
-  )
+  loadedRoutes.value = loadedRoutes.value.filter((route) => route.name === triggerName || route.name === 'Home')
   if (triggerName !== activeName) {
     $router.replace({ name: triggerName })
   }
@@ -125,9 +109,7 @@ const onCloseLeft = async () => {
   const triggerName = triggerRoute.value.name
   const activeName = $route.name
   const triggerIndex = loadedRoutes.value.findIndex((route) => route.name === triggerName)
-  loadedRoutes.value = loadedRoutes.value.filter(
-    (route, index) => route.name === triggerName || route.name === 'Home' || index > triggerIndex
-  )
+  loadedRoutes.value = loadedRoutes.value.filter((route, index) => route.name === triggerName || route.name === 'Home' || index > triggerIndex)
   if (triggerName !== activeName) {
     $router.replace({ name: triggerName })
   }
@@ -136,9 +118,7 @@ const onCloseRight = async () => {
   const triggerName = triggerRoute.value.name
   const activeName = $route.name
   const triggerIndex = loadedRoutes.value.findIndex((route) => route.name === triggerName)
-  loadedRoutes.value = loadedRoutes.value.filter(
-    (route, index) => route.name === triggerName || route.name === 'Home' || index < triggerIndex
-  )
+  loadedRoutes.value = loadedRoutes.value.filter((route, index) => route.name === triggerName || route.name === 'Home' || index < triggerIndex)
   if (triggerName !== activeName) {
     $router.replace({ name: triggerName })
   }

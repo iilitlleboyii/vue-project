@@ -16,13 +16,7 @@
     </div>
     <el-divider direction="vertical" />
     <!-- 暗黑模式 -->
-    <el-switch
-      v-model="dark"
-      inline-prompt
-      :active-icon="Moon"
-      :inactive-icon="Sunny"
-      size="large"
-    />
+    <el-switch v-model="dark" inline-prompt :active-icon="Moon" :inactive-icon="Sunny" size="large" />
   </div>
 </template>
 

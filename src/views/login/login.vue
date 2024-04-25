@@ -14,39 +14,20 @@
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input
-            v-model="loginForm.password"
-            placeholder="密码"
-            size="large"
-            type="password"
-            show-password
-            @keyup.enter="onLoginFormClick"
-          >
+          <el-input v-model="loginForm.password" placeholder="密码" size="large" type="password" show-password @keyup.enter="onLoginFormClick">
             <template #prefix><i-ep:lock color="#165dff" /></template
           ></el-input>
         </el-form-item>
       </template>
       <template v-else>
         <el-form-item prop="phoneNumber">
-          <el-input
-            v-model="loginForm.phoneNumber"
-            placeholder="手机号"
-            size="large"
-            :maxlength="11"
-          >
+          <el-input v-model="loginForm.phoneNumber" placeholder="手机号" size="large" :maxlength="11">
             <template #prefix><i-ep:iphone color="#165dff" /></template
           ></el-input>
         </el-form-item>
         <el-form-item prop="code">
           <el-row justify="space-between" class="w-full">
-            <el-input
-              v-model="loginForm.code"
-              placeholder="验证码"
-              size="large"
-              :maxlength="6"
-              @keyup.enter="onLoginFormClick"
-              style="width: 70%"
-            >
+            <el-input v-model="loginForm.code" placeholder="验证码" size="large" :maxlength="6" @keyup.enter="onLoginFormClick" style="width: 70%">
               <template #prefix><i-ep:message color="#165dff" /></template
             ></el-input>
             <el-button size="large">获取验证码</el-button>
@@ -60,22 +41,13 @@
         </el-row>
       </el-form-item>
       <el-form-item>
-        <el-button
-          type="primary"
-          size="large"
-          class="w-full"
-          :loading="loading"
-          @click="onLoginFormClick"
-          >确 定</el-button
-        >
+        <el-button type="primary" size="large" class="w-full" :loading="loading" @click="onLoginFormClick">确 定</el-button>
       </el-form-item>
       <el-form-item>
         <el-row justify="space-between" class="w-full">
           <el-row justify="space-between" align="middle" class="w-30">
             <span>其它登录方式</span>
-            <div
-              class="inline-flex justify-center items-center bg-gray p-1 rounded-full cursor-pointer transition-colors hover:bg-#165dff"
-            >
+            <div class="inline-flex justify-center items-center bg-gray p-1 rounded-full cursor-pointer transition-colors hover:bg-#165dff">
               <i-icon-park-outline:wechat font-size="4" color="white" />
             </div>
           </el-row>
@@ -118,8 +90,7 @@ const rules = {
   phoneNumber: [
     { required: true, message: '请输入手机号', trigger: 'blur' },
     {
-      pattern:
-        /^(?:(?:\+|00)86)?1(?:(?:3[\d])|(?:4[5-79])|(?:5[0-35-9])|(?:6[5-7])|(?:7[0-8])|(?:8[\d])|(?:9[1589]))\d{8}$/,
+      pattern: /^(?:(?:\+|00)86)?1(?:(?:3[\d])|(?:4[5-79])|(?:5[0-35-9])|(?:6[5-7])|(?:7[0-8])|(?:8[\d])|(?:9[1589]))\d{8}$/,
       message: '请输入正确的手机号',
       trigger: 'blur'
     }
