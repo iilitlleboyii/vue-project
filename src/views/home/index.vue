@@ -1,12 +1,33 @@
 <template>
   <div class="app-container">
-    <el-button @click="handleDownload">下载文件</el-button>
-    <el-button @click="handleExport">导出表格</el-button>
+    <div class="flex gap-10">
+      <div>
+        <el-button @click="handleDownload">下载文件</el-button>
+        <el-button @click="handleExport">导出表格</el-button>
+      </div>
+      <AsyncTag :width="600" :height="600">
+        <CodeContainer :source="source"></CodeContainer>
+      </AsyncTag>
+    </div>
   </div>
 </template>
 
 <script setup name="Home">
 import { downloadFile, exportExcel } from '@/api/common'
+/* 代码内容 */
+import vues from '@/assets/md/vue.md?raw'
+import javas from '@/assets/md/java.md?raw'
+
+const source = [
+  {
+    name: 'vue',
+    code: vues
+  },
+  {
+    name: 'java',
+    code: javas
+  }
+]
 
 function handleDownload() {
   downloadFile(null, 'test.rar')

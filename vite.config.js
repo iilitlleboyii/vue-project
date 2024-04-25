@@ -46,7 +46,7 @@ export default defineConfig(({ mode, command }) => {
       }
     },
     optimizeDeps: {
-      include: ['element-plus/es/components/**/style/index', 'lodash-es', 'dayjs'],
+      include: ['element-plus/es/components/**/style/index', 'lodash-es', 'dayjs', 'shiki', 'markdown-it', '@shikijs/markdown-it/core'],
       force: true
     },
     esbuild: {
