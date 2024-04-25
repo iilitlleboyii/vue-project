@@ -1,6 +1,8 @@
 <template>
   <div class="app-container">
-    <CodeContainer :source="source"></CodeContainer>
+    <AsyncTag :width="600" :height="600">
+      <CodeContainer :source="source"></CodeContainer>
+    </AsyncTag>
   </div>
 </template>
 

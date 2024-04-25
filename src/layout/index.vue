@@ -26,12 +26,7 @@
         <router-view v-slot="{ Component }">
           <transition enter-active-class="animate__animated animate__fadeInLeft">
             <keep-alive :include="cachedComponents">
-              <Suspense>
-                <!-- 主要内容 -->
-                <component :is="Component" :key="$route.path" />
-                <!-- 加载中状态 -->
-                <!-- <template #fallback> 正在加载... </template> -->
-              </Suspense>
+              <component :is="Component" :key="$route.path" />
             </keep-alive>
           </transition>
         </router-view>

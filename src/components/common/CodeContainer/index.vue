@@ -1,12 +1,28 @@
 <template>
   <div ref="CodeContainerRef" class="Code-Container">
-    <div class="copy-btn">
-      <!-- <el-button @click="onCopy" :icon="DocumentCopy"></el-button> -->
-      <el-button @click="onCopy">
-        <template #default>
-          <i-ep-document-copy />
-        </template>
-      </el-button>
+    <!-- 图标懒得换了！ -->
+    <div class="copy-btn" title="复制代码">
+      <template v-if="!copied">
+        <el-button @click="onCopy">
+          <template #default>
+            <i-ep-document-copy />
+          </template>
+        </el-button>
+      </template>
+      <template v-else>
+        <div class="copied-btns">
+          <el-button>
+            <template #default>
+              <span>Copied</span>
+            </template>
+          </el-button>
+          <el-button>
+            <template #default>
+              <i-ep-document-copy />
+            </template>
+          </el-button>
+        </div>
+      </template>
     </div>
     <el-tabs v-model="activeName" @tab-click="handleClickTab">
       <el-tab-pane v-for="item in source" :label="item.name" :name="item.name"></el-tab-pane>
@@ -16,8 +32,6 @@
 </template>
 
 <script setup>
-import { ref, watch, computed, onMounted, nextTick } from 'vue'
-import { ElMessage } from 'element-plus'
 /* 全量捆绑 */
 import { bundledLanguages, bundledThemes, getHighlighter } from 'shiki'
 /* 细粒度捆绑 */
@@ -37,10 +51,7 @@ const props = defineProps({
 const CodeContainerRef = ref(null)
 const ContentRef = ref(null)
 
-const activeName = ref('')
-nextTick(() => {
-  activeName.value = props.source[0].name
-})
+const activeName = ref(props.source[0].name)
 
 function handleClickTab() {
   nextTick(() => {
@@ -49,29 +60,17 @@ function handleClickTab() {
 }
 
 function setThemeToBody(val) {
-  if (val === 'vue') {
-    document.body.dataset.theme = 'light'
-  } else {
-    document.body.dataset.theme = 'dark'
-  }
+  document.body.dataset.theme = val === 'vue' ? 'light' : 'dark'
 }
 
-const { text, copy, copied, isSupported } = useClipboard({
+const { copy, copied, isSupported } = useClipboard({
   legacy: true
 })
 
 function onCopy() {
-  if (!isSupported.value) {
-    ElMessage.warning('当前浏览器环境不支持复制！')
-    return
-  }
-  copy(content.value).then(() => {
-    if (copied.value) {
-      ElMessage.success('复制成功！')
-    } else {
-      ElMessage.error('复制失败！')
-    }
-  })
+  if (!isSupported.value) return ElMessage.warning('当前浏览器环境不支持复制！')
+  if (copied.value) return
+  copy(content.value)
 }
 
 // const highlighter = await getHighlighterCore({
@@ -128,19 +127,19 @@ function setCssVarToParent() {
   }
 }
 
-/* 添加markdown代码块格式 */
+/* 添加 markdown 代码块格式 */
 function addStringToFirstAndLastLine(code, language) {
   const lines = code.split('\n')
   lines.unshift('```' + language)
   lines.push('```')
   return lines.join('\n')
 }
-/* 删除markdown代码块格式 */
+/* 删除 markdown 代码块格式 */
 function removeFirstAndLastLine(code) {
   return code.trim().replace(/^.*\n|\n.*$/g, '')
 }
 
-/* 解决css方案 el-tab hover状态切换主题时复制按钮颜色闪烁的不好体验 */
+/* 解决 css 方案 el-tab hover状态切换主题时复制按钮颜色闪烁的不好体验 */
 function showCopyBtn() {
   if (!ContentRef.value) return
   ContentRef.value.addEventListener(
@@ -189,12 +188,31 @@ function showCopyBtn() {
     opacity: 1 !important;
   }
 }
+
+.copied-btns {
+  .el-button + .el-button {
+    margin-left: 0;
+  }
+
+  .el-button:first-child {
+    width: 5em;
+    font-size: 12px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: 0;
+  }
+  .el-button:last-child {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
 </style>
 
 <style lang="scss">
 .shiki {
   padding: 0.5em;
   overflow: auto;
+  outline: none;
 
   &::-webkit-scrollbar {
     height: 8px;
