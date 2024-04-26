@@ -38,7 +38,8 @@ export default function createAutoImport(isServe) {
             'material-symbols',
             'line-md',
             'flagpack',
-            'healthicons'
+            'healthicons',
+            'lucide'
           ]
         })
       ],

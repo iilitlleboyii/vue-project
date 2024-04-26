@@ -1,11 +1,10 @@
 <template>
   <div ref="CodeContainerRef" class="Code-Container">
-    <!-- 图标懒得换了！ -->
     <div class="copy-btn" title="复制代码">
       <template v-if="!copied">
         <el-button @click="onCopy">
           <template #default>
-            <i-ep-document-copy />
+            <i-lucide:clipboard />
           </template>
         </el-button>
       </template>
@@ -18,7 +17,7 @@
           </el-button>
           <el-button>
             <template #default>
-              <i-ep-document-copy />
+              <i-lucide:clipboard-check />
             </template>
           </el-button>
         </div>
@@ -182,6 +181,7 @@ function showCopyBtn() {
     padding: 0;
     width: 36px;
     height: 36px;
+    font-size: 18px;
   }
 
   &:hover {
@@ -286,14 +286,14 @@ function showCopyBtn() {
 /* 设置深浅色主题复制按钮相关颜色 */
 [data-theme='light'] .Code-Container .copy-btn {
   .el-button {
-    color: #212121;
+    color: #808080;
     background-color: #f6f6f7;
     border-color: #e2e2e3;
   }
 }
 [data-theme='dark'] .Code-Container .copy-btn {
   .el-button {
-    color: #e0e0e0;
+    color: #808080;
     background-color: #202127;
     border-color: #2e2e32;
   }
