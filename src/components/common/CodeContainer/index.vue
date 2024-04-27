@@ -23,8 +23,9 @@
         </div>
       </template>
     </div>
+    <div class="code-lang">{{ activeName }}</div>
     <el-tabs v-model="activeName" @tab-click="handleClickTab">
-      <el-tab-pane v-for="item in source" :label="item.name" :name="item.name"></el-tab-pane>
+      <el-tab-pane v-for="item in source" :label="item.name" :name="item.lang"></el-tab-pane>
     </el-tabs>
     <div ref="ContentRef" v-html="html"></div>
   </div>
@@ -41,16 +42,38 @@ import MarkdownIt from 'markdown-it'
 import { fromHighlighter } from '@shikijs/markdown-it/core'
 
 const props = defineProps({
+  /* 数据结构
+   [
+      {
+        name: 'filename.vue',
+        lang: 'vue',
+        code: vuestr
+      },
+      {
+        name: 'filename.java',
+        lang: 'java',
+        code: javastr
+      }
+    ]
+  */
   source: {
     type: Array,
     required: true
+  },
+  /* 可选值
+    'light' | 'dark' | 'auto'
+  */
+  theme: {
+    type: String,
+    required: false,
+    default: 'light'
   }
 })
 
 const CodeContainerRef = ref(null)
 const ContentRef = ref(null)
 
-const activeName = ref(props.source[0].name)
+const activeName = ref(props.source[0].lang)
 
 function handleClickTab() {
   nextTick(() => {
@@ -59,7 +82,11 @@ function handleClickTab() {
 }
 
 function setThemeToBody(val) {
-  document.body.dataset.theme = val === 'vue' ? 'light' : 'dark'
+  if (props.theme === 'auto') {
+    document.body.dataset.theme = val === 'vue' ? 'light' : 'dark'
+  } else {
+    document.body.dataset.theme = props.theme
+  }
 }
 
 const { copy, copied, isSupported } = useClipboard({
@@ -93,6 +120,7 @@ const md = MarkdownIt()
 
 md.use(
   fromHighlighter(highlighter, {
+    /* 配置深浅色主题 */
     themes: {
       dark: 'dracula',
       light: 'vitesse-light'
@@ -102,9 +130,15 @@ md.use(
   })
 )
 
-const content = computed(() => props.source.find((item) => item.name === activeName.value)?.code)
+const content = ref('')
 
-const html = computed(() => md.render(addStringToFirstAndLastLine(content.value, activeName.value)))
+const html = ref('')
+
+watchEffect(() => {
+  setThemeToBody(activeName.value)
+  content.value = props.source.find((item) => item.lang === activeName.value)?.code || ''
+  html.value = md.render(addStringToFirstAndLastLine(content.value, activeName.value))
+})
 
 onMounted(() => {
   handleClickTab() // 设置默认主题
@@ -113,6 +147,7 @@ onMounted(() => {
 })
 
 function setCssVarToParent() {
+  if (!ContentRef.value || !CodeContainerRef.value) return
   const vars = ['--shiki-light-bg', '--shiki-dark-bg', '--shiki-light', '--shiki-dark']
   for (const varName of vars) {
     const value = getCssVar(ContentRef.value.getElementsByTagName('pre')[0], varName)
@@ -144,16 +179,20 @@ function showCopyBtn() {
   ContentRef.value.addEventListener(
     'mouseenter',
     function () {
-      const dom = document.querySelector('.Code-Container .copy-btn')
-      dom.style.opacity = 1
+      const btn = document.querySelector('.Code-Container .copy-btn')
+      const lang = document.querySelector('.Code-Container .code-lang')
+      btn.style.opacity = 1
+      lang.style.opacity = 0
     },
     false
   )
   ContentRef.value.addEventListener(
     'mouseleave',
     function () {
-      const dom = document.querySelector('.Code-Container .copy-btn')
-      dom.style.opacity = 0
+      const btn = document.querySelector('.Code-Container .copy-btn')
+      const lang = document.querySelector('.Code-Container .code-lang')
+      btn.style.opacity = 0
+      lang.style.opacity = 1
     },
     false
   )
@@ -165,7 +204,7 @@ function showCopyBtn() {
   padding: 0 1em 1em 1em;
   border-radius: 0.5em;
   position: relative;
-  max-width: 600px;
+  width: 100%;
   overflow: hidden;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
@@ -176,6 +215,7 @@ function showCopyBtn() {
   top: 3em;
   opacity: 0;
   transition: opacity 300ms;
+  z-index: 1;
 
   :deep(.el-button) {
     padding: 0;
@@ -186,7 +226,25 @@ function showCopyBtn() {
 
   &:hover {
     opacity: 1 !important;
+
+    ~ .code-lang {
+      opacity: 0 !important;
+    }
   }
+}
+
+.code-lang {
+  position: absolute;
+  right: 1em;
+  top: 3em;
+  width: fit-content;
+  height: fit-content;
+  font-size: 14px;
+  color: #8e8e92;
+  cursor: default;
+  user-select: none;
+  opacity: 1;
+  transition: opacity 300ms;
 }
 
 .copied-btns {
