@@ -32,6 +32,9 @@ importers:
       element-plus:
         specifier: ^2.6.3
         version: 2.6.3(vue@3.4.21)
+      js-cookie:
+        specifier: ^3.0.5
+        version: 3.0.5
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1863,6 +1866,10 @@ packages:
 
   js-base64@2.6.4:
     resolution: {integrity: sha512-pZe//GGmwJndub7ZghVHz7vjb2LgC1m8B07Au3eYqeqv9emhESByMXxaEgkUkEqJe87oBbSniGYoQNIBklc7IQ==}
+
+  js-cookie@3.0.5:
+    resolution: {integrity: sha512-cEiJEAEoIbWfCZYKWhVwFuvPX1gETRYPw6LlaTKoxD3s2AkXzkCjnp6h0V77ozyqj0jakteJ4YqDJT830+lVGw==}
+    engines: {node: '>=14'}
 
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
@@ -4860,6 +4867,8 @@ snapshots:
   jiti@1.21.0: {}
 
   js-base64@2.6.4: {}
+
+  js-cookie@3.0.5: {}
 
   js-tokens@4.0.0: {}
 

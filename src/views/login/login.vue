@@ -61,6 +61,7 @@
 <script setup>
 import AppIndex from './index.vue'
 import { useUserStore } from '@/stores/modules'
+import Cookies from 'js-cookie'
 
 const loginFormRef = ref(null)
 
@@ -71,8 +72,8 @@ const rememberMe = ref(!!JSON.parse(localStorage.getItem('rememberMe')))
 const loading = ref(false)
 
 const loginForm = reactive({
-  username: '',
-  password: '',
+  username: rememberMe.value ? (Cookies.get('__UU__') ? JSON.parse(decodeURIComponent(Cookies.get('__UU__'))).username : '') : '',
+  password: rememberMe.value ? (Cookies.get('__UU__') ? JSON.parse(decodeURIComponent(Cookies.get('__UU__'))).password : '') : '',
   phoneNumber: '',
   code: ''
 })
@@ -118,6 +119,14 @@ function onLoginFormClick() {
           .Login({ username: loginForm.username, password: loginForm.password })
           .then(() => {
             localStorage.setItem('rememberMe', JSON.stringify(rememberMe.value))
+            if (rememberMe.value) {
+              // TODO 信息加密
+              Cookies.set('__UU__', encodeURIComponent(JSON.stringify({ username: loginForm.username, password: loginForm.password })), {
+                expires: 7
+              })
+            } else {
+              Cookies.remove('__UU__')
+            }
             ElMessage.success('登录成功')
             $router.replace('/home')
           })

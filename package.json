@@ -21,6 +21,7 @@
     "dayjs": "^1.11.10",
     "echarts": "^5.5.0",
     "element-plus": "^2.6.3",
+    "js-cookie": "^3.0.5",
     "lodash-es": "^4.17.21",
     "markdown-it": "^14.1.0",
     "nprogress": "^0.2.0",
