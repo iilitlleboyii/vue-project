@@ -4,7 +4,7 @@
       <template v-if="!copied">
         <el-button @click="onCopy">
           <template #default>
-            <img style="transform: scale(0.6)" src="@/assets/images/LucideClipboard.png" alt="" />
+            <i-lucide:clipboard />
           </template>
         </el-button>
       </template>
@@ -17,7 +17,7 @@
           </el-button>
           <el-button>
             <template #default>
-              <img style="transform: scale(0.6)" src="@/assets/images/LucideClipboardCheck.png" alt="" />
+              <i-lucide:clipboard-check />
             </template>
           </el-button>
         </div>
@@ -32,8 +32,6 @@
 </template>
 
 <script setup>
-import { ref, watchEffect, nextTick, onMounted } from 'vue'
-import { ElMessage } from 'element-plus'
 /* 全量捆绑 */
 import { bundledLanguages, bundledThemes, getHighlighter } from 'shiki'
 /* 细粒度捆绑 */
@@ -124,8 +122,8 @@ md.use(
   fromHighlighter(highlighter, {
     /* 配置深浅色主题 */
     themes: {
-      dark: 'github-dark',
-      light: 'github-light'
+      dark: 'dracula',
+      light: 'vitesse-light'
     },
     defaultColor: false,
     cssVariablePrefix: '--shiki-'

@@ -1,11 +1,5 @@
 <template>
-  <div
-    class="relative"
-    :style="{
-      width: width + 'px',
-      height: height + 'px'
-    }"
-  >
+  <div class="Async-Tag">
     <Suspense>
       <!-- 主要内容 -->
       <slot></slot>
@@ -26,20 +20,15 @@
   </div>
 </template>
 
-<script setup>
-defineProps({
-  width: {
-    type: Number,
-    required: true
-  },
-  height: {
-    type: Number,
-    required: true
-  }
-})
-</script>
+<script setup></script>
 
 <style lang="scss" scoped>
+.Async-Tag {
+  position: relative;
+  width: 100%;
+  min-height: 400px;
+}
+
 .my-loading {
   width: fit-content;
   height: fit-content;

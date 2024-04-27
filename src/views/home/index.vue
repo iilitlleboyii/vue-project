@@ -5,7 +5,7 @@
         <el-button @click="handleDownload">下载文件</el-button>
         <el-button @click="handleExport">导出表格</el-button>
       </div>
-      <AsyncTag :width="600" :height="600">
+      <AsyncTag style="width: 600px">
         <CodeContainer :source="source" theme="light"></CodeContainer>
       </AsyncTag>
     </div>
