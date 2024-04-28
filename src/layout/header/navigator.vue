@@ -16,7 +16,9 @@
     </div>
     <el-divider direction="vertical" />
     <!-- 暗黑模式 -->
-    <el-switch v-model="dark" inline-prompt :active-icon="Moon" :inactive-icon="Sunny" size="large" />
+    <div @click="switchTheme">
+      <el-switch v-model="dark" inline-prompt :active-icon="Moon" :inactive-icon="Sunny" :before-change="beforeChangeTheme" />
+    </div>
   </div>
 </template>
 
@@ -30,4 +32,38 @@ import { Sunny, Moon } from '@element-plus/icons-vue'
 const dark = useDark()
 
 const { isFullscreen, toggle } = useFullscreen()
+
+let resolveFn
+const beforeChangeTheme = () => {
+  return new Promise((resolve) => {
+    resolveFn = resolve
+  })
+}
+const switchTheme = (event) => {
+  const isAppearanceTransition = document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  if (!isAppearanceTransition || !event) {
+    resolveFn(true)
+    return
+  }
+  const x = event.clientX
+  const y = event.clientY
+  const endRadius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y))
+  const transition = document.startViewTransition(async () => {
+    resolveFn(true)
+    await nextTick()
+  })
+  transition.ready.then(() => {
+    document.documentElement.animate(
+      {
+        clipPath: [`circle(0 at ${x}px ${y}px)`, `circle(${endRadius}px at ${x}px ${y}px)`]
+      },
+      {
+        duration: 600,
+        easing: 'ease-in-out',
+        direction: dark.value ? 'reverse' : 'normal',
+        pseudoElement: dark.value ? '::view-transition-old(root)' : '::view-transition-new(root)'
+      }
+    )
+  })
+}
 </script>

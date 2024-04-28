@@ -8,6 +8,7 @@ import router from './router'
 import 'virtual:uno.css'
 import '@unocss/reset/tailwind-compat.css'
 import '@/assets/styles/element/dark.scss'
+import '@/assets/styles/index.scss'
 
 // 引入动画库
 import 'animate.css'
