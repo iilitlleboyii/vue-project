@@ -44,27 +44,12 @@ import MarkdownIt from 'markdown-it'
 import { fromHighlighter } from '@shikijs/markdown-it/core'
 
 const props = defineProps({
-  /* 数据结构
-   [
-      {
-        name: 'filename.vue',
-        lang: 'vue',
-        code: vuestr
-      },
-      {
-        name: 'filename.java',
-        lang: 'java',
-        code: javastr
-      }
-    ]
-  */
+  /** @type {Array<{name: string, lang: string, code: string}>} */
   source: {
     type: Array,
     required: true
   },
-  /* 可选值
-    'light' | 'dark' | 'auto'
-  */
+  /** @type {'light' | 'dark' | 'auto'} */
   theme: {
     type: String,
     required: false,
