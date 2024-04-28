@@ -17,7 +17,7 @@
     <el-divider direction="vertical" />
     <!-- 暗黑模式 -->
     <div @click="switchTheme">
-      <el-switch v-model="dark" inline-prompt :active-icon="Moon" :inactive-icon="Sunny" :before-change="beforeChangeTheme" />
+      <el-switch v-model="dark" :active-action-icon="Moon" :inactive-action-icon="Sunny" :before-change="beforeChangeTheme" />
     </div>
   </div>
 </template>
@@ -67,3 +67,19 @@ const switchTheme = (event) => {
   })
 }
 </script>
+
+<style lang="scss" scoped>
+:deep(.el-switch .el-switch__core .el-switch__action) {
+  color: #606266;
+}
+
+:deep(.el-switch.is-checked .el-switch__core .el-switch__action) {
+  color: #cfd3dc;
+  background-color: #141414;
+}
+
+:deep(.el-switch.is-checked .el-switch__core) {
+  background-color: #2c2c2c;
+  border-color: #48494b;
+}
+</style>
