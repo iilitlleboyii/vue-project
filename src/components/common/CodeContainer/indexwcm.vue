@@ -12,7 +12,7 @@
         <div class="copied-btns">
           <el-button>
             <template #default>
-              <span>Copied</span>
+              <span>已复制</span>
             </template>
           </el-button>
           <el-button>
