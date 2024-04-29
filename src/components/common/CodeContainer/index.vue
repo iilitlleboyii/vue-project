@@ -207,10 +207,8 @@ function showCopyBtn() {
 
 /**
  * 来自vitepress重写的插件，稍加改造
- * @author Yuxianhao <yu.xh00@foxmail.com>
- * @date 2024-04-29
  * @param {any} md
- * @param {any} enable=false
+ * @param {any} enable 默认值false
  * @returns {any}
  */
 function lineNumberPlugin(md, enable = false) {
