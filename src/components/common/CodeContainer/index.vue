@@ -1,6 +1,6 @@
 <template>
   <div ref="CodeContainerRef" class="Code-Container">
-    <div class="copy-btn" title="复制代码">
+    <div class="copy-btn" title="Copy Code">
       <template v-if="!copied">
         <el-button @click="onCopy">
           <template #default>
@@ -24,10 +24,10 @@
       </template>
     </div>
     <div class="code-lang">{{ activeName }}</div>
-    <el-tabs v-model="activeName" @tab-click="handleClickTab">
+    <el-tabs v-model="activeName" @tab-click="handleClickTab" :class="lineNums ? 'line-numbers-mode' : ''">
       <el-tab-pane v-for="item in source" :label="item.name" :name="item.lang"></el-tab-pane>
     </el-tabs>
-    <div ref="ContentRef" v-html="html"></div>
+    <div ref="ContentRef" v-html="html" class="flex"></div>
   </div>
 </template>
 
@@ -42,16 +42,38 @@ import MarkdownIt from 'markdown-it'
 import { fromHighlighter } from '@shikijs/markdown-it/core'
 
 const props = defineProps({
-  /** @type {Array<{name: string, lang: string, code: string}>} */
+  /**
+   * 数据源
+   *
+   * @type {Array<{name: string, lang: string, code: string}>}
+   * @description name 文件名
+   * @description lang 语言
+   * @description code 代码内容
+   */
   source: {
     type: Array,
     required: true
   },
-  /** @type {'light' | 'dark' | 'auto'} */
+  /**
+   * 主题色
+   *
+   * @type {'light' | 'dark' | 'auto'}
+   * @default 'light'
+   */
   theme: {
     type: String,
     required: false,
     default: 'light'
+  },
+  /** 是否显示行号
+   *
+   * @type {boolean}
+   * @default false
+   */
+  lineNums: {
+    type: Boolean,
+    required: false,
+    default: false
   }
 })
 
@@ -113,7 +135,7 @@ md.use(
     defaultColor: false,
     cssVariablePrefix: '--shiki-'
   })
-)
+).use(lineNumberPlugin, props.lineNums)
 
 const content = ref('')
 
@@ -181,6 +203,36 @@ function showCopyBtn() {
     },
     false
   )
+}
+
+/**
+ * 来自vitepress重写的插件，稍加改造
+ * @author Yuxianhao <yu.xh00@foxmail.com>
+ * @date 2024-04-29
+ * @param {any} md
+ * @param {any} enable=false
+ * @returns {any}
+ */
+function lineNumberPlugin(md, enable = false) {
+  const fence = md.renderer.rules.fence
+  md.renderer.rules.fence = (...args) => {
+    const rawCode = fence(...args)
+    const [tokens, idx] = args
+    const info = tokens[idx].info
+    if ((!enable && !/:line-numbers($| |=)/.test(info)) || (enable && /:no-line-numbers($| )/.test(info))) {
+      return rawCode
+    }
+    let startLineNumber = 1
+    const matchStartLineNumber = info.match(/=(\d*)/)
+    if (matchStartLineNumber && matchStartLineNumber[1]) {
+      startLineNumber = parseInt(matchStartLineNumber[1])
+    }
+    const lines = rawCode.split('\n')
+    const lineNumbersCode = [...Array(lines.length - 2)].map((_, index) => `<span class="line-number">${index + startLineNumber}</span><br>`).join('')
+    const lineNumbersWrapperCode = `<div class="line-numbers-wrapper" aria-hidden="true">${lineNumbersCode}</div>`
+    const finalCode = `${lineNumbersWrapperCode}\n` + rawCode
+    return finalCode
+  }
 }
 </script>
 
@@ -253,6 +305,15 @@ function showCopyBtn() {
     border-bottom-left-radius: 0;
   }
 }
+
+:deep(.el-tabs__header) {
+  margin-bottom: 0;
+}
+
+/* !实际应该根据.line-numbers-wrapper的宽度来动态计算的 */
+.line-numbers-mode :deep(.el-tabs__nav-wrap.is-top) {
+  padding-left: 4em;
+}
 </style>
 
 <style lang="scss">
@@ -272,6 +333,26 @@ function showCopyBtn() {
   &::-webkit-scrollbar-track {
     height: 12px;
   }
+}
+
+.line-numbers-wrapper {
+  padding: 0.5em 1em 0.5em 0;
+  border-right: 2px solid;
+  text-align: center;
+  margin-right: 1em;
+
+  .line-number {
+    color: #8e8e92;
+    font-size: 0.875em;
+    line-height: inherit;
+  }
+}
+
+[data-theme='light'] .line-numbers-wrapper {
+  border-right-color: #e2e2e3;
+}
+[data-theme='dark'] .line-numbers-wrapper {
+  border-right-color: #000000;
 }
 
 /* 设置深浅色主题 */

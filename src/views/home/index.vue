@@ -6,7 +6,7 @@
         <el-button @click="handleExport">导出表格</el-button>
       </div>
       <AsyncTag style="width: 600px">
-        <CodeContainer :source="source" :theme="theme"></CodeContainer>
+        <CodeContainer :source="source" :theme="theme" lineNums></CodeContainer>
       </AsyncTag>
     </div>
   </div>
