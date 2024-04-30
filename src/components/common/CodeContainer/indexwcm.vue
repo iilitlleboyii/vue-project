@@ -352,7 +352,7 @@ function lineNumberPlugin(md, enable = false) {
   .line-number {
     color: #8e8e92;
     font-size: 0.875em;
-    line-height: inherit;
+    line-height: 1.2;
   }
 }
 
