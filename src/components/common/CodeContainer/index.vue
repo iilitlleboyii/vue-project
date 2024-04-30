@@ -315,6 +315,10 @@ function lineNumberPlugin(md, enable = false) {
 </style>
 
 <style lang="scss">
+:root {
+  --code-line-height: 1.2;
+}
+
 .shiki {
   padding: 0.5em;
   overflow: auto;
@@ -331,6 +335,10 @@ function lineNumberPlugin(md, enable = false) {
   &::-webkit-scrollbar-track {
     height: 12px;
   }
+
+  code {
+    line-height: var(--code-line-height);
+  }
 }
 
 .line-numbers-wrapper {
@@ -342,7 +350,7 @@ function lineNumberPlugin(md, enable = false) {
   .line-number {
     color: #8e8e92;
     font-size: 0.875em;
-    line-height: 1.2;
+    line-height: var(--code-line-height);
   }
 }
 
