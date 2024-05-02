@@ -1,7 +1,7 @@
 <template>
   <div class="Draw-Container">
     <el-form @submit.prevent>
-      <template v-for="item in pageData" :key="item.id">
+      <template v-for="item in staticData" :key="item.id">
         <!-- 边框 -->
         <el-form-item :style="item.style" v-if="item.type === 'border'">
           <div
@@ -23,13 +23,15 @@
         <el-form-item :style="item.style" v-if="item.type === 'picture'">
           <el-image :src="'data:image/png;base64,' + item.value" />
         </el-form-item>
+      </template>
+      <template v-for="item in dynamicData" :key="item.id">
         <!-- 输入框 -->
         <el-form-item :style="item.style" v-if="item.type === 'input'">
-          <el-input v-model="item.value" :disabled="false"></el-input>
+          <el-input v-model="item.value" :disabled="false" @change="onChange"></el-input>
         </el-form-item>
         <!-- 选择框 -->
         <el-form-item :style="item.style" v-if="item.type === 'select'">
-          <el-select v-model="item.value" :disabled="false">
+          <el-select v-model="item.value" :disabled="false" @change="onChange">
             <el-option v-for="(option, index) in item.options" :key="index" :label="option.label" :value="option.value" />
           </el-select>
         </el-form-item>
@@ -62,12 +64,22 @@
 </template>
 
 <script setup>
-defineProps({
-  pageData: {
+const props = defineProps({
+  staticData: {
+    type: null,
+    required: true
+  },
+  dynamicData: {
     type: null,
     required: true
   }
 })
+
+const emit = defineEmits(['update:dynamicData'])
+
+function onChange() {
+  emit('update:dynamicData', props.dynamicData)
+}
 </script>
 
 <style lang="scss" scoped>
