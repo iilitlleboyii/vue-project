@@ -157,7 +157,7 @@ function onEmit(value) {
 .draw {
   width: 768px;
   height: 1024px;
-  background-color: #e2e7e8;
+  background-color: #f9f9f9;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   border-radius: 4px;
   scale: 0.8;
