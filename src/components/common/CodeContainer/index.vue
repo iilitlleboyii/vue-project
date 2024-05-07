@@ -80,7 +80,7 @@ const props = defineProps({
 const CodeContainerRef = ref(null)
 const ContentRef = ref(null)
 
-const activeName = ref(props.source[0].lang)
+const activeName = ref('')
 
 function handleClickTab() {
   nextTick(() => {
@@ -90,7 +90,8 @@ function handleClickTab() {
 
 function setThemeToBody(val) {
   if (props.theme === 'auto') {
-    document.body.dataset.theme = val === 'vue' ? 'light' : 'dark'
+    // TODO 自动逻辑
+    // document.body.dataset.theme = val === 'vue' ? 'light' : 'dark'
   } else {
     document.body.dataset.theme = props.theme
   }
@@ -142,9 +143,12 @@ const content = ref('')
 const html = ref('')
 
 watchEffect(() => {
-  setThemeToBody(activeName.value)
-  content.value = props.source.find((item) => item.lang === activeName.value)?.code || ''
-  html.value = md.render(addStringToFirstAndLastLine(content.value, activeName.value))
+  if (props.source instanceof Array && props.source.length > 0) {
+    !activeName.value && (activeName.value = props.source[0].lang)
+    setThemeToBody(activeName.value)
+    content.value = props.source.find((item) => item.lang === activeName.value)?.code || ''
+    html.value = md.render(addStringToFirstAndLastLine(content.value, activeName.value))
+  }
 })
 
 onMounted(() => {
@@ -154,7 +158,7 @@ onMounted(() => {
 })
 
 function setCssVarToParent() {
-  if (!ContentRef.value || !CodeContainerRef.value) return
+  if (!ContentRef.value || !CodeContainerRef.value || !ContentRef.value.getElementsByTagName('pre')[0]) return
   const vars = ['--shiki-light-bg', '--shiki-dark-bg', '--shiki-light', '--shiki-dark']
   for (const varName of vars) {
     const value = getCssVar(ContentRef.value.getElementsByTagName('pre')[0], varName)
@@ -240,6 +244,7 @@ function lineNumberPlugin(md, enable = false) {
   border-radius: 0.5em;
   position: relative;
   width: 100%;
+  min-height: 100%;
   overflow: hidden;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
